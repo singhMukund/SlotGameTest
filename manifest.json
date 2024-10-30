@@ -1,0 +1,13 @@
+{
+    "bundles":[
+       {
+          "name":"background-image",
+          "assets":[
+             {
+                "alias":"background",
+                "src":"./StaticImage/bg_Img.png"
+             }
+          ]
+       }
+    ]
+}
