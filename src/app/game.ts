@@ -1,5 +1,5 @@
 // Game.ts
-import { Application, Container, Loader, Renderer, Ticker } from 'pixi.js';
+import { Application, Assets, Container, Loader, Ticker } from 'pixi.js';
 import { CommonConfig } from '../Common/CommonConfig';
 import { CommonEvents } from '@/Common/CommonEvents';
 
@@ -47,7 +47,7 @@ export class Game {
 
   private async loadImages() {
 
-
+    Assets.init({manifest: "path/manifest.json"});
     // @ts-ignore
     const loadAssets = () => {
       return new Promise<void>((resolve, reject) => {
@@ -73,15 +73,7 @@ export class Game {
           .catch((error) => {
             console.error("Error during asset loading or login:", error);
           });
-      } else {
-        Promise.all([loadAssets()])
-          .then(() => {
-            this.onLoadComplete();
-          })
-          .catch((error) => {
-            console.error("Error during asset loading or login:", error);
-          });
-      }
+      } 
 
 
     } catch (error) {
