@@ -1,5 +1,4 @@
-import { Container, Loader, Sprite } from "pixi.js";
-import { Game } from "../game";
+import { Assets, Container, Sprite } from "pixi.js";
 
 export class ReelView extends Container{
     private reelBg! : Sprite;
@@ -8,15 +7,18 @@ export class ReelView extends Container{
     constructor(){
         super();
         this.initialiZeReelView();
+        this.addContainerToStage();
+        this.setPosition();
     }
 
     private initialiZeReelView() : void{
-       this.reelBg = new Sprite(Game.the.app.loader.resources['reelFrame'].texture); 
-       this.addChild(this.reelBg);
-       this.position.set((1920 - this.reelBg.width)/2,(1080 - this.reelBg.height)/2 - 100);
+       this.reelBg = new Sprite(Assets.get("reelFrameImage")); 
+    }
 
-       this.logo = new Sprite(Game.the.app.loader.resources['logo'].texture);
-       this.addChild(this.logo);
-       this.logo.position.set((1920 - this.logo.width)/2 - 120, 10);
+    private setPosition() :void{
+    }
+
+    private addContainerToStage() {
+        this.addChild(this.reelBg);
     }
 }

@@ -15,20 +15,11 @@ export class ReelManager extends Container{
     private reel5 !: Reel;
     private maskContainer !: Graphics;
     private symbolPool !: SymbolPool;
-    static get the(): ReelManager {
-        if (!ReelManager._the) {
-            ReelManager._the = new ReelManager();
-        }
-
-        return ReelManager._the;
-    }
 
     constructor(){
         super();
         this.symbolPool = new SymbolPool();
         this.initializeReelContainer();
-        if (ReelManager._the == null) ReelManager._the = this;
-        else throw 'SymbolPool is a Singleton!';
         this.initGraphics();
         this.subscribeEvent();
     }

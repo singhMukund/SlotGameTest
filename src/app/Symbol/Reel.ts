@@ -25,6 +25,7 @@ export class Reel extends Container {
     private spinClicked : boolean = false;
 
     private maxPosition = CommonConfig.symbolHeight * 4;
+    private minPosition = -CommonConfig.symbolHeight;
     private positions: number[] = [CommonConfig.symbolHeight * -1, CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3]
 
@@ -55,26 +56,31 @@ export class Reel extends Container {
         this.looper_00 = new Container();
         this.looper_00.position.set(0, CommonConfig.symbolHeight * -1);
         this.looper_00.name = 'looper_00';
+        this.looper_00.alpha = 0;
         this.addChild(this.looper_00);
 
         this.looper_01 = new Container();
         this.looper_01.position.set(0, CommonConfig.symbolHeight * 3);
         this.looper_01.name = 'looper_01';
+        this.looper_01.alpha = 0;
         this.addChild(this.looper_01);
 
         this.looper_02 = new Container();
         this.looper_02.position.set(0, 1000);
         this.looper_02.name = 'looper_02';
+        this.looper_02.alpha = 0;
         this.addChild(this.looper_02);
 
         this.looper_03 = new Container();
         this.looper_03.position.set(0, 1000);
         this.looper_03.name = 'looper_03';
+        this.looper_03.alpha = 0;
         this.addChild(this.looper_03);
 
         this.looper_04 = new Container();
         this.looper_04.position.set(0, 1000);
         this.looper_04.name = 'looper_04';
+        this.looper_04.alpha = 0;
         this.addChild(this.looper_04);
     }
 
@@ -229,6 +235,10 @@ export class Reel extends Container {
 
     checkAndUpdateTheReel(): void {
         for (let i: number = 0; i < this.children.length; i++) {
+            if((this.children[i] as Container).y > this.maxPosition - 50){
+                let minPos = Math.min(...this.children.map(c => c.position.y));
+                 
+            }
             if (!this.notCheckArray.includes((this.children[i] as Container).name as string) && (this.children[i] as Container).y > this.maxPosition - 50 && (this.children[i] as Container).y !== 1000) {
                 if (((this.children[i] as Container).name as string).includes('looper_')) {
                     (this.children[i] as Container).removeChildren();

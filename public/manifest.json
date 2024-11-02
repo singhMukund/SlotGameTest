@@ -1,0 +1,84 @@
+{
+   "bundles": [
+      {
+         "name": "background-image",
+         "assets": [
+            {
+               "alias": "background",
+               "src": "./StaticImage/Loading_Screen_Background.png"
+            }
+         ]
+      },
+      {
+         "name": "ReelFrame-Component",
+         "assets": [
+            {
+               "alias": "reelFrameImage",
+               "src": "./StaticImage/reelFrame.png"
+            }
+         ]
+      },
+      {
+         "name": "static-symbol",
+         "assets": [
+            {
+               "alias": "sym_bonus",
+               "src": "./StaticImage/symbols/BONUS.png"
+            },
+            {
+               "alias": "sym_H1",
+               "src": "./StaticImage/symbols/H1.png"
+            },
+            {
+               "alias": "sym_H2",
+               "src": "./StaticImage/symbols/H2.png"
+            },
+            {
+               "alias": "sym_H3",
+               "src": "./StaticImage/symbols/H3.png"
+            },
+            {
+               "alias": "sym_H4",
+               "src": "./StaticImage/symbols/H4.png"
+            },
+            {
+               "alias": "sym_L1",
+               "src": "./StaticImage/symbols/L1.png"
+            },
+            {
+               "alias": "sym_L2",
+               "src": "./StaticImage/symbols/L2.png"
+            },
+            {
+               "alias": "sym_L3",
+               "src": "./StaticImage/symbols/L3.png"
+            },
+            {
+               "alias": "sym_L4",
+               "src": "./StaticImage/symbols/L4.png"
+            },
+            {
+               "alias": "sym_L5",
+               "src": "./StaticImage/symbols/L5.png"
+            },
+            {
+               "alias": "sym_Scatter",
+               "src": "./StaticImage/symbols/SCATTER.png"
+            },
+            {
+               "alias": "sym_Wild",
+               "src": "./StaticImage/symbols/WILD.png"
+            }
+         ]
+      },
+      {
+         "name": "static-button",
+         "assets": [
+            {
+               "alias": "spin_button",
+               "src": "./StaticImage/spin_button.json"
+            }
+         ]
+      }
+   ]
+}

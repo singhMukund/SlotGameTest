@@ -1,30 +1,25 @@
-import { Container, Sprite } from "pixi.js";
+import { Assets, Container, Sprite, Spritesheet, Texture } from "pixi.js";
 import { Game } from "../game";
-import { ReelManager } from "../Symbol/ReelManager";
 import { CommonConfig } from "../../Common/CommonConfig";
 
 export class SpinButton extends Container{
-    private normalSpinButtton !: Sprite;
-    private pressedSpinButton !: Sprite;
-    private hoverSpinButton !: Sprite;
-    private disabledSpinButton !: Sprite;
+    private buttton !: Sprite;
+    private buttonTexture !: Spritesheet;
 
     constructor(){
         super();
+        this.buttonTexture = Assets.get("spin_button")
         this.initializeButton();
         this.addEvent();
     }
 
     private initializeButton() :void{
-        this.normalSpinButtton = new Sprite(Game.the.app.loader.resources['Spin_Idle'].texture);
-        this.addChild(this.normalSpinButtton);
+        this.buttton = new Sprite(this.buttonTexture.textures['Spin_Idle.png']);
+        this.addChild(this.buttton);
     }
 
     private addEvent() :void{
         this.interactive = true;
-        this.buttonMode = true; // Show hand cursor
-
-        // Add event listeners
         this.on('pointerdown', this.onButtonDown, this)
               .on('pointerup', this.onButtonUp, this)
               .on('pointerover', this.onButtonOver, this)
@@ -34,39 +29,31 @@ export class SpinButton extends Container{
     }
 
     private onButtonDown() : void{
-        // @ts-ignore
-        this.normalSpinButtton.texture = Game.the.app.loader.resources['Spin_Pressed'].texture
+        this.buttton.texture = this.buttonTexture.textures['Spin_Pressed.png'];
     }
 
     private onButtonUp() :void{
-        // @ts-ignore
-        this.normalSpinButtton.texture = Game.the.app.loader.resources['Spin_Idle'].texture;
+        this.buttton.texture = this.buttonTexture.textures['Spin_Idle.png'];
         Game.the.app.stage.emit(CommonConfig.START_SPIN);
         this.disable();
     }
 
     private onButtonOver() :void{
-        // @ts-ignore
-        this.normalSpinButtton.texture = Game.the.app.loader.resources['Spin_Hover'].texture
+        this.buttton.texture = this.buttonTexture.textures['Spin_Hover.png'];
     }
 
     private onButtonOut() :void{
-        // @ts-ignore
-        this.normalSpinButtton.texture = Game.the.app.loader.resources['Spin_Idle'].texture
+        this.buttton.texture = this.buttonTexture.textures['Spin_Idle.png'];
     }
 
     disable() :void{
-        // @ts-ignore
-        this.normalSpinButtton.texture = Game.the.app.loader.resources['Spin_Disabled'].texture;
+        this.buttton.texture = this.buttonTexture.textures['Spin_Disabled.png'];
         this.interactive = false;
-        this.buttonMode = false;
     }
 
     enable() :void{
-        // @ts-ignore
-        this.normalSpinButtton.texture = Game.the.app.loader.resources['Spin_Idle'].texture;
+        this.buttton.texture = this.buttonTexture.textures['Spin_Idle.png'];
         this.interactive = true;
-        this.buttonMode = true;
     }
     
 }

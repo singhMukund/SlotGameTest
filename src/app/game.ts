@@ -1,7 +1,11 @@
 // Game.ts
-import { Application, Assets, Container, Loader, Ticker } from 'pixi.js';
+import { Application, Assets, Container, Loader, Sprite, Ticker } from 'pixi.js';
 import { CommonConfig } from '../Common/CommonConfig';
 import { CommonEvents } from '@/Common/CommonEvents';
+import { Spine } from 'pixi-spine';
+import { BackgroundView } from './Background/BackgroundView';
+import { BaseGame } from './State/Basegame';
+// import manifest from "../../public/manifest.json";
 
 
 
@@ -46,39 +50,9 @@ export class Game {
   }
 
   private async loadImages() {
-
-    Assets.init({manifest: "path/manifest.json"});
-    // @ts-ignore
-    const loadAssets = () => {
-      return new Promise<void>((resolve, reject) => {
-        resolve()
-        // this.loader.load(() => {
-        //   resolve();
-        // });
-        // @ts-ignore
-        this.loader.onError.add((error) => {
-          console.error("Error loading assets:", error);
-          reject(error);
-        });
-      });
-    };
-
-
-    try {
-      if (this.isLocaltesting) {
-        Promise.all([loadAssets()])
-          .then(() => {
-            this.onLoadComplete();
-          })
-          .catch((error) => {
-            console.error("Error during asset loading or login:", error);
-          });
-      } 
-
-
-    } catch (error) {
-      console.error("Error during asset loading or login:", error);
-    }
+    await Assets.init({ manifest: "./manifest.json" });
+    await Assets.loadBundle(["background-image", "ReelFrame-Component","static-symbol","static-button"]);
+    this.onLoadComplete();
   }
 
   isIOS(): boolean {
@@ -98,8 +72,7 @@ export class Game {
 
 
   private onLoadComplete() {
-
-
+    this.app.stage.addChild(new BaseGame());
   }
 
 

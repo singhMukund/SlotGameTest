@@ -1,4 +1,4 @@
-import { Container, Loader, Sprite } from "pixi.js";
+import { Assets, Container, Loader, Sprite } from "pixi.js";
 import { Game } from "../game";
 import { Spine } from "pixi-spine";
 
@@ -9,15 +9,16 @@ export class StaticSymbol extends Container{
 
     constructor(texture: string) {
         super();
-        this.symbol = new Sprite(Game.the.app.loader.resources[`static_${texture}`].texture);
+        this.symbol = new Sprite(Assets.get(texture));
+        // @ts-ignore
         this.symbol.name = "Static_Symbol";
-         // @ts-ignore
-        this.spinAnimation = new Spine(Game.the.app.loader.resources[`anim_${texture}`].spineData);
-         // @ts-ignore
-        this.spinAnimation.name = "Spine_Symbol"
+        //  // @ts-ignore
+        // this.spinAnimation = new Spine(Game.the.app.loader.resources[`anim_${texture}`].spineData);
+        //  // @ts-ignore
+        // this.spinAnimation.name = "Spine_Symbol"
         this.addChild(this.symbol);
-        this.addChild(this.spinAnimation);
-        this.spinAnimation.visible = false;
+        // this.addChild(this.spinAnimation);
+        // this.spinAnimation.visible = false;
         this.symbolName = texture;
         this.symbol.anchor.set(0.5);  // Center the symbol
         this.name = 'SymbolContainer';
@@ -33,7 +34,7 @@ export class StaticSymbol extends Container{
             case 'Sym_SCATTER':
                 // this.symbol.y = -20;
                 break;
-            case 'Sym_WILD':
+            case 'sym_Wild':
               
                 break;
             case 'Sym_H1':
@@ -79,20 +80,20 @@ export class StaticSymbol extends Container{
     }
 
     playSpineAnimation() :void{
-        this.symbol.visible = false;
-        this.spinAnimation.visible = true;
-        this.spinAnimation.state.setAnimation(0, 'win', true);
-        this.spinAnimation.state.addListener({
-            complete: () => {
-                if (this.spinAnimation) {
-                    this.spinAnimation.state.clearListeners()
-                    this.spinAnimation.state.tracks = []
-                }
+        // this.symbol.visible = false;
+        // this.spinAnimation.visible = true;
+        // this.spinAnimation.state.setAnimation(0, 'win', true);
+        // this.spinAnimation.state.addListener({
+        //     complete: () => {
+        //         if (this.spinAnimation) {
+        //             this.spinAnimation.state.clearListeners()
+        //             this.spinAnimation.state.tracks = []
+        //         }
 
-                this.symbol.visible = true;
-                this.spinAnimation.visible = false;
-            }
-        })
+        //         this.symbol.visible = true;
+        //         this.spinAnimation.visible = false;
+        //     }
+        // })
     }
     
 }
