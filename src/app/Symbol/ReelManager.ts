@@ -61,7 +61,7 @@ export class ReelManager extends Container{
     }
 
     spinTheReels() :void{
-        this.takeInputFromSymbol()
+        // this.takeInputFromSymbol()
         this.reel1.spinTheReel();
         this.reel2.spinTheReel();
         this.reel3.spinTheReel();

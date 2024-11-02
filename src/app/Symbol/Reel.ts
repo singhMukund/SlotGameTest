@@ -9,22 +9,17 @@ export class Reel extends Container {
     private pos_00 !: Container;
     private pos_01 !: Container;
     private pos_02 !: Container;
-    private looper_00 !: Container;
-    private looper_01 !: Container;
-    private looper_02 !: Container;
-    private looper_03 !: Container;
-    private looper_04 !: Container;
     private normalSpintime: number = 3;
     private stopping: boolean = false;
     private notCheckArray: string[] = [];
     private reelId: number = 0;
     private delayStart: number = 0.3;
     private stopTween: gsap.core.Tween | null = null;
-    private reelStartSpeed: number = 60;
-    private reelStopSpeed: number = 60;
+    private reelStartSpeed: number = 10;
+    private reelStopSpeed: number = 10;
     private spinClicked : boolean = false;
-
     private maxPosition = CommonConfig.symbolHeight * 4;
+    private speed : number = this.maxPosition / 3;
     private minPosition = -CommonConfig.symbolHeight;
     private positions: number[] = [CommonConfig.symbolHeight * -1, CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3]
@@ -51,37 +46,25 @@ export class Reel extends Container {
         this.pos_02 = new Container();
         this.pos_02.position.set(0, CommonConfig.symbolHeight * 2);
         this.pos_02.name = 'pos_02';
-        this.addChild(this.pos_02);
+        this.addChild(this.pos_02); 
+    }
 
-        this.looper_00 = new Container();
-        this.looper_00.position.set(0, CommonConfig.symbolHeight * -1);
-        this.looper_00.name = 'looper_00';
-        this.looper_00.alpha = 0;
-        this.addChild(this.looper_00);
+    private playPosGsap(pos : Container, i : number) : void{
+        let distance = this.maxPosition - pos.y;
+        let time = this.calculateTime(distance);
+        gsap.to(pos, {
+            duration: time,
+            y : this.maxPosition,
+            delay : (CommonConfig.symbolsPerReel - i) * this.delayStart,
+            ease: "power1.in",
+            // onUpdate: () => this.updatePosition(),
+            onComplete: () => this.resetPositions(pos, i) 
+        });
+    }
 
-        this.looper_01 = new Container();
-        this.looper_01.position.set(0, CommonConfig.symbolHeight * 3);
-        this.looper_01.name = 'looper_01';
-        this.looper_01.alpha = 0;
-        this.addChild(this.looper_01);
-
-        this.looper_02 = new Container();
-        this.looper_02.position.set(0, 1000);
-        this.looper_02.name = 'looper_02';
-        this.looper_02.alpha = 0;
-        this.addChild(this.looper_02);
-
-        this.looper_03 = new Container();
-        this.looper_03.position.set(0, 1000);
-        this.looper_03.name = 'looper_03';
-        this.looper_03.alpha = 0;
-        this.addChild(this.looper_03);
-
-        this.looper_04 = new Container();
-        this.looper_04.position.set(0, 1000);
-        this.looper_04.name = 'looper_04';
-        this.looper_04.alpha = 0;
-        this.addChild(this.looper_04);
+    private resetPositions(pos : Container, i : number) :void{
+        let y_pos : number = this.minPosition - (i * CommonConfig.symbolHeight);
+        pos.position.set(pos.x, y_pos);
     }
 
     updatePos_00WithSym(sym: StaticSymbol): void {
@@ -122,17 +105,27 @@ export class Reel extends Container {
         }
     }
 
+    private calculateTime(distance : number) : number{
+        return distance / this.speed; 
+    } 
+
     spinTheReel(): void {
         this.spinClicked = true;
         this.initializeReel();
         gsap.delayedCall(this.reelId * this.delayStart, () => {
-            gsap.to(this, {
-                duration: 3,
-                ease: "power1.in",
-                onUpdate: () => this.updatePosition(),
-                onComplete: () => this.decelerateAndStop()
-            });
+            this.children.forEach((value,index)=>{
+                this.playPosGsap(value,index);
+            })
         })
+      
+        // gsap.delayedCall(this.reelId * this.delayStart, () => {
+        //     gsap.to(this, {
+        //         duration: 3,
+        //         ease: "power1.in",
+        //         onUpdate: () => this.updatePosition(),
+        //         onComplete: () => this.decelerateAndStop()
+        //     });
+        // })
     }
 
     private decelerateAndStop(): void {
@@ -237,7 +230,7 @@ export class Reel extends Container {
         for (let i: number = 0; i < this.children.length; i++) {
             if((this.children[i] as Container).y > this.maxPosition - 50){
                 let minPos = Math.min(...this.children.map(c => c.position.y));
-                 
+                
             }
             if (!this.notCheckArray.includes((this.children[i] as Container).name as string) && (this.children[i] as Container).y > this.maxPosition - 50 && (this.children[i] as Container).y !== 1000) {
                 if (((this.children[i] as Container).name as string).includes('looper_')) {
