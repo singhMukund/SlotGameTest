@@ -125,21 +125,20 @@ export class Reel extends Container {
 
     private resetAfterStop(pos: Container, i: number): void {
         gsap.to(pos, {
-            duration: 0.08,
-            y: this.positions[i] - 20,
-            ease: "Ease.in",
-            onComplete: () =>{
+            duration: 0.1,
+            y: this.positions[i] - 30,
+            ease: "power1.out",
+            onComplete: () =>{    
                 gsap.to(pos, {
-                    duration: 0.5,
+                    duration: 0.1,
                     y: this.positions[i],
-                    ease: "bounce.out"
+                    ease: "power1.out"
                 });
+                if (this.reelId === CommonConfig.totalReel - 1) {
+                    Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+                }
             }
         });
-        
-        if (this.reelId === CommonConfig.totalReel - 1) {
-            Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
-        }
     }
 
     private playStopPosGsap(pos: Container, i: number): void {
@@ -147,7 +146,7 @@ export class Reel extends Container {
         let time = this.calculateTime(distance);
         gsap.to(pos, {
             duration: time,
-            y: this.positions[i] + 10,
+            y: this.positions[i] + 100,
             delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
             ease: "power1.inOut",
             onComplete: () => this.resetAfterStop(pos, i)
