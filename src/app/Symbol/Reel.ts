@@ -19,7 +19,7 @@ export class Reel extends Container {
     private reelStopSpeed: number = 10;
     private spinClicked: boolean = false;
     private maxPosition = CommonConfig.symbolHeight * 4;
-    private speed: number = this.maxPosition / 1;
+    private speed: number = this.maxPosition / 0.4;
     private minPosition = -CommonConfig.symbolHeight * 2;
     private positions: number[] = [CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3]
@@ -123,15 +123,33 @@ export class Reel extends Container {
         })
     }
 
+    private resetAfterStop(pos: Container, i: number): void {
+        gsap.to(pos, {
+            duration: 0.1,
+            y: this.positions[i] - 40,
+            ease: "bounce.out",
+            onComplete: () =>{
+                gsap.to(pos, {
+                    duration: 0.1,
+                    y: this.positions[i],
+                    ease: "bounce.out"
+                });
+            }
+        });
+        if (this.reelId === CommonConfig.totalReel - 1) {
+            Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+        }
+    }
+
     private playStopPosGsap(pos: Container, i: number): void {
         let distance = this.positions[i] - pos.y;
         let time = this.calculateTime(distance);
         gsap.to(pos, {
             duration: time,
-            y: this.positions[i],
+            y: this.positions[i] + 40,
             delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
             ease: "power1.inOut",
-            onComplete: () => this.resetAfterStop()
+            onComplete: () => this.resetAfterStop(pos, i)
         });
 
         // gsap.to(pos, {
@@ -171,7 +189,7 @@ export class Reel extends Container {
             ease: "power1.inOut",
             repeat: -1,
             onUpdate: () => this.updatePositionForStop(),
-            onComplete: () => this.resetAfterStop()
+            // onComplete: () => this.resetAfterStop()
         });
     }
 
@@ -206,12 +224,6 @@ export class Reel extends Container {
         this.updatePos_00WithSym(symbol1);
         this.updatePos_01WithSym(symbol2);
         this.updatePos_02WithSym(symbol3);
-    }
-
-    private resetAfterStop(): void {
-        if (this.reelId === CommonConfig.totalReel - 1) {
-            Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
-        }
     }
 
     private updatePositionForStop(): void {
