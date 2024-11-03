@@ -126,7 +126,7 @@ export class Reel extends Container {
     private resetAfterStop(pos: Container, i: number): void {
         gsap.to(pos, {
             duration: 0.1,
-            y: this.positions[i] - 30,
+            y: this.positions[i] - 20,
             ease: "power1.out",
             onComplete: () =>{    
                 gsap.to(pos, {
@@ -146,7 +146,7 @@ export class Reel extends Container {
         let time = this.calculateTime(distance);
         gsap.to(pos, {
             duration: time,
-            y: this.positions[i] + 100,
+            y: this.positions[i] + 20,
             delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
             ease: "power1.inOut",
             onComplete: () => this.resetAfterStop(pos, i)
