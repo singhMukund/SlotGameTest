@@ -20,7 +20,7 @@ export class Reel extends Container {
     private spinClicked: boolean = false;
     private maxPosition = CommonConfig.symbolHeight * 4;
     private speed: number = this.maxPosition / 0.4;
-    private minPosition = -CommonConfig.symbolHeight * 2;
+    private minPosition = -CommonConfig.symbolHeight;
     private positions: number[] = [CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3]
 
@@ -130,7 +130,7 @@ export class Reel extends Container {
             ease: "Ease.in",
             onComplete: () =>{
                 gsap.to(pos, {
-                    duration: 0.1,
+                    duration: 0.5,
                     y: this.positions[i],
                     ease: "bounce.out"
                 });
