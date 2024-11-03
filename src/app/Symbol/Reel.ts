@@ -130,7 +130,7 @@ export class Reel extends Container {
             ease: "power1.out",
             onComplete: () =>{    
                 gsap.to(pos, {
-                    duration: 0.1,
+                    duration: 0.25,
                     y: this.positions[i],
                     ease: "power1.out"
                 });
