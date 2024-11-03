@@ -136,6 +136,7 @@ export class Reel extends Container {
                 });
             }
         });
+        
         if (this.reelId === CommonConfig.totalReel - 1) {
             Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
         }
