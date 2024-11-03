@@ -3,6 +3,7 @@ import { BackgroundView } from "../Background/BackgroundView";
 import { ReelView } from "../Background/ReelView";
 import { ReelManager } from "../Symbol/ReelManager";
 import { SpinButton } from "../Button/SpinButton";
+import { Game } from "../game";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
@@ -17,6 +18,8 @@ export class BaseGame extends Container {
         this.init();
         this.addContainerToStage();
         this.setPosition();
+        this.resizeApp();
+        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private init() {
@@ -61,5 +64,12 @@ export class BaseGame extends Container {
         this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2);
         this.reelManager.position.set(370, 280);
         this.bottomPanelButton.position.set(0,(window.innerHeight - this.bottomPanelButton.height))
+    }
+
+    private resizeApp() :void{
+        if(window.innerWidth<window.innerHeight){
+            this.reelContainer.scale.set(0.32);
+            this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
+        }
     }
 }

@@ -16,6 +16,7 @@ export class CommonConfig {
     public static ENABLE_INFO_BUTTON: string = "ENABLE_INFO_BUTTON";
     public static INFO_BTN_CLICKED: string = "INFO_BTN_CLICKED";
     public static SPIN_STOPPED: string = "SPIN_STOPPED";
+    public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
     private winningSymbolIdFromUser: number = 12;
     private winningSymbolIds: string[][] = [['12'], ['12'], ['12']];
 

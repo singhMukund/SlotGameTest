@@ -13,15 +13,15 @@ export class Reel extends Container {
     private stopping: boolean = false;
     private notCheckArray: string[] = [];
     private reelId: number = 0;
-    private delayStart: number = 0.3;
+    private delayStart: number = 0.05;
     private stopTween: gsap.core.Tween | null = null;
     private reelStartSpeed: number = 10;
     private reelStopSpeed: number = 10;
-    private spinClicked : boolean = false;
+    private spinClicked: boolean = false;
     private maxPosition = CommonConfig.symbolHeight * 4;
-    private speed : number = this.maxPosition / 3;
-    private minPosition = -CommonConfig.symbolHeight;
-    private positions: number[] = [CommonConfig.symbolHeight * -1, CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
+    private speed: number = this.maxPosition / 1;
+    private minPosition = -CommonConfig.symbolHeight * 2;
+    private positions: number[] = [CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3]
 
 
@@ -30,6 +30,7 @@ export class Reel extends Container {
         this.reelId = reelId;
         this.init();
         Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.playAnimation, this);
+        Game.the.app.stage.on(CommonConfig.PLAY_STOP_SPIN, this.stopTheReel, this);
     }
 
     private init(): void {
@@ -46,25 +47,30 @@ export class Reel extends Container {
         this.pos_02 = new Container();
         this.pos_02.position.set(0, CommonConfig.symbolHeight * 2);
         this.pos_02.name = 'pos_02';
-        this.addChild(this.pos_02); 
+        this.addChild(this.pos_02);
     }
 
-    private playPosGsap(pos : Container, i : number) : void{
+    private playPosGsap(pos: Container, i: number): void {
         let distance = this.maxPosition - pos.y;
         let time = this.calculateTime(distance);
         gsap.to(pos, {
             duration: time,
-            y : this.maxPosition,
-            delay : (CommonConfig.symbolsPerReel - i) * this.delayStart,
+            y: this.maxPosition,
+            delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
             ease: "power1.in",
-            // onUpdate: () => this.updatePosition(),
-            onComplete: () => this.resetPositions(pos, i) 
+            // onUpdate: () => this.updatePositi   on(),
+            onComplete: () => this.resetPositions(pos, i)
         });
     }
 
-    private resetPositions(pos : Container, i : number) :void{
-        let y_pos : number = this.minPosition - (i * CommonConfig.symbolHeight);
+
+
+    private resetPositions(pos: Container, i: number): void {
+        let y_pos: number = this.minPosition - ((CommonConfig.symbolsPerReel - i) * CommonConfig.symbolHeight);
         pos.position.set(pos.x, y_pos);
+        if (i === 0 && this.reelId === CommonConfig.totalReel - 1) {
+            Game.the.app.stage.emit(CommonConfig.PLAY_STOP_SPIN);
+        }
     }
 
     updatePos_00WithSym(sym: StaticSymbol): void {
@@ -105,27 +111,53 @@ export class Reel extends Container {
         }
     }
 
-    private calculateTime(distance : number) : number{
-        return distance / this.speed; 
-    } 
+    private calculateTime(distance: number): number {
+        return distance / this.speed;
+    }
+
+    private stopTheReel(): void {
+        gsap.delayedCall(this.reelId * this.delayStart, () => {
+            this.children.forEach((value, index) => {
+                this.playStopPosGsap(value, index);
+            })
+        })
+    }
+
+    private playStopPosGsap(pos: Container, i: number): void {
+        let distance = this.positions[i] - pos.y;
+        let time = this.calculateTime(distance);
+        gsap.to(pos, {
+            duration: time,
+            y: this.positions[i],
+            delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
+            ease: "power1.inOut",
+            onComplete: () => this.resetAfterStop()
+        });
+
+        // gsap.to(pos, {
+        //     duration: time * 0.7,  // Start with a faster initial drop
+        //     y: this.positions[i] + 60, // Move slightly beyond the target
+        //     delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
+        //     ease: "power1.inOut",
+        // });
+
+        // // Bounce back up to the target position
+        // gsap.to(pos, {
+        //     duration: time * 0.3,
+        //     y: this.positions[i],
+        //     delay: time * 0.7,  // Delay to start after initial drop
+        //     ease: "bounce.out",
+        // });
+    }
 
     spinTheReel(): void {
         this.spinClicked = true;
         this.initializeReel();
         gsap.delayedCall(this.reelId * this.delayStart, () => {
-            this.children.forEach((value,index)=>{
-                this.playPosGsap(value,index);
+            this.children.forEach((value, index) => {
+                this.playPosGsap(value, index);
             })
         })
-      
-        // gsap.delayedCall(this.reelId * this.delayStart, () => {
-        //     gsap.to(this, {
-        //         duration: 3,
-        //         ease: "power1.in",
-        //         onUpdate: () => this.updatePosition(),
-        //         onComplete: () => this.decelerateAndStop()
-        //     });
-        // })
     }
 
     private decelerateAndStop(): void {
@@ -177,7 +209,9 @@ export class Reel extends Container {
     }
 
     private resetAfterStop(): void {
-        //    performance.now();
+        if (this.reelId === CommonConfig.totalReel - 1) {
+            Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+        }
     }
 
     private updatePositionForStop(): void {
@@ -207,7 +241,7 @@ export class Reel extends Container {
     playAnimation(): void {
         this.spinClicked = false;
         gsap.delayedCall(0.1, () => {
-            if(!this.spinClicked){
+            if (!this.spinClicked) {
                 (this.pos_00.children[0] as StaticSymbol).playSpineAnimation();
                 (this.pos_01.children[0] as StaticSymbol).playSpineAnimation();
                 (this.pos_02.children[0] as StaticSymbol).playSpineAnimation();
@@ -228,9 +262,9 @@ export class Reel extends Container {
 
     checkAndUpdateTheReel(): void {
         for (let i: number = 0; i < this.children.length; i++) {
-            if((this.children[i] as Container).y > this.maxPosition - 50){
+            if ((this.children[i] as Container).y > this.maxPosition - 50) {
                 let minPos = Math.min(...this.children.map(c => c.position.y));
-                
+
             }
             if (!this.notCheckArray.includes((this.children[i] as Container).name as string) && (this.children[i] as Container).y > this.maxPosition - 50 && (this.children[i] as Container).y !== 1000) {
                 if (((this.children[i] as Container).name as string).includes('looper_')) {
