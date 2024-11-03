@@ -22,7 +22,8 @@ export class Reel extends Container {
     private speed: number = this.maxPosition / 0.4;
     private minPosition = -CommonConfig.symbolHeight;
     private positions: number[] = [CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
-    CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3]
+    CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3];
+    private delays : number [] = [0.05,0.025,0.015,0.03];
 
 
     constructor(reelId: number) {
@@ -116,7 +117,8 @@ export class Reel extends Container {
     }
 
     private stopTheReel(): void {
-        gsap.delayedCall(this.reelId * this.delayStart, () => {
+        let delay = this.delays[Math.floor(Math.random() * this.delays.length)];
+        gsap.delayedCall(delay, () => {
             this.children.forEach((value, index) => {
                 this.playStopPosGsap(value, index);
             })
@@ -151,27 +153,13 @@ export class Reel extends Container {
             ease: "power1.inOut",
             onComplete: () => this.resetAfterStop(pos, i)
         });
-
-        // gsap.to(pos, {
-        //     duration: time * 0.7,  // Start with a faster initial drop
-        //     y: this.positions[i] + 60, // Move slightly beyond the target
-        //     delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
-        //     ease: "power1.inOut",
-        // });
-
-        // // Bounce back up to the target position
-        // gsap.to(pos, {
-        //     duration: time * 0.3,
-        //     y: this.positions[i],
-        //     delay: time * 0.7,  // Delay to start after initial drop
-        //     ease: "bounce.out",
-        // });
     }
 
     spinTheReel(): void {
         this.spinClicked = true;
         this.initializeReel();
-        gsap.delayedCall(this.reelId * this.delayStart, () => {
+        let delay = this.delays[Math.floor(Math.random() * this.delays.length)];
+        gsap.delayedCall(delay, () => {
             this.children.forEach((value, index) => {
                 this.playPosGsap(value, index);
             })
