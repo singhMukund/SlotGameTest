@@ -70,8 +70,10 @@ export class Reel extends Container {
         let y_pos: number = this.minPosition - ((CommonConfig.symbolsPerReel - i) * CommonConfig.symbolHeight);
         pos.position.set(pos.x, y_pos);
         if (i === 0 && this.reelId === CommonConfig.totalReel - 1) {
-            Game.the.app.stage.emit(CommonConfig.SET_RESPONSE_AT_REEL);
-            Game.the.app.stage.emit(CommonConfig.PLAY_STOP_SPIN);
+            gsap.delayedCall(0.05,()=>{
+                Game.the.app.stage.emit(CommonConfig.SET_RESPONSE_AT_REEL);
+                Game.the.app.stage.emit(CommonConfig.PLAY_STOP_SPIN);
+            })
         }
     }
 
