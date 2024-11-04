@@ -70,6 +70,7 @@ export class Reel extends Container {
         let y_pos: number = this.minPosition - ((CommonConfig.symbolsPerReel - i) * CommonConfig.symbolHeight);
         pos.position.set(pos.x, y_pos);
         if (i === 0 && this.reelId === CommonConfig.totalReel - 1) {
+            Game.the.app.stage.emit(CommonConfig.SET_RESPONSE_AT_REEL);
             Game.the.app.stage.emit(CommonConfig.PLAY_STOP_SPIN);
         }
     }
@@ -117,6 +118,7 @@ export class Reel extends Container {
     }
 
     private stopTheReel(): void {
+        // this.setSymbolAtReel();
         let delay = this.delays[Math.floor(Math.random() * this.delays.length)];
         gsap.delayedCall(delay, () => {
             this.children.forEach((value, index) => {
@@ -167,7 +169,7 @@ export class Reel extends Container {
     }
 
     private decelerateAndStop(): void {
-        this.setSymbolAtReel();
+        // this.setSymbolAtReel();
         let minPos = Math.min(...this.children.map(c => c.position.y));
         this.pos_02.position.set(0, minPos - CommonConfig.symbolHeight);
         this.pos_01.position.set(0, this.pos_02.y - CommonConfig.symbolHeight);
@@ -179,39 +181,6 @@ export class Reel extends Container {
             onUpdate: () => this.updatePositionForStop(),
             // onComplete: () => this.resetAfterStop()
         });
-    }
-
-    public setSymbolAtReel(): void {
-        let stoppingResponseId: number = Number(Math.floor(Math.random() * 5));
-        let response: string[][] = [];
-        if (stoppingResponseId === 0) {
-            response = CommonConfig.RESPONSE_01;
-        } else if (stoppingResponseId === 1) {
-            response = CommonConfig.RESPONSE_02;
-        } else if (stoppingResponseId === 2) {
-            response = CommonConfig.RESPONSE_03;
-        } else if (stoppingResponseId === 3) {
-            response = CommonConfig.RESPONSE_04;
-        } else if (stoppingResponseId === 4) {
-            response = CommonConfig.RESPONSE_05;
-        }
-        if (CommonConfig.the.getwinningSymbolIdFromUser() !== 0) {
-            response = CommonConfig.RESPONSE_SAME_SYM_ALL_REEL;
-            for (let i: number = 0; i < response.length; i++) {
-                for (let j: number = 0; j < response[i].length; j++) {
-                    response[i][j] = CommonConfig.the.getwinningSymbolIdFromUser().toString();
-                }
-            }
-        }
-        let symbol1 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[this.reelId][0]) - 1]);
-        let symbol2 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[this.reelId][1]) - 1]);
-        let symbol3 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[this.reelId][2]) - 1]);
-        this.pos_00.removeChildren();
-        this.pos_01.removeChildren();
-        this.pos_02.removeChildren();
-        this.updatePos_00WithSym(symbol1);
-        this.updatePos_01WithSym(symbol2);
-        this.updatePos_02WithSym(symbol3);
     }
 
     private updatePositionForStop(): void {

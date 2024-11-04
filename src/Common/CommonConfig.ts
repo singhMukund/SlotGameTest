@@ -11,6 +11,7 @@ export class CommonConfig {
     public static symbolHeight: number = 212.33;
 
     public static START_SPIN: string = "START_SPIN";
+    public static SET_RESPONSE_AT_REEL: string = "SET_RESPONSE_AT_REEL";
     public static PAYTABLE_NAV_BTN_CLICKED: string = "PAYTABLE_NAV_BTN_CLICKED";
     public static PAYTABLE_CROSS_BTN_CLICKED: string = "PAYTABLE_CROSS_BTN_CLICKED";
     public static ENABLE_INFO_BUTTON: string = "ENABLE_INFO_BUTTON";
