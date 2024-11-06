@@ -125,7 +125,6 @@ export class Reel extends Container {
                     ease: "power1.out"
                 });
                 if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
-                    Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
                     this.playWinAnim([1]);
                 }
             }
@@ -157,6 +156,7 @@ export class Reel extends Container {
     private playWinAnim(posId : number[]){
         if(this.noOfTimeWinCount >= 4){
             this.noOfTimeWinCount = 0;
+            Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
             return
         }
         this.noOfTimeWinCount ++;
