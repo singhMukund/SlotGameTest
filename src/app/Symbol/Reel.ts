@@ -125,7 +125,8 @@ export class Reel extends Container {
                     ease: "power1.out"
                 });
                 if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
-                    this.playWinAnim([1]);
+                    Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+                    // this.playWinAnim([1]); 
                 }
             }
         });
@@ -153,10 +154,10 @@ export class Reel extends Container {
         })
     }
 
-    private playWinAnim(posId : number[]){
+    public playWinAnim(posId : number[]){
         if(this.noOfTimeWinCount >= 4){
             this.noOfTimeWinCount = 0;
-            Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
             return
         }
         this.noOfTimeWinCount ++;
@@ -165,9 +166,9 @@ export class Reel extends Container {
                 duration: 0.5,
                 alpha : 0,
                 ease: "power1.inOut",
-                onComplete: () => {
-                    i === posId.length-1 && this.playAfterHideCurrentSymbol(posId)
-                }
+                // onComplete: () => {
+                //     i === posId.length-1 && this.playAfterHideCurrentSymbol(posId)
+                // }
             })
         }
        
