@@ -44,9 +44,9 @@ export class CheatPanel extends Container {
         // Normal Win Toggle Button
         this.normalWinToggle = new Text("Set", buttonStyle);
         this.normalWinToggle.position.set(200, 60);
-        this.normalWinToggle.interactive = true;
+        this.interactive = true;
         // this.normalWinToggle.buttonMode = true;
-        this.normalWinToggle.on("pointerdown", () => this.toggleCheat("normal"));
+        this.on("pointerdown", () => this.toggleCheat("normal"));
         this.addChild(this.normalWinToggle);
 
         // Large Win Cheat Button
