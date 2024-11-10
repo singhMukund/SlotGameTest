@@ -67,54 +67,48 @@ export class CommonConfig {
     public getwinningSymbolIdFromUser(): number {
         return this.winningSymbolIdFromUser;
     }
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
+    // [4, 5, 4, 6, 3], 
+    //     [2, 6, 3, 8, 4], 
+    //     [4, 3, 3, 3, 4], 
+    //     [6, 2, 3, 4, 0], 
+    //     [3, 0, 4, 9, 4]];
     public static NormalWinResponse: number[][] = [
-        [4, 5, 3, 6, 3], 
-        [2, 6, 3, 8, 4], 
-        [3, 3, 3, 3, 3], 
-        [6, 2, 3, 4, 0], 
+        [4, 5, 4, 6, 3],
+        [2, 6, 4, 8, 4],
+        [4, 4, 3, 3, 4],
+        [6, 3, 3, 4, 0],
+        [3, 0, 4, 9, 4]];
+
+    public static NormalWinResponse2: number[][] = [
+        [4, 5, 4, 6, 3],
+        [2, 6, 4, 8, 4],
+        [4, 4, 3, 3, 4],
+        [6, 3, 3, 4, 0],
+        [3, 0, 4, 9, 4]
+    ];
+
+    public static NormalWinResponse3: number[][] = [
+        [4, 5, 3, 6, 3],
+        [2, 6, 3, 8, 4],
+        [3, 3, 3, 3, 3],
+        [6, 3, 3, 4, 0],
+        [3, 0, 3, 9, 4]
+    ];
+    public static NormalWinResponse4: number[][] =
+        [[4, 5, 4, 6, 3],
+        [2, 6, 5, 8, 4],
+        [4, 3, 3, 3, 4],
+        [6, 2, 3, 4, 0],
         [3, 0, 3, 9, 4]];
+    public static NormalWinResponse5: number[][] =
+    [[4, 5, 4, 6, 3],
+    [2, 6, 5, 8, 4],
+    [4, 3, 3, 3, 4],
+    [6, 2, 3, 4, 4],
+    [3, 0, 3, 4, 4]];
 
-    public static RESPONSE_01: string[][] = [
-        ["12", "10", "5"],
-        ["12", "5", "8"],
-        ["12", "11", "6"],
-        ["11", "8", "10"],
-        ["5", "5", "8"],
-    ];
-    public static RESPONSE_02: string[][] = [
-        ["10", "3", "7"],
-        ["8", "6", "6"],
-        ["4", "5", "9"],
-        ["4", "2", "3"],
-        ["12", "11", "6"],
-    ]
-    public static RESPONSE_03: string[][] = [
-        ["10", "3", "7"],
-        ["8", "6", "6"],
-        ["4", "5", "9"],
-        ["4", "2", "3"],
-        ["5", "5", "8"],
-    ];
-    public static RESPONSE_04: string[][] = [
-        ["10", "3", "7"],
-        ["8", "6", "6"],
-        ["4", "5", "9"],
-        ["4", "2", "3"],
-        ["12", "11", "6"],
-    ];
-    public static RESPONSE_05: string[][] = [
-        ["8", "6", "6"],
-        ["4", "5", "9"],
-        ["4", "2", "3"],
-        ["11", "8", "10"],
-        ["5", "5", "8"],
-    ];
-
+    private winResponses : number[][][] = [CommonConfig.NormalWinResponse,CommonConfig.NormalWinResponse2,CommonConfig.NormalWinResponse3,CommonConfig.NormalWinResponse4,CommonConfig.NormalWinResponse5]
+   
     public static reels: number[][] = [
         [6, 7, 2, 3, 1, 8, 9, 4, 5, 0, 6, 3, 7, 2, 8, 5, 9, 1, 4, 7, 6, 3, 8, 4, 2, 9, 7, 1, 6, 5,
             3, 9, 8, 0, 4, 2, 1, 7, 6, 5, 3, 4, 9, 2, 8, 5, 1, 0, 6, 7, 3, 8, 2, 9, 4, 1, 7, 6, 5, 0],
@@ -146,8 +140,9 @@ export class CommonConfig {
 
     public generateRandomView(): number[][] {
         const view: number[][] = [];
-        if(this.getCheatType().length && this.getCheatType() === "normal"){
-            return this.returnCloneArray(CommonConfig.NormalWinResponse);
+        if (this.getCheatType().length && this.getCheatType() === "normal") {
+            let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
+            return this.returnCloneArray(winresponse);
         }
         this.setCheatType("");
         // Loop through each reel to pick random positions
@@ -214,37 +209,88 @@ export class CommonConfig {
         const winningSymbols: Set<string> = new Set();
         const rows = view.length;
         const cols = view[0].length;
+        const visited = new Set<string>();
 
         // Helper function to add a position to winningSymbols
         function addToWinGroup(r: number, c: number) {
             winningSymbols.add(`${r},${c}`);
         }
 
-        // Traverse each cell to check horizontal and vertical groups
+        // DFS to explore all connected cells with the same symbol
+        function dfs(r: number, c: number, symbol: number, group: Set<string>) {
+            const posKey = `${r},${c}`;
+            if (
+                r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+                view[r][c] !== symbol ||                   // Different symbol
+                visited.has(posKey)                        // Already visited
+            ) return;
+
+            // Mark as visited and add to current group
+            visited.add(posKey);
+            group.add(posKey);
+
+            // Explore neighbors in all 4 directions
+            dfs(r + 1, c, symbol, group);
+            dfs(r - 1, c, symbol, group);
+            dfs(r, c + 1, symbol, group);
+            dfs(r, c - 1, symbol, group);
+        }
+
+        // Traverse each cell to find connected groups of 4 or more
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 const symbol = view[r][c];
-                if (symbol === null) continue;
+                if (symbol === null || visited.has(`${r},${c}`)) continue;
 
-                // Check horizontal
-                let horGroup = [];
-                for (let i = 0; i < 4 && c + i < cols; i++) {
-                    if (view[r][c + i] === symbol) horGroup.push(`${r},${c + i}`);
-                    else break;
-                }
-                if (horGroup.length >= 4) horGroup.forEach(pos => winningSymbols.add(pos));
+                // Initialize a new group to collect connected symbols
+                const currentGroup: Set<string> = new Set();
+                dfs(r, c, symbol, currentGroup);
 
-                // Check vertical
-                let vertGroup = [];
-                for (let i = 0; i < 4 && r + i < rows; i++) {
-                    if (view[r + i][c] === symbol) vertGroup.push(`${r + i},${c}`);
-                    else break;
+                // If group has 4 or more connected symbols, add to winningSymbols
+                if (currentGroup.size >= 4) {
+                    currentGroup.forEach(pos => winningSymbols.add(pos));
                 }
-                if (vertGroup.length >= 4) vertGroup.forEach(pos => winningSymbols.add(pos));
             }
         }
+
         return winningSymbols;
     }
+
+    // findWinningGroups(view: number[][]): Set<string> {
+    //     const winningSymbols: Set<string> = new Set();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+
+    //     // Helper function to add a position to winningSymbols
+    //     function addToWinGroup(r: number, c: number) {
+    //         winningSymbols.add(`${r},${c}`);
+    //     }
+
+    //     // Traverse each cell to check horizontal and vertical groups
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null) continue;
+
+    //             // Check horizontal
+    //             let horGroup = [];
+    //             for (let i = 0; i < 4 && c + i < cols; i++) {
+    //                 if (view[r][c + i] === symbol) horGroup.push(`${r},${c + i}`);
+    //                 else break;
+    //             }
+    //             if (horGroup.length >= 4) horGroup.forEach(pos => winningSymbols.add(pos));
+
+    //             // Check vertical
+    //             let vertGroup = [];
+    //             for (let i = 0; i < 4 && r + i < rows; i++) {
+    //                 if (view[r + i][c] === symbol) vertGroup.push(`${r + i},${c}`);
+    //                 else break;
+    //             }
+    //             if (vertGroup.length >= 4) vertGroup.forEach(pos => winningSymbols.add(pos));
+    //         }
+    //     }
+    //     return winningSymbols;
+    // }
 
     cascade(view: number[][], winningSymbols: Set<string>): number[][] {
         // Explode symbols by setting them to null
@@ -252,22 +298,6 @@ export class CommonConfig {
             const [r, c] = pos.split(',').map(Number);
             view[r][c] = NaN;
         });
-
-        // // Cascade symbols
-        // for (let col = 0; col < view[0].length; col++) {
-        //     let emptyRow = view.length - 1;
-        //     for (let row = view.length - 1; row >= 0; row--) {
-        //         if (view[row][col] !== null) {
-        //             view[emptyRow][col] = view[row][col];
-        //             if (emptyRow !== row) view[row][col] = NaN;
-        //             emptyRow--;
-        //         }
-        //     }
-        //     // Fill new symbols at the top
-        //     // for (let row = emptyRow; row >= 0; row--) {
-        //     //     view[row][col] = this.getRandomSymbol(col);
-        //     // }
-        // }
         console.log(view);
         const outputArray = view.map(innerArray => {
             // Filter out null values, then add them to the beginning of the array
@@ -284,25 +314,16 @@ export class CommonConfig {
                 }
             }
         }
-        // outputArray.forEach((value, col)=>{
-        //     value.forEach((value2)=>{
-        //         if(isNaN(value2)){
-        //             value2 = this.getRandomSymbol(col);
-        //         }
-        //     })
-        // })
-
-
         console.log(outputArray);
 
         return outputArray;
     }
 
-    private returnCloneArray(value : number[][]) : number[][]{
-        const newArray : number[][] = [];
-        for(let i : number = 0;i<value.length;i++){
-            let subArray : number[] = [];
-            for (let j : number = 0;j<value[i].length;j++){
+    private returnCloneArray(value: number[][]): number[][] {
+        const newArray: number[][] = [];
+        for (let i: number = 0; i < value.length; i++) {
+            let subArray: number[] = [];
+            for (let j: number = 0; j < value[i].length; j++) {
                 subArray.push(value[i][j]);
             }
             newArray.push(subArray);
