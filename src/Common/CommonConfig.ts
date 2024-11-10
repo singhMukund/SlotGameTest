@@ -67,16 +67,16 @@ export class CommonConfig {
     public getwinningSymbolIdFromUser(): number {
         return this.winningSymbolIdFromUser;
     }
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
-    // ["12", "12", "12"],
+    // / [4, 5, 3, 6, 3], 
+    // [2, 6, 3, 8, 4], 
+    // [3, 3, 3, 3, 3], 
+    // [6, 2, 3, 4, 0], 
+    // [3, 0, 3, 9, 4]];
     public static NormalWinResponse: number[][] = [
-        [4, 5, 3, 6, 3], 
-        [2, 6, 3, 8, 4], 
-        [3, 3, 3, 3, 3], 
-        [6, 2, 3, 4, 0], 
+        [4, 5, 3, 6, 3],
+        [2, 6, 3, 8, 4],
+        [3, 3, 3, 3, 3],
+        [6, 2, 3, 4, 0],
         [3, 0, 3, 9, 4]];
 
     public static RESPONSE_01: string[][] = [
@@ -146,7 +146,7 @@ export class CommonConfig {
 
     public generateRandomView(): number[][] {
         const view: number[][] = [];
-        if(this.getCheatType().length && this.getCheatType() === "normal"){
+        if (this.getCheatType().length && this.getCheatType() === "normal") {
             return this.returnCloneArray(CommonConfig.NormalWinResponse);
         }
         this.setCheatType("");
@@ -298,11 +298,11 @@ export class CommonConfig {
         return outputArray;
     }
 
-    private returnCloneArray(value : number[][]) : number[][]{
-        const newArray : number[][] = [];
-        for(let i : number = 0;i<value.length;i++){
-            let subArray : number[] = [];
-            for (let j : number = 0;j<value[i].length;j++){
+    private returnCloneArray(value: number[][]): number[][] {
+        const newArray: number[][] = [];
+        for (let i: number = 0; i < value.length; i++) {
+            let subArray: number[] = [];
+            for (let j: number = 0; j < value[i].length; j++) {
                 subArray.push(value[i][j]);
             }
             newArray.push(subArray);

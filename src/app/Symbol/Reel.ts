@@ -289,12 +289,12 @@ export class Reel extends Container {
                 fromToBeReshuffledChildrens.push(this.children[i]);
             }
         }
-
         for (let i: number = 0; i < this.children.length; i++) {
             if (this.children[i].alpha === 0) {
                 pushedToLastChildrens.push(this.children[i]);
             }
         }
+        pushedToLastChildrens.sort((a, b) => a.y - b.y);
         // for (let i: number = startingIndex; i < firstIndexToBeReshuffledChildren; i++) {
         //     fromToBeReshuffledChildrens.push(this.children[i])
         // }
