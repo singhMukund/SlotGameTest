@@ -15,7 +15,7 @@ export class WinpresentationController {
     private resetsOnSpinClick() :void{
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
         CommonConfig.the.setWinGrid(new Set<string>());
-        console.clear();
+        // console.clear();
     }
 
     private onShowNextWinPresentation(): void {

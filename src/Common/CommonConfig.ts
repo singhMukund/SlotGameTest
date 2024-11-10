@@ -22,34 +22,35 @@ export class CommonConfig {
 
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
     public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
-    public static CHECK_WIN : number = 0;
-    public static ANIMATE_WIN_SYMBOL : number = 1;
-    public static CREATE_AND_UPDATE_CASCADE_VIEW : number = 2;
-    public static PLAY_CASCADE_REEL_DROP_ANIMATION :number = 3;
-    public static RECHECK_CASCADE_WIN : number = 2;
+    public static CHECK_WIN: number = 0;
+    public static ANIMATE_WIN_SYMBOL: number = 1;
+    public static CREATE_AND_UPDATE_CASCADE_VIEW: number = 2;
+    public static PLAY_CASCADE_REEL_DROP_ANIMATION: number = 3;
+    public static RECHECK_CASCADE_WIN: number = 2;
 
-    public static TOTAL_ANIMATION_LENGTH : number = 5;
+    public static TOTAL_ANIMATION_LENGTH: number = 5;
 
-    private currentWinAnimationIndex : number = 0;
+    private currentWinAnimationIndex: number = 0;
 
-    private winGrid : Set<string> = new Set([]);
+    private winGrid: Set<string> = new Set([]);
 
-    public SetCurrentWinAnimationIndex(value : number) :void{
+    public SetCurrentWinAnimationIndex(value: number): void {
         this.currentWinAnimationIndex = value;
     }
 
-    public getCurrentWinAnimationIndex() : number{
+    public getCurrentWinAnimationIndex(): number {
         return this.currentWinAnimationIndex;
     }
 
 
     private winningSymbolIdFromUser: number = 12;
     private winningSymbolIds: string[][] = [['12'], ['12'], ['12']];
-    private view : number[][] = [];
-    private oldView : number[][] = [];
-    private winReelIds : number[] = [];
+    private view: number[][] = [];
+    private oldView: number[][] = [];
+    private winReelIds: number[] = [];
+    private cheatType: string = "";
 
-    
+
 
     public setwinningSymbolIds(value: number): void {
         this.winningSymbolIds = [[`${value}`], [`${value}`], [`${value}`]];
@@ -58,8 +59,6 @@ export class CommonConfig {
     public getwinningSymbolIds(): string[][] {
         return this.winningSymbolIds;
     }
-
-
 
     public setwinningSymbolIdFromUser(value: number): void {
         this.winningSymbolIdFromUser = value;
@@ -73,13 +72,12 @@ export class CommonConfig {
     // ["12", "12", "12"],
     // ["12", "12", "12"],
     // ["12", "12", "12"],
-    public static RESPONSE_SAME_SYM_ALL_REEL: string[][] = [
-        ["12", "12", "12"],
-        ["12", "12", "12"],
-        ["12", "12", "12"],
-        ["12", "12", "12"],
-        ["12", "12", "12"],
-    ];
+    public static NormalWinResponse: number[][] = [
+        [4, 5, 3, 6, 3], 
+        [2, 6, 3, 8, 4], 
+        [3, 3, 3, 3, 3], 
+        [6, 2, 3, 4, 0], 
+        [3, 0, 3, 9, 4]];
 
     public static RESPONSE_01: string[][] = [
         ["12", "10", "5"],
@@ -117,21 +115,21 @@ export class CommonConfig {
         ["5", "5", "8"],
     ];
 
-    public static reels : number[][]= [
-        [6, 7, 2, 3, 1, 8, 9, 4, 5, 0, 6, 3, 7, 2, 8, 5, 9, 1, 4, 7, 6, 3, 8, 4, 2, 9, 7, 1, 6, 5, 
-         3, 9, 8, 0, 4, 2, 1, 7, 6, 5, 3, 4, 9, 2, 8, 5, 1, 0, 6, 7, 3, 8, 2, 9, 4, 1, 7, 6, 5, 0],
-    
+    public static reels: number[][] = [
+        [6, 7, 2, 3, 1, 8, 9, 4, 5, 0, 6, 3, 7, 2, 8, 5, 9, 1, 4, 7, 6, 3, 8, 4, 2, 9, 7, 1, 6, 5,
+            3, 9, 8, 0, 4, 2, 1, 7, 6, 5, 3, 4, 9, 2, 8, 5, 1, 0, 6, 7, 3, 8, 2, 9, 4, 1, 7, 6, 5, 0],
+
         [3, 8, 9, 1, 2, 7, 6, 4, 0, 5, 2, 9, 1, 8, 3, 6, 7, 4, 5, 6, 3, 0, 9, 1, 7, 8, 5, 2, 4, 6,
-         9, 3, 7, 1, 4, 8, 0, 2, 5, 6, 3, 9, 8, 1, 4, 7, 0, 5, 2, 6, 3, 8, 4, 9, 5, 1, 7, 2, 6, 0],
-    
-        [5, 6, 3, 2, 1, 8, 9, 0, 4, 7, 5, 2, 8, 3, 6, 9, 1, 7, 4, 6, 5, 3, 9, 1, 8, 4, 2, 7, 0, 5, 
-         9, 3, 6, 1, 4, 8, 7, 2, 5, 6, 3, 0, 7, 9, 4, 2, 8, 1, 6, 5, 3, 4, 9, 8, 1, 7, 2, 6, 5, 0],
-    
+            9, 3, 7, 1, 4, 8, 0, 2, 5, 6, 3, 9, 8, 1, 4, 7, 0, 5, 2, 6, 3, 8, 4, 9, 5, 1, 7, 2, 6, 0],
+
+        [5, 6, 3, 2, 1, 8, 9, 0, 4, 7, 5, 2, 8, 3, 6, 9, 1, 7, 4, 6, 5, 3, 9, 1, 8, 4, 2, 7, 0, 5,
+            9, 3, 6, 1, 4, 8, 7, 2, 5, 6, 3, 0, 7, 9, 4, 2, 8, 1, 6, 5, 3, 4, 9, 8, 1, 7, 2, 6, 5, 0],
+
         [7, 4, 6, 1, 5, 8, 3, 0, 2, 9, 6, 4, 7, 1, 8, 3, 9, 2, 5, 6, 7, 4, 0, 9, 3, 1, 6, 5, 2, 8,
-         4, 7, 0, 3, 9, 1, 6, 2, 8, 5, 4, 7, 9, 3, 1, 0, 6, 5, 2, 4, 8, 3, 7, 1, 9, 6, 2, 5, 4, 0],
-    
+            4, 7, 0, 3, 9, 1, 6, 2, 8, 5, 4, 7, 9, 3, 1, 0, 6, 5, 2, 4, 8, 3, 7, 1, 9, 6, 2, 5, 4, 0],
+
         [2, 5, 9, 1, 4, 7, 8, 3, 0, 6, 5, 3, 2, 8, 4, 7, 1, 9, 6, 5, 2, 3, 0, 8, 9, 4, 1, 7, 6, 5,
-         4, 9, 3, 1, 8, 6, 0, 7, 5, 2, 4, 8, 9, 3, 6, 0, 1, 7, 4, 5, 8, 2, 9, 6, 0, 3, 7, 1, 5, 4]
+            4, 9, 3, 1, 8, 6, 0, 7, 5, 2, 4, 8, 9, 3, 6, 0, 1, 7, 4, 5, 8, 2, 9, 6, 0, 3, 7, 1, 5, 4]
     ];
     static get the(): CommonConfig {
         if (!CommonConfig._the) {
@@ -148,13 +146,16 @@ export class CommonConfig {
 
     public generateRandomView(): number[][] {
         const view: number[][] = [];
-    
+        if(this.getCheatType().length && this.getCheatType() === "normal"){
+            return this.returnCloneArray(CommonConfig.NormalWinResponse);
+        }
+        this.setCheatType("");
         // Loop through each reel to pick random positions
         for (let reelIndex = 0; reelIndex < CommonConfig.reels.length; reelIndex++) {
             const reel = CommonConfig.reels[reelIndex];
-            
+
             const startPosition = Math.floor(Math.random() * reel.length);
-            
+
             const reelSymbols = [
                 reel[startPosition % reel.length],
                 reel[(startPosition + 1) % reel.length],
@@ -162,42 +163,50 @@ export class CommonConfig {
                 reel[(startPosition + 3) % reel.length],
                 reel[(startPosition + 4) % reel.length]
             ];
-    
-             view.push(reelSymbols);
+
+            view.push(reelSymbols);
         }
-    
+        console.log(view);
         return view;
     }
 
-    public setWinReelIds(value : number[]) :void{
+    public setCheatType(value: string): void {
+        this.cheatType = value;
+    }
+
+    public getCheatType(): string {
+        return this.cheatType;
+    }
+
+    public setWinReelIds(value: number[]): void {
         this.winReelIds = value
     }
 
-    public getWinReelIds() : number[]{
+    public getWinReelIds(): number[] {
         return this.winReelIds;
     }
 
-    public setOldView(value : number[][]) :void{
+    public setOldView(value: number[][]): void {
         this.oldView = value
     }
 
-    public getOldView() : number[][]{
+    public getOldView(): number[][] {
         return this.oldView;
     }
 
-    public setView(value : number[][]) :void{
+    public setView(value: number[][]): void {
         this.view = value
     }
 
-    public getView() : number[][]{
+    public getView(): number[][] {
         return this.view;
     }
 
-    public setWinGrid(value : Set<string>) :void{
+    public setWinGrid(value: Set<string>): void {
         this.winGrid = value
     }
 
-    public getWinGrid() : Set<string>{
+    public getWinGrid(): Set<string> {
         return this.winGrid;
     }
 
@@ -205,18 +214,18 @@ export class CommonConfig {
         const winningSymbols: Set<string> = new Set();
         const rows = view.length;
         const cols = view[0].length;
-    
+
         // Helper function to add a position to winningSymbols
         function addToWinGroup(r: number, c: number) {
             winningSymbols.add(`${r},${c}`);
         }
-    
+
         // Traverse each cell to check horizontal and vertical groups
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 const symbol = view[r][c];
                 if (symbol === null) continue;
-    
+
                 // Check horizontal
                 let horGroup = [];
                 for (let i = 0; i < 4 && c + i < cols; i++) {
@@ -224,7 +233,7 @@ export class CommonConfig {
                     else break;
                 }
                 if (horGroup.length >= 4) horGroup.forEach(pos => winningSymbols.add(pos));
-    
+
                 // Check vertical
                 let vertGroup = [];
                 for (let i = 0; i < 4 && r + i < rows; i++) {
@@ -243,7 +252,7 @@ export class CommonConfig {
             const [r, c] = pos.split(',').map(Number);
             view[r][c] = NaN;
         });
-    
+
         // // Cascade symbols
         // for (let col = 0; col < view[0].length; col++) {
         //     let emptyRow = view.length - 1;
@@ -268,9 +277,9 @@ export class CommonConfig {
         });
         // this.setOldView(outputArray);
         console.log(outputArray);
-        for(let i : number= 0;i<outputArray.length;i++){
-            for(let j : number= 0;j<outputArray[i].length;j++){
-                if(isNaN(outputArray[i][j])){
+        for (let i: number = 0; i < outputArray.length; i++) {
+            for (let j: number = 0; j < outputArray[i].length; j++) {
+                if (isNaN(outputArray[i][j])) {
                     outputArray[i][j] = this.getRandomSymbol(i);
                 }
             }
@@ -282,14 +291,29 @@ export class CommonConfig {
         //         }
         //     })
         // })
-        
+
 
         console.log(outputArray);
-    
+
         return outputArray;
     }
 
+    private returnCloneArray(value : number[][]) : number[][]{
+        const newArray : number[][] = [];
+        for(let i : number = 0;i<value.length;i++){
+            let subArray : number[] = [];
+            for (let j : number = 0;j<value[i].length;j++){
+                subArray.push(value[i][j]);
+            }
+            newArray.push(subArray);
+        }
+        return newArray;
+    }
+
     getRandomSymbol(reelIndex: number): number {
+        // if(this.getCheatType().length && this.getCheatType() === "normal"){
+        //     return 3;
+        // }
         const reel = CommonConfig.reels[reelIndex];
         return reel[Math.floor(Math.random() * reel.length)];
     }
@@ -297,20 +321,20 @@ export class CommonConfig {
     calculateCascadingWins(view: number[][]): number {
         let totalWins = 0;
         let cascadeCount = 0;
-    
+
         while (true) {
             const winningSymbols = this.findWinningGroups(view);
-    
+
             if (winningSymbols.size === 0) break;
-    
+
             console.log(`Cascade ${++cascadeCount} - Winning Symbols:`, winningSymbols);
             totalWins += winningSymbols.size;
-    
+
             // Update the view with cascades
             view = this.cascade(view, winningSymbols);
             console.log(`View after Cascade ${cascadeCount}:`, view);
         }
-    
+
         return totalWins;
     }
 

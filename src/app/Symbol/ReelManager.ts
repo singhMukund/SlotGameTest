@@ -67,7 +67,7 @@ export class ReelManager extends Container {
 
         console.log(winReelData);
 
-        gsap.delayedCall(2, () => {
+        gsap.delayedCall(0.6, () => {
           let response : number[][] = CommonConfig.the.cascade(CommonConfig.the.getView(),winGrid);
           this.updateView(response);
           Game.the.app.stage.emit(CommonConfig.PLAY_DROP_REEL);
