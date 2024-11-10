@@ -67,11 +67,6 @@ export class CommonConfig {
     public getwinningSymbolIdFromUser(): number {
         return this.winningSymbolIdFromUser;
     }
-    // [4, 5, 4, 6, 3], 
-    //     [2, 6, 3, 8, 4], 
-    //     [4, 3, 3, 3, 4], 
-    //     [6, 2, 3, 4, 0], 
-    //     [3, 0, 4, 9, 4]];
     public static NormalWinResponse: number[][] = [
         [4, 5, 4, 6, 3],
         [2, 6, 4, 8, 4],
