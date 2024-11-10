@@ -69,13 +69,15 @@ export class BaseGame extends Container {
 
     private setPosition() {
         this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2);
-        this.reelManager.position.set(370, 280);
+        this.reelManager.position.set(370, 385);
         this.bottomPanelButton.position.set(0, (window.innerHeight - this.bottomPanelButton.height))
     }
 
     private resizeApp(): void {
+        this.reelContainer.scale.set(0.7);
+        this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
         if (window.innerWidth < window.innerHeight) {
-            this.reelContainer.scale.set(0.32);
+            this.reelContainer.scale.set(0.37);
             this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
         }
     }

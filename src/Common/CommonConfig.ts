@@ -5,7 +5,7 @@ export class CommonConfig {
         'sym_H1', 'sym_H2', 'sym_H3', 'sym_H4',
         'sym_L1', 'sym_L2', 'sym_L3', 'sym_L4', 'sym_L5',];
 
-    public static symbolsPerReel: number = 3;
+    public static symbolsPerReel: number = 5;
     public static totalReel: number = 5;
     public static reelWidth: number = 228.8;
     public static symbolHeight: number = 212.33;
@@ -17,6 +17,7 @@ export class CommonConfig {
     public static ENABLE_INFO_BUTTON: string = "ENABLE_INFO_BUTTON";
     public static INFO_BTN_CLICKED: string = "INFO_BTN_CLICKED";
     public static SPIN_STOPPED: string = "SPIN_STOPPED";
+    public static PLAY_DROP_REEL: string = "PLAY_DROP_REEL";
     public static PLAY_ANIMATED_WIN_SYMBOL: string = "PLAY_ANIMATED_WIN_SYMBOL";
 
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
@@ -25,7 +26,7 @@ export class CommonConfig {
     public static ANIMATE_WIN_SYMBOL : number = 1;
     public static CREATE_AND_UPDATE_CASCADE_VIEW : number = 2;
     public static PLAY_CASCADE_REEL_DROP_ANIMATION :number = 3;
-    public static RECHECK_CASCADE_WIN : number = 4;
+    public static RECHECK_CASCADE_WIN : number = 2;
 
     public static TOTAL_ANIMATION_LENGTH : number = 5;
 
@@ -45,6 +46,8 @@ export class CommonConfig {
     private winningSymbolIdFromUser: number = 12;
     private winningSymbolIds: string[][] = [['12'], ['12'], ['12']];
     private view : number[][] = [];
+    private oldView : number[][] = [];
+    private winReelIds : number[] = [];
 
     
 
@@ -155,13 +158,31 @@ export class CommonConfig {
             const reelSymbols = [
                 reel[startPosition % reel.length],
                 reel[(startPosition + 1) % reel.length],
-                reel[(startPosition + 2) % reel.length]
+                reel[(startPosition + 2) % reel.length],
+                reel[(startPosition + 3) % reel.length],
+                reel[(startPosition + 4) % reel.length]
             ];
     
              view.push(reelSymbols);
         }
     
         return view;
+    }
+
+    public setWinReelIds(value : number[]) :void{
+        this.winReelIds = value
+    }
+
+    public getWinReelIds() : number[]{
+        return this.winReelIds;
+    }
+
+    public setOldView(value : number[][]) :void{
+        this.oldView = value
+    }
+
+    public getOldView() : number[][]{
+        return this.oldView;
     }
 
     public setView(value : number[][]) :void{
@@ -198,19 +219,19 @@ export class CommonConfig {
     
                 // Check horizontal
                 let horGroup = [];
-                for (let i = 0; i < 2 && c + i < cols; i++) {
+                for (let i = 0; i < 4 && c + i < cols; i++) {
                     if (view[r][c + i] === symbol) horGroup.push(`${r},${c + i}`);
                     else break;
                 }
-                if (horGroup.length >= 2) horGroup.forEach(pos => winningSymbols.add(pos));
+                if (horGroup.length >= 4) horGroup.forEach(pos => winningSymbols.add(pos));
     
                 // Check vertical
                 let vertGroup = [];
-                for (let i = 0; i < 2 && r + i < rows; i++) {
+                for (let i = 0; i < 4 && r + i < rows; i++) {
                     if (view[r + i][c] === symbol) vertGroup.push(`${r + i},${c}`);
                     else break;
                 }
-                if (vertGroup.length >= 2) vertGroup.forEach(pos => winningSymbols.add(pos));
+                if (vertGroup.length >= 4) vertGroup.forEach(pos => winningSymbols.add(pos));
             }
         }
         return winningSymbols;
@@ -223,21 +244,21 @@ export class CommonConfig {
             view[r][c] = NaN;
         });
     
-        // Cascade symbols
-        for (let col = 0; col < view[0].length; col++) {
-            let emptyRow = view.length - 1;
-            for (let row = view.length - 1; row >= 0; row--) {
-                if (view[row][col] !== null) {
-                    view[emptyRow][col] = view[row][col];
-                    if (emptyRow !== row) view[row][col] = NaN;
-                    emptyRow--;
-                }
-            }
-            // Fill new symbols at the top
-            // for (let row = emptyRow; row >= 0; row--) {
-            //     view[row][col] = this.getRandomSymbol(col);
-            // }
-        }
+        // // Cascade symbols
+        // for (let col = 0; col < view[0].length; col++) {
+        //     let emptyRow = view.length - 1;
+        //     for (let row = view.length - 1; row >= 0; row--) {
+        //         if (view[row][col] !== null) {
+        //             view[emptyRow][col] = view[row][col];
+        //             if (emptyRow !== row) view[row][col] = NaN;
+        //             emptyRow--;
+        //         }
+        //     }
+        //     // Fill new symbols at the top
+        //     // for (let row = emptyRow; row >= 0; row--) {
+        //     //     view[row][col] = this.getRandomSymbol(col);
+        //     // }
+        // }
         console.log(view);
         const outputArray = view.map(innerArray => {
             // Filter out null values, then add them to the beginning of the array
@@ -245,6 +266,22 @@ export class CommonConfig {
             const nullValues = innerArray.filter(value => isNaN(value));
             return [...nullValues, ...nonNullValues];
         });
+        // this.setOldView(outputArray);
+        console.log(outputArray);
+        for(let i : number= 0;i<outputArray.length;i++){
+            for(let j : number= 0;j<outputArray[i].length;j++){
+                if(isNaN(outputArray[i][j])){
+                    outputArray[i][j] = this.getRandomSymbol(i);
+                }
+            }
+        }
+        // outputArray.forEach((value, col)=>{
+        //     value.forEach((value2)=>{
+        //         if(isNaN(value2)){
+        //             value2 = this.getRandomSymbol(col);
+        //         }
+        //     })
+        // })
         
 
         console.log(outputArray);

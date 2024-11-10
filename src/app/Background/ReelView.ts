@@ -13,6 +13,7 @@ export class ReelView extends Container{
 
     private initialiZeReelView() : void{
        this.reelBg = new Sprite(Assets.get("reelFrameImage")); 
+       this.reelBg.scale.set(1,1.65);
     }
 
     private setPosition() :void{

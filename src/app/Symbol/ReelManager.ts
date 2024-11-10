@@ -34,19 +34,48 @@ export class ReelManager extends Container {
     private initGraphics(): void {
         this.maskContainer = new Graphics();
         this.maskContainer.beginFill(0xffa500);
-        this.maskContainer.drawRect(-210, -110, 1300, 639);
+        this.maskContainer.drawRect(-210, -104, 1300, 1060);
         this.maskContainer.endFill();
         this.addChild(this.maskContainer);
         this.mask = this.maskContainer;
     }
 
     private onPlayWinSymbol() :void{
-        const winGrid : Set<string> = CommonConfig.the.getWinGrid();
+        let winGrid : Set<string> = CommonConfig.the.getWinGrid();
+        // winGrid = new Set(['0,0', '0,2']);
+        // CommonConfig.the.setWinGrid(winGrid);
+        let winReelData : { [key: number]: number[] } = { };
         winGrid.forEach(position => {
             let reelRow : string[] = position.split(",");
-            (this.reelsContainer.children[Number(reelRow[0])] as Reel).playWinAnim([Number(reelRow[1])])
+            console.log(reelRow);
+            if(winReelData.hasOwnProperty(Number(reelRow[0]))){
+                winReelData[Number(reelRow[0])].push(Number(reelRow[1]));
+            }else{
+                winReelData[Number(reelRow[0])] = [Number(reelRow[1])] ;  
+            }
+            // (this.reelsContainer.children[Number(reelRow[0])] as Reel).playWinAnim([Number(reelRow[1])])
             // console.log(position); // Outputs each coordinate, e.g., "0,2", "1,2", etc.
         });
+        CommonConfig.the.setWinReelIds([]);
+        let winReelids: number[] = [];
+        Object.keys(winReelData).forEach(key => {
+            const reelKey = parseInt(key, 10);
+            winReelids.push(reelKey);
+            (this.reelsContainer.children[reelKey] as Reel).playWinAnim(winReelData[reelKey].sort())
+        });
+        CommonConfig.the.setWinReelIds(winReelids);
+
+        console.log(winReelData);
+
+        gsap.delayedCall(2, () => {
+          let response : number[][] = CommonConfig.the.cascade(CommonConfig.the.getView(),winGrid);
+          this.updateView(response);
+          Game.the.app.stage.emit(CommonConfig.PLAY_DROP_REEL);
+          gsap.delayedCall(2, () => {
+            CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+          })
+        })
     }
 
     private initializeReelContainer(): void {
@@ -74,32 +103,66 @@ export class ReelManager extends Container {
         this.insertReel5();
     }
 
-    private createView(): string[][] {
-        let viewArray: number[][] = CommonConfig.the.generateRandomView();
-        let view: string[][] = [];
-        for (let i: number = 0; i < viewArray.length; i++) {
-            let reel: string[] = [];
-            for (let j: number = 0; j < viewArray[i].length; i++) {
-                reel.push(viewArray[i][j].toString());
-            }
-            view.push(reel);
-        }
-        return view
+    private updateView(response : number[][]) : void {
+        CommonConfig.the.setView(response);
+        this.reelsContainer.children.forEach((value, index) => {
+            (value as Reel).children.forEach((pos,posindex)=>{
+                let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][posindex])]);
+                pos.removeChildren();
+                if(pos.name === 'pos_00'){
+                    (value as Reel).updatePos_00WithSym(symbol);
+                }else if(pos.name === 'pos_01'){
+                    (value as Reel).updatePos_01WithSym(symbol);
+                }else if(pos.name === 'pos_02'){
+                    (value as Reel).updatePos_02WithSym(symbol);
+                }else if(pos.name === 'pos_03'){
+                    (value as Reel).updatePos_03WithSym(symbol);
+                }else{
+                    (value as Reel).updatePos_04WithSym(symbol);
+                }
+                
+            })
+            // let symbol1 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][0])]);
+            // let symbol2 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][1])]);
+            // let symbol3 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][2])]);
+            // (value as Reel).children.forEach((value) => {
+            //     value.removeChildren();
+            // });
+            // (value as Reel).updatePos_00WithSym(symbol1);
+            // (value as Reel).updatePos_01WithSym(symbol2);
+            // (value as Reel).updatePos_02WithSym(symbol3);
+        })
     }
 
     private setSymbolAtReel(): void {
         let response: number[][] = CommonConfig.the.generateRandomView();
         CommonConfig.the.setView(response);
         this.reelsContainer.children.forEach((value, index) => {
-            let symbol1 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][0])]);
-            let symbol2 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][1])]);
-            let symbol3 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][2])]);
-            (value as Reel).children.forEach((value) => {
-                value.removeChildren();
-            });
-            (value as Reel).updatePos_00WithSym(symbol1);
-            (value as Reel).updatePos_01WithSym(symbol2);
-            (value as Reel).updatePos_02WithSym(symbol3);
+            (value as Reel).children.forEach((pos,posindex)=>{
+                let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][posindex])]);
+                pos.removeChildren();
+                if(pos.name === 'pos_00'){
+                    (value as Reel).updatePos_00WithSym(symbol);
+                }else if(pos.name === 'pos_01'){
+                    (value as Reel).updatePos_01WithSym(symbol);
+                }else if(pos.name === 'pos_02'){
+                    (value as Reel).updatePos_02WithSym(symbol);
+                }else if(pos.name === 'pos_03'){
+                    (value as Reel).updatePos_03WithSym(symbol);
+                }else{
+                    (value as Reel).updatePos_04WithSym(symbol);
+                }
+                
+            })
+            // let symbol1 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][0])]);
+            // let symbol2 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][1])]);
+            // let symbol3 = SymbolPool.the.getSymbol(CommonConfig.symbolIds[Number(response[index][2])]);
+            // (value as Reel).children.forEach((value) => {
+            //     value.removeChildren();
+            // });
+            // (value as Reel).updatePos_00WithSym(symbol1);
+            // (value as Reel).updatePos_01WithSym(symbol2);
+            // (value as Reel).updatePos_02WithSym(symbol3);
         })
     }
 
@@ -127,6 +190,10 @@ export class ReelManager extends Container {
         this.reel1.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
         this.reel1.updatePos_02WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        this.reel1.updatePos_03WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        this.reel1.updatePos_04WithSym(symbol);
 
         // for(let i : number = 0;i< CommonConfig.symbolsPerReel; i++){
         //     let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[0]);
@@ -142,6 +209,10 @@ export class ReelManager extends Container {
         this.reel2.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
         this.reel2.updatePos_02WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        this.reel2.updatePos_03WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        this.reel2.updatePos_04WithSym(symbol);
     }
 
     private insertReel3(): void {
@@ -151,6 +222,10 @@ export class ReelManager extends Container {
         this.reel3.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
         this.reel3.updatePos_02WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        this.reel3.updatePos_03WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        this.reel3.updatePos_04WithSym(symbol);
     }
 
     private insertReel4(): void {
@@ -160,6 +235,10 @@ export class ReelManager extends Container {
         this.reel4.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
         this.reel4.updatePos_02WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        this.reel4.updatePos_03WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        this.reel4.updatePos_04WithSym(symbol);
     }
 
     private insertReel5(): void {
@@ -169,6 +248,10 @@ export class ReelManager extends Container {
         this.reel5.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
         this.reel5.updatePos_02WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        this.reel5.updatePos_03WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        this.reel5.updatePos_04WithSym(symbol);
     }
 
 
