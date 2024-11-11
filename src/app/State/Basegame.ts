@@ -16,7 +16,7 @@ export class BaseGame extends Container {
     private spinBtn !: SpinButton;
     private winpresentationController !: WinpresentationController;
     private cheatPanel !: CheatPanel;
-    private normalRation : number = 1920/1080;
+    private normalRation : number = 1920/919;
 
     constructor() {
         super();
