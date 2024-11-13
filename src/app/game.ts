@@ -2,9 +2,9 @@
 import { Application, Assets, Container, Loader, Sprite, Ticker } from 'pixi.js';
 import { CommonConfig } from '../Common/CommonConfig';
 import { CommonEvents } from '@/Common/CommonEvents';
-import { Spine } from 'pixi-spine';
 import { BackgroundView } from './Background/BackgroundView';
 import { BaseGame } from './State/Basegame';
+import { GameConfig } from './GameConfiguration/GameConfig';
 // import manifest from "../../public/manifest.json";
 
 
@@ -51,7 +51,7 @@ export class Game {
 
   private async loadImages() {
     await Assets.init({ manifest: "./manifest.json" });
-    await Assets.loadBundle(["background-image", "ReelFrame-Component","static-symbol","static-button"]);
+    await Assets.loadBundle(["background-image", "ReelFrame-Component","static-symbol","static-button","win_animation"]);
     this.onLoadComplete();
   }
 
@@ -67,6 +67,7 @@ export class Game {
     this.loadImages();
     new CommonEvents();
     new CommonConfig();
+    new GameConfig();
   }
 
 

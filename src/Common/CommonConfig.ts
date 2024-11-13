@@ -1,3 +1,11 @@
+interface SymbolWinValues {
+    [key: number]: number;
+}
+
+interface SymbolWinData {
+    [key: number]: SymbolWinValues;
+}
+
 export class CommonConfig {
     protected static _the: CommonConfig;
     public static symbolIds: string[] = [
@@ -32,7 +40,36 @@ export class CommonConfig {
 
     private currentWinAnimationIndex: number = 0;
 
-    private winGrid: Set<string> = new Set([]);
+    private bet: number = 1;
+
+    private symbolWinData: SymbolWinData = {
+        3: {
+            4: 3, 5: 6, 6: 12, 7: 12, 8: 24, 9: 24, 10: 48, 11: 48, 12: 75, 13: 75, 14: 75, 15: 300
+        },
+        4: {
+            4: 2.25, 5: 4.5, 6: 9, 7: 9, 8: 18, 9: 18, 10: 36, 11: 36, 12: 45, 13: 45, 14: 45, 15: 180
+        },
+        5: {
+            4: 1.5, 5: 3, 6: 6, 7: 6, 8: 12, 9: 12, 10: 24, 11: 24, 12: 30, 13: 30, 14: 30, 15: 120
+        },
+        6: {
+            4: 0.75, 5: 1.5, 6: 3, 7: 3, 8: 6, 9: 6, 10: 12, 11: 12, 12: 15, 13: 15, 14: 15, 15: 60
+        },
+        7: {
+            4: 0.45, 5: 0.75, 6: 1.2, 7: 1.2, 8: 2.4, 9: 2.4, 10: 4.8, 11: 4.8, 12: 6, 13: 6, 14: 6, 15: 15
+        },
+        8: {
+            4: 0.3, 5: 0.6, 6: 0.9, 7: 0.9, 8: 1.8, 9: 1.8, 10: 3.6, 11: 3.6, 12: 4.5, 13: 4.5, 14: 4.5, 15: 12
+        },
+        9: {
+            4: 0.3, 5: 0.45, 6: 0.75, 7: 0.75, 8: 1.35, 9: 1.35, 10: 2.7, 11: 2.7, 12: 3.3, 13: 3.3, 14: 3.3, 15: 9
+        },
+        10: {
+            4: 0.15, 5: 0.3, 6: 0.45, 7: 0.45, 8: 0.9, 9: 0.9, 10: 1.8, 11: 1.8, 12: 2.25, 13: 2.25, 14: 2.25, 15: 6
+        },
+    }
+
+    private winGrid: Set<string[]> = new Set([]);
 
     public SetCurrentWinAnimationIndex(value: number): void {
         this.currentWinAnimationIndex = value;
@@ -96,14 +133,14 @@ export class CommonConfig {
         [6, 2, 3, 4, 0],
         [3, 0, 3, 9, 4]];
     public static NormalWinResponse5: number[][] =
-    [[4, 5, 4, 6, 3],
-    [2, 6, 5, 8, 4],
-    [4, 3, 3, 3, 4],
-    [6, 2, 3, 4, 4],
-    [3, 0, 3, 4, 4]];
+        [[4, 5, 4, 6, 3],
+        [2, 6, 5, 8, 4],
+        [4, 3, 3, 3, 4],
+        [6, 2, 3, 4, 4],
+        [3, 0, 3, 4, 4]];
 
-    private winResponses : number[][][] = [CommonConfig.NormalWinResponse,CommonConfig.NormalWinResponse2,CommonConfig.NormalWinResponse3,CommonConfig.NormalWinResponse4,CommonConfig.NormalWinResponse5]
-   
+    private winResponses: number[][][] = [CommonConfig.NormalWinResponse, CommonConfig.NormalWinResponse2, CommonConfig.NormalWinResponse3, CommonConfig.NormalWinResponse4, CommonConfig.NormalWinResponse5]
+
     public static reels: number[][] = [
         [6, 7, 2, 3, 1, 8, 9, 4, 5, 0, 6, 3, 7, 2, 8, 5, 9, 1, 4, 7, 6, 3, 8, 4, 2, 9, 7, 1, 6, 5,
             3, 9, 8, 0, 4, 2, 1, 7, 6, 5, 3, 4, 9, 2, 8, 5, 1, 0, 6, 7, 3, 8, 2, 9, 4, 1, 7, 6, 5, 0],
@@ -160,6 +197,18 @@ export class CommonConfig {
         return view;
     }
 
+    public setBet(value: number): void {
+        this.bet = value;
+    }
+
+    public getBet(): number {
+        return this.bet;
+    }
+
+    public getWinAmount(id: number, winDataLength: number): number {
+        return this.symbolWinData[id][winDataLength] * this.getBet();
+    }
+
     public setCheatType(value: string): void {
         this.cheatType = value;
     }
@@ -192,25 +241,20 @@ export class CommonConfig {
         return this.view;
     }
 
-    public setWinGrid(value: Set<string>): void {
+    public setWinGrid(value: Set<string[]>): void {
         this.winGrid = value
     }
 
-    public getWinGrid(): Set<string> {
+    public getWinGrid(): Set<string[]> {
         return this.winGrid;
     }
 
-    findWinningGroups(view: number[][]): Set<string> {
-        const winningSymbols: Set<string> = new Set();
+    findWinningGroups(view: number[][]): Set<string[]> {
+        const winningGroups: Set<string[]> = new Set();
         const rows = view.length;
         const cols = view[0].length;
         const visited = new Set<string>();
-
-        // Helper function to add a position to winningSymbols
-        function addToWinGroup(r: number, c: number) {
-            winningSymbols.add(`${r},${c}`);
-        }
-
+    
         // DFS to explore all connected cells with the same symbol
         function dfs(r: number, c: number, symbol: number, group: Set<string>) {
             const posKey = `${r},${c}`;
@@ -219,73 +263,90 @@ export class CommonConfig {
                 view[r][c] !== symbol ||                   // Different symbol
                 visited.has(posKey)                        // Already visited
             ) return;
-
+    
             // Mark as visited and add to current group
             visited.add(posKey);
             group.add(posKey);
-
+    
             // Explore neighbors in all 4 directions
             dfs(r + 1, c, symbol, group);
             dfs(r - 1, c, symbol, group);
             dfs(r, c + 1, symbol, group);
             dfs(r, c - 1, symbol, group);
         }
-
+    
         // Traverse each cell to find connected groups of 4 or more
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 const symbol = view[r][c];
                 if (symbol === null || visited.has(`${r},${c}`)) continue;
-
+    
                 // Initialize a new group to collect connected symbols
                 const currentGroup: Set<string> = new Set();
                 dfs(r, c, symbol, currentGroup);
-
-                // If group has 4 or more connected symbols, add to winningSymbols
+    
+                // If group has 4 or more connected symbols, add it to winningGroups
                 if (currentGroup.size >= 4) {
-                    currentGroup.forEach(pos => winningSymbols.add(pos));
+                    winningGroups.add([...currentGroup]); // Convert the set to an array and add it to winningGroups
                 }
             }
         }
-
-        return winningSymbols;
+    
+        return winningGroups;
     }
+    
 
     // findWinningGroups(view: number[][]): Set<string> {
     //     const winningSymbols: Set<string> = new Set();
     //     const rows = view.length;
     //     const cols = view[0].length;
+    //     const visited = new Set<string>();
 
     //     // Helper function to add a position to winningSymbols
     //     function addToWinGroup(r: number, c: number) {
     //         winningSymbols.add(`${r},${c}`);
     //     }
 
-    //     // Traverse each cell to check horizontal and vertical groups
+    //     // DFS to explore all connected cells with the same symbol
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             view[r][c] !== symbol ||                   // Different symbol
+    //             visited.has(posKey)                        // Already visited
+    //         ) return;
+
+    //         // Mark as visited and add to current group
+    //         visited.add(posKey);
+    //         group.add(posKey);
+
+    //         // Explore neighbors in all 4 directions
+    //         dfs(r + 1, c, symbol, group);
+    //         dfs(r - 1, c, symbol, group);
+    //         dfs(r, c + 1, symbol, group);
+    //         dfs(r, c - 1, symbol, group);
+    //     }
+
+    //     // Traverse each cell to find connected groups of 4 or more
     //     for (let r = 0; r < rows; r++) {
     //         for (let c = 0; c < cols; c++) {
     //             const symbol = view[r][c];
-    //             if (symbol === null) continue;
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
 
-    //             // Check horizontal
-    //             let horGroup = [];
-    //             for (let i = 0; i < 4 && c + i < cols; i++) {
-    //                 if (view[r][c + i] === symbol) horGroup.push(`${r},${c + i}`);
-    //                 else break;
-    //             }
-    //             if (horGroup.length >= 4) horGroup.forEach(pos => winningSymbols.add(pos));
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             dfs(r, c, symbol, currentGroup);
 
-    //             // Check vertical
-    //             let vertGroup = [];
-    //             for (let i = 0; i < 4 && r + i < rows; i++) {
-    //                 if (view[r + i][c] === symbol) vertGroup.push(`${r + i},${c}`);
-    //                 else break;
+    //             // If group has 4 or more connected symbols, add to winningSymbols
+    //             if (currentGroup.size >= 4) {
+    //                 currentGroup.forEach(pos => winningSymbols.add(pos));
     //             }
-    //             if (vertGroup.length >= 4) vertGroup.forEach(pos => winningSymbols.add(pos));
     //         }
     //     }
+
     //     return winningSymbols;
     // }
+
 
     cascade(view: number[][], winningSymbols: Set<string>): number[][] {
         // Explode symbols by setting them to null
@@ -347,7 +408,7 @@ export class CommonConfig {
             totalWins += winningSymbols.size;
 
             // Update the view with cascades
-            view = this.cascade(view, winningSymbols);
+            // view = this.cascade(view, winningSymbols);
             console.log(`View after Cascade ${cascadeCount}:`, view);
         }
 

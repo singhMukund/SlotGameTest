@@ -14,7 +14,7 @@ export class WinpresentationController {
 
     private resetsOnSpinClick() :void{
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
-        CommonConfig.the.setWinGrid(new Set<string>());
+        CommonConfig.the.setWinGrid(new Set<string[]>());
         // console.clear();
     }
 
@@ -42,20 +42,20 @@ export class WinpresentationController {
     }
 
     private recheckWin() :void{
-        let win: Set<string> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Set<string[]> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         //  win = new Set(['0,0', '0,2']);
         // console.log(win);
         if (win.size) {
             CommonConfig.the.SetCurrentWinAnimationIndex(0)
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }else{
-            CommonConfig.the.setWinGrid(new Set<string>());
+            CommonConfig.the.setWinGrid(new Set<string[]>());
             Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
         }
     }
 
     private onCheckWin(): void {
-        let win: Set<string> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Set<string[]> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         //  win = new Set(['0,0', '0,2']);
         // console.log(win);
         if (win.size) {
@@ -63,7 +63,7 @@ export class WinpresentationController {
             CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         } else {
-            CommonConfig.the.setWinGrid(new Set<string>());
+            CommonConfig.the.setWinGrid(new Set<string[]>());
             Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
         }
         console.log(CommonConfig.the.getWinGrid());

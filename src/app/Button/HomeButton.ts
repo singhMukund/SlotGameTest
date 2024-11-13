@@ -2,7 +2,7 @@ import { Assets, Container, Sprite, Spritesheet, Texture } from "pixi.js";
 import { Game } from "../game";
 import { CommonConfig } from "../../Common/CommonConfig";
 
-export class SpinButton extends Container{
+export class HomeButton extends Container{
     private buttton !: Sprite;
     private buttonTexture !: Spritesheet;
 
@@ -14,7 +14,7 @@ export class SpinButton extends Container{
     }
 
     private initializeButton() :void{
-        this.buttton = new Sprite(this.buttonTexture.textures['btn_spin.png']);
+        this.buttton = new Sprite(this.buttonTexture.textures['btn_home.png']);
         this.addChild(this.buttton);
         this.buttton.scale.set(0.9);
     }
@@ -30,30 +30,30 @@ export class SpinButton extends Container{
     }
 
     private onButtonDown() : void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['btn_home.png'];
     }
 
     private onButtonUp() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
-        Game.the.app.stage.emit(CommonConfig.START_SPIN);
-        this.disable();
+        this.buttton.texture = this.buttonTexture.textures['btn_home.png'];
+        // Game.the.app.stage.emit(CommonConfig.START_SPIN);
+        // this.disable();
     }
 
     private onButtonOver() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['btn_home.png'];
     }
 
     private onButtonOut() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['btn_home.png'];
     }
 
     disable() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['btn_home.png'];
         this.interactive = false;
     }
 
     enable() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['btn_home.png'];
         this.interactive = true;
     }
     
