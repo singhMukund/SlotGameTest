@@ -40,8 +40,29 @@ export class ReelManager extends Container {
         this.mask = this.maskContainer;
     }
 
+    // [
+    //     {
+    //         "value": [
+    //             "1,4",
+    //             "2,4",
+    //             "3,4",
+    //             "4,4",
+    //             "4,3",
+    //             "3,3"
+    //         ]
+    //     },
+    //     {
+    //         "value": [
+    //             "2,1",
+    //             "2,2",
+    //             "3,2",
+    //             "4,2",
+    //             "2,3"
+    //         ]
+    //     }
+    // ]
     private onPlayWinSymbol() :void{
-        let winGrid : Set<string> = CommonConfig.the.getWinGrid();
+        let winGrid : Set<string[]> = CommonConfig.the.getWinGrid();
         // winGrid = new Set(['0,0', '0,2']);
         // CommonConfig.the.setWinGrid(winGrid);
         let winReelData : { [key: number]: number[] } = { };
