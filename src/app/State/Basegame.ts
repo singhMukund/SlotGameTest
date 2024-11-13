@@ -7,6 +7,7 @@ import { Game } from "../game";
 import { WinpresentationController } from "../Symbol/WinpresentationController";
 import { CheatPanel } from "../CheatPanel/CheatPanel";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
+import { BigWinMeter } from "../Meter/BigWinMeter";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
@@ -18,6 +19,7 @@ export class BaseGame extends Container {
     private cheatPanel !: CheatPanel;
     private normalRation : number = 1920/919;
     private bottomPanel !: BottomPanel;
+    private bgWinMeter !: BigWinMeter;
 
     constructor() {
         super();
@@ -45,6 +47,7 @@ export class BaseGame extends Container {
         this.initWinpresentationController();
         this.initializeCheatPanel();
         this.initBottomPanel();
+        // this.initBigWinMeter();
     }
 
     private parentContainer(): void {
@@ -68,6 +71,10 @@ export class BaseGame extends Container {
         this.winpresentationController = new WinpresentationController();
     }
 
+    private initBigWinMeter() :void{
+        this.bgWinMeter = new BigWinMeter();
+    }
+
     private initializeCheatPanel(): void {
         this.cheatPanel = new CheatPanel();
         this.cheatPanel.position.set(50, 50); // Position the panel in the top-left corner
@@ -85,6 +92,7 @@ export class BaseGame extends Container {
         this.addChild(this.bottomPanelButton);
         this.addChild(this.cheatPanel);
         this.addChild(this.bottomPanel);
+        // this.addChild(this.bgWinMeter);
     }
 
     private setPosition() {

@@ -30,6 +30,9 @@ export class CommonConfig {
 
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
     public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
+    public static PLAY_SHUFFLE_REEL: string = "PLAY_SHUFFLE_REEL";
+    public static UPDATE_WIN_METER: string = "UPDATE_WIN_METER";
+    public static RESET_WIN_METER: string = "RESET_WIN_METER";
     public static CHECK_WIN: number = 0;
     public static ANIMATE_WIN_SYMBOL: number = 1;
     public static CREATE_AND_UPDATE_CASCADE_VIEW: number = 2;
@@ -41,8 +44,15 @@ export class CommonConfig {
     private currentWinAnimationIndex: number = 0;
 
     private bet: number = 1;
+    private currentWinAmount: number = 0;
 
     private symbolWinData: SymbolWinData = {
+        1: {
+            4: 3, 5: 6, 6: 12, 7: 12, 8: 24, 9: 24, 10: 48, 11: 48, 12: 75, 13: 75, 14: 75, 15: 300
+        },
+        2: {
+            4: 3, 5: 6, 6: 12, 7: 12, 8: 24, 9: 24, 10: 48, 11: 48, 12: 75, 13: 75, 14: 75, 15: 300
+        },
         3: {
             4: 3, 5: 6, 6: 12, 7: 12, 8: 24, 9: 24, 10: 48, 11: 48, 12: 75, 13: 75, 14: 75, 15: 300
         },
@@ -69,7 +79,7 @@ export class CommonConfig {
         },
     }
 
-    private winGrid: Set<string[]> = new Set([]);
+    private winGrid: Map<number, Set<string>> = new Map();
 
     public SetCurrentWinAnimationIndex(value: number): void {
         this.currentWinAnimationIndex = value;
@@ -174,6 +184,7 @@ export class CommonConfig {
         const view: number[][] = [];
         if (this.getCheatType().length && this.getCheatType() === "normal") {
             let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
+            // winresponse = CommonConfig.NormalWinResponse5;
             return this.returnCloneArray(winresponse);
         }
         this.setCheatType("");
@@ -203,6 +214,14 @@ export class CommonConfig {
 
     public getBet(): number {
         return this.bet;
+    }
+
+    public setCurrentWinAmount(value : number) :void{
+       this.currentWinAmount = value;
+    }
+
+    public getCurrentWinAmount() : number{
+        return this.currentWinAmount;
     }
 
     public getWinAmount(id: number, winDataLength: number): number {
@@ -241,16 +260,16 @@ export class CommonConfig {
         return this.view;
     }
 
-    public setWinGrid(value: Set<string[]>): void {
+    public setWinGrid(value: Map<number, Set<string>>): void {
         this.winGrid = value
     }
 
-    public getWinGrid(): Set<string[]> {
+    public getWinGrid(): Map<number, Set<string>> {
         return this.winGrid;
     }
 
-    findWinningGroups(view: number[][]): Set<string[]> {
-        const winningGroups: Set<string[]> = new Set();
+    findWinningGroups(view: number[][]): Map<number, Set<string>> {
+        const winningGroups: Map<number, Set<string>> = new Map();
         const rows = view.length;
         const cols = view[0].length;
         const visited = new Set<string>();
@@ -285,15 +304,117 @@ export class CommonConfig {
                 const currentGroup: Set<string> = new Set();
                 dfs(r, c, symbol, currentGroup);
     
-                // If group has 4 or more connected symbols, add it to winningGroups
+                // If group has 4 or more connected symbols, add to winningGroups map
                 if (currentGroup.size >= 4) {
-                    winningGroups.add([...currentGroup]); // Convert the set to an array and add it to winningGroups
+                    if (!winningGroups.has(symbol)) {
+                        winningGroups.set(symbol, new Set());
+                    }
+                    // Add the positions of the current group to the symbol's set in the map
+                    const symbolGroup = winningGroups.get(symbol)!;
+                    currentGroup.forEach(pos => symbolGroup.add(pos));
                 }
             }
         }
     
         return winningGroups;
     }
+    
+
+    // findWinningGroups(view: number[][]): Map<number, Set<string[]>> {
+    //     const winningGroups: Map<number, Set<string[]>> = new Map();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+    //     const visited = new Set<string>();
+    
+    //     // DFS to explore all connected cells with the same symbol
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             view[r][c] !== symbol ||                   // Different symbol
+    //             visited.has(posKey)                        // Already visited
+    //         ) return;
+    
+    //         // Mark as visited and add to current group
+    //         visited.add(posKey);
+    //         group.add(posKey);
+    
+    //         // Explore neighbors in all 4 directions
+    //         dfs(r + 1, c, symbol, group);
+    //         dfs(r - 1, c, symbol, group);
+    //         dfs(r, c + 1, symbol, group);
+    //         dfs(r, c - 1, symbol, group);
+    //     }
+    
+    //     // Traverse each cell to find connected groups of 4 or more
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
+    
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             dfs(r, c, symbol, currentGroup);
+    
+    //             // If group has 4 or more connected symbols, add it to winningGroups map
+    //             if (currentGroup.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 winningGroups.get(symbol)!.add([...currentGroup]);
+    //             }
+    //         }
+    //     }
+    
+    //     return winningGroups;
+    // }
+    
+
+    // findWinningGroups(view: number[][]): Set<string[]> {
+    //     const winningGroups: Set<string[]> = new Set();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+    //     const visited = new Set<string>();
+    
+    //     // DFS to explore all connected cells with the same symbol
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             view[r][c] !== symbol ||                   // Different symbol
+    //             visited.has(posKey)                        // Already visited
+    //         ) return;
+    
+    //         // Mark as visited and add to current group
+    //         visited.add(posKey);
+    //         group.add(posKey);
+    
+    //         // Explore neighbors in all 4 directions
+    //         dfs(r + 1, c, symbol, group);
+    //         dfs(r - 1, c, symbol, group);
+    //         dfs(r, c + 1, symbol, group);
+    //         dfs(r, c - 1, symbol, group);
+    //     }
+    
+    //     // Traverse each cell to find connected groups of 4 or more
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
+    
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             dfs(r, c, symbol, currentGroup);
+    
+    //             // If group has 4 or more connected symbols, add it to winningGroups
+    //             if (currentGroup.size >= 4) {
+    //                 winningGroups.add([...currentGroup]); // Convert the set to an array and add it to winningGroups
+    //             }
+    //         }
+    //     }
+    
+    //     return winningGroups;
+    // }
     
 
     // findWinningGroups(view: number[][]): Set<string> {
