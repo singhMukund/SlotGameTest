@@ -14,7 +14,9 @@ export class WinpresentationController {
 
     private resetsOnSpinClick() :void{
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
-        CommonConfig.the.setWinGrid(new Set<string[]>());
+        CommonConfig.the.setWinGrid(new Map());
+        CommonConfig.the.setCurrentWinAmount(0);
+        Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
         // console.clear();
     }
 
@@ -42,28 +44,36 @@ export class WinpresentationController {
     }
 
     private recheckWin() :void{
-        let win: Set<string[]> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+       
         //  win = new Set(['0,0', '0,2']);
         // console.log(win);
+        // win.forEach(position => {
+        //   console.log(position);
+        // })
         if (win.size) {
             CommonConfig.the.SetCurrentWinAnimationIndex(0)
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }else{
-            CommonConfig.the.setWinGrid(new Set<string[]>());
+            CommonConfig.the.setWinGrid(new Map());
             Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
         }
     }
 
     private onCheckWin(): void {
-        let win: Set<string[]> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+      
         //  win = new Set(['0,0', '0,2']);
         // console.log(win);
+        // win.forEach(position => {
+        //     console.log(position);
+        // })
         if (win.size) {
             CommonConfig.the.setWinGrid(win);
             CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         } else {
-            CommonConfig.the.setWinGrid(new Set<string[]>());
+            CommonConfig.the.setWinGrid(new Map());
             Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
         }
         console.log(CommonConfig.the.getWinGrid());

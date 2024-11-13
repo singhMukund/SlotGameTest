@@ -31,6 +31,7 @@ export class Reel extends Container {
         Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.playAnimation, this);
         Game.the.app.stage.on(CommonConfig.PLAY_DROP_REEL, this.dropWinReel, this);
         Game.the.app.stage.on(CommonConfig.PLAY_STOP_SPIN, this.stopTheReel, this);
+        Game.the.app.stage.on(CommonConfig.PLAY_SHUFFLE_REEL, this.playAfterHideCurrentSymbol, this);
     }
 
     private init(): void {
@@ -231,14 +232,14 @@ export class Reel extends Container {
                 alpha: 0,
                 ease: "power1.inOut",
                 onComplete: () => {
-                    i === posId.length - 1 && this.playAfterHideCurrentSymbol(posId)
+                    // i === posId.length - 1 && this.playAfterHideCurrentSymbol(posId)
                 }
             })
         }
 
     }
 
-    private playAfterHideCurrentSymbol(posId: number[]) {
+    playAfterHideCurrentSymbol(posId: number[]) {
         let maxY: number = -Infinity;
         for (let i: number = 0; i < this.children.length; i++) {
             if (posId.includes(i) && this.children[i].y > maxY) {
