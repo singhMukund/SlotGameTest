@@ -27,7 +27,7 @@ export class CommonConfig {
     public static SPIN_STOPPED: string = "SPIN_STOPPED";
     public static PLAY_DROP_REEL: string = "PLAY_DROP_REEL";
     public static PLAY_ANIMATED_WIN_SYMBOL: string = "PLAY_ANIMATED_WIN_SYMBOL";
-
+    public static PLAY_BIG_WIN: string = "PLAY_BIG_WIN";
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
     public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
     public static PLAY_SHUFFLE_REEL: string = "PLAY_SHUFFLE_REEL";
@@ -38,10 +38,13 @@ export class CommonConfig {
     public static CREATE_AND_UPDATE_CASCADE_VIEW: number = 2;
     public static PLAY_CASCADE_REEL_DROP_ANIMATION: number = 3;
     public static RECHECK_CASCADE_WIN: number = 2;
+    public static BIG_WIN: number = 3;
+    public static ENABLE_BUTTON_PLAY: number = 4;
 
     public static TOTAL_ANIMATION_LENGTH: number = 5;
 
     private currentWinAnimationIndex: number = 0;
+    private incrementForLargeWin : number = 0;
 
     private bet: number = 1;
     private currentWinAmount: number = 0;
@@ -181,10 +184,14 @@ export class CommonConfig {
     }
 
     public generateRandomView(): number[][] {
+        this.incrementForLargeWin = 0;
         const view: number[][] = [];
         if (this.getCheatType().length && this.getCheatType() === "normal") {
             let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
             // winresponse = CommonConfig.NormalWinResponse5;
+            return this.returnCloneArray(winresponse);
+        } else if (this.getCheatType().length && this.getCheatType() === "large") {
+            let winresponse = CommonConfig.NormalWinResponse3;
             return this.returnCloneArray(winresponse);
         }
         this.setCheatType("");
@@ -216,11 +223,11 @@ export class CommonConfig {
         return this.bet;
     }
 
-    public setCurrentWinAmount(value : number) :void{
-       this.currentWinAmount = value;
+    public setCurrentWinAmount(value: number): void {
+        this.currentWinAmount = value;
     }
 
-    public getCurrentWinAmount() : number{
+    public getCurrentWinAmount(): number {
         return this.currentWinAmount;
     }
 
@@ -273,7 +280,7 @@ export class CommonConfig {
         const rows = view.length;
         const cols = view[0].length;
         const visited = new Set<string>();
-    
+
         // DFS to explore all connected cells with the same symbol
         function dfs(r: number, c: number, symbol: number, group: Set<string>) {
             const posKey = `${r},${c}`;
@@ -282,28 +289,28 @@ export class CommonConfig {
                 view[r][c] !== symbol ||                   // Different symbol
                 visited.has(posKey)                        // Already visited
             ) return;
-    
+
             // Mark as visited and add to current group
             visited.add(posKey);
             group.add(posKey);
-    
+
             // Explore neighbors in all 4 directions
             dfs(r + 1, c, symbol, group);
             dfs(r - 1, c, symbol, group);
             dfs(r, c + 1, symbol, group);
             dfs(r, c - 1, symbol, group);
         }
-    
+
         // Traverse each cell to find connected groups of 4 or more
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 const symbol = view[r][c];
                 if (symbol === null || visited.has(`${r},${c}`)) continue;
-    
+
                 // Initialize a new group to collect connected symbols
                 const currentGroup: Set<string> = new Set();
                 dfs(r, c, symbol, currentGroup);
-    
+
                 // If group has 4 or more connected symbols, add to winningGroups map
                 if (currentGroup.size >= 4) {
                     if (!winningGroups.has(symbol)) {
@@ -315,17 +322,17 @@ export class CommonConfig {
                 }
             }
         }
-    
+
         return winningGroups;
     }
-    
+
 
     // findWinningGroups(view: number[][]): Map<number, Set<string[]>> {
     //     const winningGroups: Map<number, Set<string[]>> = new Map();
     //     const rows = view.length;
     //     const cols = view[0].length;
     //     const visited = new Set<string>();
-    
+
     //     // DFS to explore all connected cells with the same symbol
     //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
     //         const posKey = `${r},${c}`;
@@ -334,28 +341,28 @@ export class CommonConfig {
     //             view[r][c] !== symbol ||                   // Different symbol
     //             visited.has(posKey)                        // Already visited
     //         ) return;
-    
+
     //         // Mark as visited and add to current group
     //         visited.add(posKey);
     //         group.add(posKey);
-    
+
     //         // Explore neighbors in all 4 directions
     //         dfs(r + 1, c, symbol, group);
     //         dfs(r - 1, c, symbol, group);
     //         dfs(r, c + 1, symbol, group);
     //         dfs(r, c - 1, symbol, group);
     //     }
-    
+
     //     // Traverse each cell to find connected groups of 4 or more
     //     for (let r = 0; r < rows; r++) {
     //         for (let c = 0; c < cols; c++) {
     //             const symbol = view[r][c];
     //             if (symbol === null || visited.has(`${r},${c}`)) continue;
-    
+
     //             // Initialize a new group to collect connected symbols
     //             const currentGroup: Set<string> = new Set();
     //             dfs(r, c, symbol, currentGroup);
-    
+
     //             // If group has 4 or more connected symbols, add it to winningGroups map
     //             if (currentGroup.size >= 4) {
     //                 if (!winningGroups.has(symbol)) {
@@ -365,17 +372,17 @@ export class CommonConfig {
     //             }
     //         }
     //     }
-    
+
     //     return winningGroups;
     // }
-    
+
 
     // findWinningGroups(view: number[][]): Set<string[]> {
     //     const winningGroups: Set<string[]> = new Set();
     //     const rows = view.length;
     //     const cols = view[0].length;
     //     const visited = new Set<string>();
-    
+
     //     // DFS to explore all connected cells with the same symbol
     //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
     //         const posKey = `${r},${c}`;
@@ -384,38 +391,38 @@ export class CommonConfig {
     //             view[r][c] !== symbol ||                   // Different symbol
     //             visited.has(posKey)                        // Already visited
     //         ) return;
-    
+
     //         // Mark as visited and add to current group
     //         visited.add(posKey);
     //         group.add(posKey);
-    
+
     //         // Explore neighbors in all 4 directions
     //         dfs(r + 1, c, symbol, group);
     //         dfs(r - 1, c, symbol, group);
     //         dfs(r, c + 1, symbol, group);
     //         dfs(r, c - 1, symbol, group);
     //     }
-    
+
     //     // Traverse each cell to find connected groups of 4 or more
     //     for (let r = 0; r < rows; r++) {
     //         for (let c = 0; c < cols; c++) {
     //             const symbol = view[r][c];
     //             if (symbol === null || visited.has(`${r},${c}`)) continue;
-    
+
     //             // Initialize a new group to collect connected symbols
     //             const currentGroup: Set<string> = new Set();
     //             dfs(r, c, symbol, currentGroup);
-    
+
     //             // If group has 4 or more connected symbols, add it to winningGroups
     //             if (currentGroup.size >= 4) {
     //                 winningGroups.add([...currentGroup]); // Convert the set to an array and add it to winningGroups
     //             }
     //         }
     //     }
-    
+
     //     return winningGroups;
     // }
-    
+
 
     // findWinningGroups(view: number[][]): Set<string> {
     //     const winningSymbols: Set<string> = new Set();
@@ -492,7 +499,7 @@ export class CommonConfig {
             }
         }
         console.log(outputArray);
-
+        this.incrementForLargeWin ++;
         return outputArray;
     }
 
@@ -509,9 +516,9 @@ export class CommonConfig {
     }
 
     getRandomSymbol(reelIndex: number): number {
-        // if(this.getCheatType().length && this.getCheatType() === "normal"){
-        //     return 3;
-        // }
+        if(this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1){
+            return 3;
+        }
         const reel = CommonConfig.reels[reelIndex];
         return reel[Math.floor(Math.random() * reel.length)];
     }
