@@ -20,6 +20,7 @@ export class BaseGame extends Container {
     private normalRation : number = 1920/919;
     private bottomPanel !: BottomPanel;
     private bgWinMeter !: BigWinMeter;
+    
 
     constructor() {
         super();
@@ -47,7 +48,7 @@ export class BaseGame extends Container {
         this.initWinpresentationController();
         this.initializeCheatPanel();
         this.initBottomPanel();
-        // this.initBigWinMeter();
+        this.initBigWinMeter();
     }
 
     private parentContainer(): void {
@@ -92,7 +93,7 @@ export class BaseGame extends Container {
         this.addChild(this.bottomPanelButton);
         this.addChild(this.cheatPanel);
         this.addChild(this.bottomPanel);
-        // this.addChild(this.bgWinMeter);
+        this.addChild(this.bgWinMeter);
     }
 
     private setPosition() {
