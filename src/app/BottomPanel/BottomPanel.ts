@@ -13,6 +13,7 @@ export class BottomPanel extends Container {
     private homeButton !: HomeButton;
     private settingButton !: SettingButton;
     private winMeter !: WinMeter;
+    private aspectRatio : number =1 ;
     constructor() {
         super();
         this.init();
@@ -40,23 +41,22 @@ export class BottomPanel extends Container {
     private init(): void {
         this.bg = new Sprite(Assets.get('bottomPanelBg'));
         this.addChild(this.bg);
-        // const spineData = Assets.get('5ofkind_spine');
-        // spineData.version = '4.1.19';
-        
-        // const bgAnimation = Spine.from({ skeleton: "Bigwin_data", atlas: "Bigwin_atlas"});
-        // // const bgAnimation = new Spine(spineData);
-        // bgAnimation.x = window.innerWidth / 2;
-        // bgAnimation.y = window.innerHeight / 2;
-        // this.addChild(bgAnimation);
-        // // // @ts-ignore
-        // bgAnimation.state.setAnimation(0, 'BigWinMegaWin', true);
     }
 
     private resizeApp() :void{
+        this.spinBtn.scale.set(1);
+        let height : number = this.spinBtn.height;
+        let currentHeightPanel = height/999 * window.innerHeight ;
+        let scale : number = currentHeightPanel / height;
         this.bg.position.set(0,window.innerHeight - this.bg.height);
-        this.spinBtn.position.set(window.innerWidth - (this.spinBtn.width * 1.5), (window.innerHeight - this.spinBtn.height)/2);
-        this.settingButton.position.set(window.innerWidth - (this.settingButton.width * 2), this.bg.y - (this.settingButton.height * 1.2));
-        this.homeButton.position.set(this.homeButton.width, this.settingButton.y);
         this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
+        this.spinBtn.scale.set(scale);
+        this.settingButton.scale.set(scale);
+        this.homeButton.scale.set(scale);
+        if (window.innerWidth > window.innerHeight) {
+            this.spinBtn.position.set(window.innerWidth - (this.spinBtn.width * 1.5), (window.innerHeight - this.spinBtn.height)/2);
+            this.settingButton.position.set(window.innerWidth - (this.settingButton.width * 2), this.bg.y - (this.settingButton.height * 1.2));
+            this.homeButton.position.set(this.homeButton.width, this.settingButton.y);
+        }
     }
 }
