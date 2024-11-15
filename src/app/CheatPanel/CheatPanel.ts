@@ -1,13 +1,14 @@
 import { CommonConfig } from "@/Common/CommonConfig";
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
+import { Game } from "../game";
 
 export class CheatPanel extends Container {
-    private background: Graphics;
+    private background!: Graphics;
     private isVisible: boolean;
-    private normalWinButton: Text;
-    private normalWinToggle: Text;
-    private largeWinButton: Text;
-    private largeWinToggle: Text;
+    private normalWinButton!: Text;
+    private normalWinToggle!: Text;
+    private largeWinButton!: Text;
+    private largeWinToggle!: Text;
     private normalWinActive: boolean = false;
     private largeWinActive: boolean = false;
     private normalWinCheatContainer !: Container;
@@ -17,6 +18,13 @@ export class CheatPanel extends Container {
     constructor() {
         super();
         this.isVisible = true;
+        this.init();
+        this.setPosition();
+        this.resizeApp();
+        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+    }
+
+    private init(): void {
         this.background = new Graphics();
         this.background.beginFill(0x222222, 0.9); // Dark background with transparency
         this.background.drawRect(0, 0, 350, 250);
@@ -29,7 +37,7 @@ export class CheatPanel extends Container {
 
 
         // Panel background
-       
+
 
         const roundedRectangle = new Graphics();
         roundedRectangle.beginFill(0x3498db); // Fill color, you can change this
@@ -37,7 +45,7 @@ export class CheatPanel extends Container {
         roundedRectangle.endFill();
         this.normalWinCheatContainer.addChild(roundedRectangle);
 
-      
+
         // Toggle button style
         const buttonStyle = new TextStyle({
             fill: "#00FF00",
@@ -59,7 +67,7 @@ export class CheatPanel extends Container {
         // Normal Win Toggle Button
         this.normalWinToggle = new Text("Set", buttonStyle);
         this.normalWinToggle.position.set(200, 60);
-       
+
         this.normalWinCheatContainer.addChild(this.normalWinToggle);
 
         const roundedRectangle2 = new Graphics();
@@ -76,7 +84,7 @@ export class CheatPanel extends Container {
         // Large Win Toggle Button
         this.largeWinToggle = new Text("Set", buttonStyle2);
         this.largeWinToggle.position.set(200, 100);
-       
+
         this.largeWinCheatContainer.addChild(this.largeWinToggle);
 
         this.visible = this.isVisible;
@@ -88,6 +96,23 @@ export class CheatPanel extends Container {
         this.largeWinCheatContainer.interactive = true;
         // this.largeWinToggle.buttonMode = true;
         this.largeWinCheatContainer.on("pointerdown", () => this.toggleCheat("large"));
+    }
+
+    private setPosition(): void {
+    }
+
+    private resizeApp(): void {
+        this.scale.set(1);
+        let height : number = this.height;
+        let currentHeightPanel = height/999 * window.innerHeight ;
+        let scale : number = currentHeightPanel / height;
+        if (window.innerWidth < window.innerHeight) {
+            this.scale.set(0.5);
+            this.position.set(window.innerWidth - this.width - 20, window.innerHeight - this.height -20);
+        } else {
+            this.scale.set(scale);
+            this.position.set(50, 50);
+        }
     }
 
     private toggleCheat(type: "normal" | "large"): void {

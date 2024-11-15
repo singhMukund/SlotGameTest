@@ -106,22 +106,17 @@ export class BaseGame extends Container {
     }
 
     private resizeApp(): void {
-        let currentAspectRatio : number = window.innerWidth/window.innerHeight;
-        let currentScale : number = (0.6/this.normalRation) * currentAspectRatio;
+        let currentScale : number = 1;
         let assumedHeight : number = window.innerHeight  * this.aspectRatio;
         this.reelContainer.scale.set(1);
         let height = this.reelContainer.height;
         currentScale = assumedHeight / height;
         this.reelContainer.scale.set(currentScale);
-        this.cheatPanel.scale.set((1/this.normalRation) * currentAspectRatio);
-        this.cheatPanel.position.set(50, 50);
+        let currentPanelHeight = this.cheatPanel.height;
         this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
-        // this.bottomPanel.position.set(0,window.innerHeight - this.bottomPanel.height);
         if (window.innerWidth < window.innerHeight) {
             this.reelContainer.scale.set(0.37);
             this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
-            this.cheatPanel.scale.set(0.5);
-            this.cheatPanel.position.set(window.innerWidth - this.cheatPanel.width - 20, window.innerHeight - this.cheatPanel.height -20)
         }
     }
 }
