@@ -8,6 +8,7 @@ import { WinpresentationController } from "../Symbol/WinpresentationController";
 import { CheatPanel } from "../CheatPanel/CheatPanel";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
 import { BigWinMeter } from "../Meter/BigWinMeter";
+import { LineMeter } from "../Meter/LineMeter";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
@@ -21,6 +22,7 @@ export class BaseGame extends Container {
     private bottomPanel !: BottomPanel;
     private bgWinMeter !: BigWinMeter;
     private aspectRatio : number = 0;
+    private lineMeter !: LineMeter;
     
 
     constructor() {
@@ -50,6 +52,7 @@ export class BaseGame extends Container {
         this.initializeCheatPanel();
         this.initBottomPanel();
         this.initBigWinMeter();
+        this.initLineMeter();
     }
 
     private parentContainer(): void {
@@ -77,6 +80,10 @@ export class BaseGame extends Container {
         this.bgWinMeter = new BigWinMeter();
     }
 
+    private initLineMeter() :void{
+        this.lineMeter = new LineMeter();
+    }
+
     private initializeCheatPanel(): void {
         this.cheatPanel = new CheatPanel();
         this.cheatPanel.position.set(50, 50); // Position the panel in the top-left corner
@@ -91,6 +98,7 @@ export class BaseGame extends Container {
         this.addChild(this.reelContainer);
         this.reelContainer.addChild(this.reelView);
         this.reelContainer.addChild(this.reelManager);
+        this.reelContainer.addChild(this.lineMeter);
         this.addChild(this.bottomPanelButton);
         this.addChild(this.cheatPanel);
         this.addChild(this.bottomPanel);
@@ -100,6 +108,7 @@ export class BaseGame extends Container {
     private setPosition() {
         this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2);
         this.reelManager.position.set(370, 385);
+        this.lineMeter.position.set(370, 385);
         this.reelContainer.scale.set(0.6);
         this.aspectRatio = this.reelContainer.height / 919;
         // this.bottomPanelButton.position.set(0, (window.innerHeight - this.bottomPanelButton.height));

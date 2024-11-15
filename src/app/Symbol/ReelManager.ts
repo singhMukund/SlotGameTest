@@ -87,12 +87,17 @@ export class ReelManager extends Container {
             }
         });
         CommonConfig.the.setWinReelIds([]);
+        CommonConfig.the.setLineWinAmount(0);
         Object.keys(winReelData).forEach(key => {
             const reelKey = parseInt(key, 10);
             (this.reelsContainer.children[reelKey] as Reel).playWinAnim(winReelData[reelKey].sort())
         });
+        let reelX :number =  Number(Object.keys(winReelData).sort()[0]);
+        let rowY : number =  winReelData[reelX].sort()[0];
         let cascadeWinAmount : number = CommonConfig.the.getWinAmount(this.symboldWinIds[this.currentIndexSymbolWinIds], winData.size)
         CommonConfig.the.setCurrentWinAmount(CommonConfig.the.getCurrentWinAmount() + cascadeWinAmount);
+        CommonConfig.the.setLineWinAmount(cascadeWinAmount);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_LINE_WIN_METER,[reelX,rowY]);
         Game.the.app.stage.emit(CommonConfig.UPDATE_WIN_METER);
         gsap.delayedCall(0.5, () => {
             this.currentIndexSymbolWinIds++;
