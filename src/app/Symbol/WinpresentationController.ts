@@ -16,6 +16,7 @@ export class WinpresentationController {
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
         CommonConfig.the.setWinGrid(new Map());
         CommonConfig.the.setCurrentWinAmount(0);
+        CommonConfig.the.setLineWinAmount(0);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
         // console.clear();
     }

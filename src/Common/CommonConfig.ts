@@ -32,6 +32,7 @@ export class CommonConfig {
     public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
     public static PLAY_SHUFFLE_REEL: string = "PLAY_SHUFFLE_REEL";
     public static UPDATE_WIN_METER: string = "UPDATE_WIN_METER";
+    public static UPDATE_LINE_WIN_METER: string = "UPDATE_LINE_WIN_METER";
     public static RESET_WIN_METER: string = "RESET_WIN_METER";
     public static CHECK_WIN: number = 0;
     public static ANIMATE_WIN_SYMBOL: number = 1;
@@ -44,10 +45,11 @@ export class CommonConfig {
     public static TOTAL_ANIMATION_LENGTH: number = 5;
 
     private currentWinAnimationIndex: number = 0;
-    private incrementForLargeWin : number = 0;
+    private incrementForLargeWin: number = 0;
 
     private bet: number = 1;
     private currentWinAmount: number = 0;
+    private lineWinAmount: number = 0;
 
     private symbolWinData: SymbolWinData = {
         1: {
@@ -221,6 +223,14 @@ export class CommonConfig {
 
     public getBet(): number {
         return this.bet;
+    }
+
+    public setLineWinAmount(value: number): void {
+        this.lineWinAmount = value;
+    }
+
+    public getLineWinAmount(): number {
+        return this.lineWinAmount;
     }
 
     public setCurrentWinAmount(value: number): void {
@@ -499,7 +509,7 @@ export class CommonConfig {
             }
         }
         console.log(outputArray);
-        this.incrementForLargeWin ++;
+        this.incrementForLargeWin++;
         return outputArray;
     }
 
@@ -516,7 +526,7 @@ export class CommonConfig {
     }
 
     getRandomSymbol(reelIndex: number): number {
-        if(this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1){
+        if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1) {
             return 3;
         }
         const reel = CommonConfig.reels[reelIndex];
