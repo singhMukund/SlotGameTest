@@ -57,6 +57,6 @@ export class BottomPanel extends Container {
         this.spinBtn.position.set(window.innerWidth - (this.spinBtn.width * 1.5), (window.innerHeight - this.spinBtn.height)/2);
         this.settingButton.position.set(window.innerWidth - (this.settingButton.width * 2), this.bg.y - (this.settingButton.height * 1.2));
         this.homeButton.position.set(this.homeButton.width, this.settingButton.y);
-        this.winMeter.position.set((this.bg.width - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
+        this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
     }
 }

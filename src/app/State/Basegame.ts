@@ -20,6 +20,7 @@ export class BaseGame extends Container {
     private normalRation : number = 1920/919;
     private bottomPanel !: BottomPanel;
     private bgWinMeter !: BigWinMeter;
+    private aspectRatio : number = 0;
     
 
     constructor() {
@@ -99,12 +100,18 @@ export class BaseGame extends Container {
     private setPosition() {
         this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2);
         this.reelManager.position.set(370, 385);
+        this.reelContainer.scale.set(0.6);
+        this.aspectRatio = this.reelContainer.height / 919;
         // this.bottomPanelButton.position.set(0, (window.innerHeight - this.bottomPanelButton.height));
     }
 
     private resizeApp(): void {
         let currentAspectRatio : number = window.innerWidth/window.innerHeight;
-        let currentScale : number = (0.6/this.normalRation) * currentAspectRatio
+        let currentScale : number = (0.6/this.normalRation) * currentAspectRatio;
+        let assumedHeight : number = window.innerHeight  * this.aspectRatio;
+        this.reelContainer.scale.set(1);
+        let height = this.reelContainer.height;
+        currentScale = assumedHeight / height;
         this.reelContainer.scale.set(currentScale);
         this.cheatPanel.scale.set((1/this.normalRation) * currentAspectRatio);
         this.cheatPanel.position.set(50, 50);
