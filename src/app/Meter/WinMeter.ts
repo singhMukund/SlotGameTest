@@ -31,7 +31,7 @@ export class WinMeter extends Container {
             fontWeight: "bold"
         });
         this.winMeterLabelText = new Text({
-            text: `win amount : ${this.winCurrency}`,
+            text: `WIN : ${this.winCurrency}`,
             style: buttonStyle
         });
         this.winMeterText = new Text({
@@ -67,7 +67,7 @@ export class WinMeter extends Container {
             duration: duration,
             ease: 'power1.out',
             onUpdate: function () {
-                textObj.text = Math.round(this.targets()[0].value).toString();
+                textObj.text = `${this.targets()[0].value.toFixed(2)}`;
                 // textObj.x = this.winMeterLabelText.x + this.winMeterLabelText.width + this.gap;
             },
         });

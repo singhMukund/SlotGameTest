@@ -1,4 +1,22 @@
 {"frames": {
+	"Autoplay_btn.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":370,"w":120,"h":120},
+		"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
+		"sourceSize": {"w":120,"h":120}
+	},
+	"Minus_btn.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":122,"y":370,"w":83,"h":97},
+		"spriteSourceSize": {"x":0,"y":0,"w":83,"h":97},
+		"sourceSize": {"w":83,"h":97}
+	},
+	"Plus_btn.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":207,"y":370,"w":83,"h":97},
+		"spriteSourceSize": {"x":0,"y":0,"w":83,"h":97},
+		"sourceSize": {"w":83,"h":97}
+	},
 	"btn_home.png":{
 		"rotated": false,"trimmed": true,
 		"frame": {"x":142,"y":223,"w":140,"h":145},

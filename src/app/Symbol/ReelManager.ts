@@ -94,7 +94,8 @@ export class ReelManager extends Container {
         });
         let reelX :number =  Number(Object.keys(winReelData).sort()[0]);
         let rowY : number =  winReelData[reelX].sort()[0];
-        let cascadeWinAmount : number = CommonConfig.the.getWinAmount(this.symboldWinIds[this.currentIndexSymbolWinIds], winData.size)
+        let cascadeWinAmount : number = CommonConfig.the.getWinAmount(this.symboldWinIds[this.currentIndexSymbolWinIds], winData.size);
+        cascadeWinAmount = Number(cascadeWinAmount.toFixed(2));
         CommonConfig.the.setCurrentWinAmount(CommonConfig.the.getCurrentWinAmount() + cascadeWinAmount);
         CommonConfig.the.setLineWinAmount(cascadeWinAmount);
         Game.the.app.stage.emit(CommonConfig.UPDATE_LINE_WIN_METER,[reelX,rowY]);

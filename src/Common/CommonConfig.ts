@@ -33,7 +33,17 @@ export class CommonConfig {
     public static PLAY_SHUFFLE_REEL: string = "PLAY_SHUFFLE_REEL";
     public static UPDATE_WIN_METER: string = "UPDATE_WIN_METER";
     public static UPDATE_LINE_WIN_METER: string = "UPDATE_LINE_WIN_METER";
+    public static UPDATE_AUTOPLAY_METER: string = "UPDATE_AUTOPLAY_METER";
+    public static RESET_AUTOPLAY_METER: string = "RESET_AUTOPLAY_METER";
+    public static UPDATE_BET_METER: string = "UPDATE_BET_METER";
+    public static ENABLE_DISABLE_MINUS_BTN: string = "ENABLE_DISABLE_MINUS_BTN";
+    public static ENABLE_DISABLE_PLUS_BTN: string = "ENABLE_DISABLE_PLUS_BTN";
+    public static CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN: string = "CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN";
     public static RESET_WIN_METER: string = "RESET_WIN_METER";
+    public static UPDATE_BALANCE: string = "UPDATE_BALANCE";
+    public static UPDATE_BALANCE_TEXT: string = "UPDATE_BALANCE_TEXT";
+    public static ENABLE_DISABLE_CHEAT_PANEL: string = "ENABLE_DISABLE_CHEAT_PANEL";
+    public static START_AUTOPLAY: string = "START_AUTOPLAY";
     public static CHECK_WIN: number = 0;
     public static ANIMATE_WIN_SYMBOL: number = 1;
     public static CREATE_AND_UPDATE_CASCADE_VIEW: number = 2;
@@ -50,6 +60,9 @@ export class CommonConfig {
     private bet: number = 1;
     private currentWinAmount: number = 0;
     private lineWinAmount: number = 0;
+    private currentBetIndex: number = 0;
+    private balance : number = 5000;
+    private autoplayCount : number = 25;
 
     private symbolWinData: SymbolWinData = {
         1: {
@@ -83,6 +96,9 @@ export class CommonConfig {
             4: 0.15, 5: 0.3, 6: 0.45, 7: 0.45, 8: 0.9, 9: 0.9, 10: 1.8, 11: 1.8, 12: 2.25, 13: 2.25, 14: 2.25, 15: 6
         },
     }
+
+    public static BET_ARRAY: number[] = [0.10, 0.20, 0.30, 0.40, 0.50, 0.8, 1.0, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00, 6.00, 8.00, 10.00,
+        15.00, 20.00, 25.00, 30.00, 40.00, 50.00, 60.00, 80.00, 100.00, 150.00, 200.00, 250.00, 300.00, 400.00, 500.00];
 
     private winGrid: Map<number, Set<string>> = new Map();
 
@@ -231,6 +247,30 @@ export class CommonConfig {
 
     public getLineWinAmount(): number {
         return this.lineWinAmount;
+    }
+
+    public setAutoplayCount(value : number) :void{
+        this.autoplayCount = value;
+    } 
+
+    public getAutoplayCount() :number{
+        return this.autoplayCount;
+    }
+
+    public setBalance(value : number) :void{
+        this.balance = value;
+    } 
+
+    public getBalance() :number{
+        return this.balance;
+    }
+
+    public setCurrentBetIndex(value: number): void {
+        this.currentBetIndex = value;
+    }
+
+    public getCurrentBetIndex(): number {
+        return this.currentBetIndex;
     }
 
     public setCurrentWinAmount(value: number): void {
