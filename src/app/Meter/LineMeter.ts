@@ -35,6 +35,7 @@ export class LineMeter extends Container {
 
     private updateWinAmount(value : number[]): void {
         this.winValue = CommonConfig.the.getLineWinAmount();
+        this.winValue = Number(this.winValue.toFixed(2));
         this.winMeterText.text = `$ ${this.winValue}`;
         this.winMeterText.position.set(value[0] * CommonConfig.reelWidth,value[1] * CommonConfig.symbolHeight);
         this.playUpAnimation();

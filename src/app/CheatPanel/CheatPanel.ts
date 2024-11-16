@@ -22,6 +22,9 @@ export class CheatPanel extends Container {
         this.setPosition();
         this.resizeApp();
         Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+
+        Game.the.app.stage.on(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, this.enablePanel, this);
+
     }
 
     private init(): void {
@@ -138,9 +141,8 @@ export class CheatPanel extends Container {
         toggleButton.style.fill = isActive ? "#FF0000" : "#00FF00"; // Red for "Reset" and green for "Set"
     }
 
-    // Optional method to enable or disable the entire panel
-    public enablePanel(enable: boolean): void {
-        this.isVisible = enable;
-        this.visible = this.isVisible;
+    private enablePanel(enable: boolean): void {
+        this.normalWinCheatContainer.interactive = enable;
+        this.largeWinCheatContainer.interactive = enable;
     }
 }

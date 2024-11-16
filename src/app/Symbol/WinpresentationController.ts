@@ -9,7 +9,8 @@ export class WinpresentationController {
 
     private subscribe(): void {
         Game.the.app.stage.on(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION, this.onShowNextWinPresentation, this);
-        Game.the.app.stage.on(CommonConfig.PLAY_STOP_SPIN, this.resetsOnSpinClick, this);
+        Game.the.app.stage.on(CommonConfig.START_SPIN, this.resetsOnSpinClick, this);
+        Game.the.app.stage.on(CommonConfig.UPDATE_BALANCE, this.updateBalance, this);
     }
 
     private resetsOnSpinClick(): void {
@@ -18,6 +19,8 @@ export class WinpresentationController {
         CommonConfig.the.setCurrentWinAmount(0);
         CommonConfig.the.setLineWinAmount(0);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE,-CommonConfig.the.getBet());
+        Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, false);
         // console.clear();
     }
 
@@ -64,6 +67,8 @@ export class WinpresentationController {
         CommonConfig.the.setWinGrid(new Map());
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
         Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE,CommonConfig.the.getCurrentWinAmount());
+        Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
     }
 
     private recheckWin(): void {
@@ -117,5 +122,12 @@ export class WinpresentationController {
         const win = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         console.log(win);
 
+    }
+
+    private updateBalance(value : number) :void{
+        let balance : number = CommonConfig.the.getBalance() + value;
+        balance = Number(balance.toFixed(2));
+        CommonConfig.the.setBalance(balance);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
     }
 }

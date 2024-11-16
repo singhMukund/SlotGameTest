@@ -63,11 +63,12 @@ export class BigWinMeter extends Container {
             style: buttonStyle
         });
         this.winMeter = new Text({
-            text: `$ 100`,
+            text: `$ 100.00`,
             style: buttonStyle2
         });
         this.winMeter.pivot.set(0.5, 0.5);
         this.alpha = 0;
+        this.winMeter.anchor.set(0.5,0.5);
         // this.winMeter.updateTick()
     }
 
@@ -87,7 +88,7 @@ export class BigWinMeter extends Container {
         this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2, (window.innerHeight - this.bigWinSpine.height) / 2);
         this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
         // this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
-        this.winMeter.position.set(this.titleText.x + (this.titleText.width - this.winMeter.width) / 2, (window.innerHeight - this.titleText.height) / 2.1);
+        this.winMeter.position.set((window.innerWidth - this.winMeter.width) / 1.55, (window.innerHeight - this.winMeter.height) / 1.8);
     }
 
     playIncrementAnimation() {
@@ -96,15 +97,17 @@ export class BigWinMeter extends Container {
         const duration = 0.4; // Fixed duration of 0.4 seconds
         this.currentvalue = 0;
         this.winMeter.text = '0';
+        this.speed = CommonConfig.the.getCurrentWinAmount() / 1200;
         this.currentBet = CommonConfig.the.getBet();
+        this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
         this.winMeterGsapTween = gsap.to(this.winMeter, {
             ease: 'power1.out',
             repeat: -1,
             onUpdate: () => {
                 this.currentvalue += this.speed;
                 this.currentvalue = Number(this.currentvalue.toFixed(2));
-                this.winMeter.text = `$ ${this.currentvalue.toString()}`;
-                this.winMeter.position.set(this.titleText.x + (this.titleText.width - this.winMeter.width) / 2, (window.innerHeight - this.titleText.height) / 2.1);
+                this.winMeter.text = `$ ${this.currentvalue.toFixed(2)}`;
+                // this.winMeter.position.set(this.titleText.x + (this.titleText.width - this.winMeter.width) / 2, (window.innerHeight - this.titleText.height) / 2.1);
                 // textObj.text = Math.round(this.targets()[0].value).toString();
                 this.checkStopTween();
                 if (this.currentvalue > (20 * this.currentBet) && this.currentvalue <= (40 * this.currentBet) && this.currentLargeWinSeq < 2) {
@@ -125,6 +128,7 @@ export class BigWinMeter extends Container {
 
     private checkStopTween(): void {
         if (this.currentvalue >= CommonConfig.the.getCurrentWinAmount()) {
+            this.winMeter.text = `$ ${CommonConfig.the.getCurrentWinAmount()}`;
             this.winMeterGsapTween.kill();
             gsap.delayedCall(0.5,()=>this.hide());
         }
@@ -179,14 +183,14 @@ export class BigWinMeter extends Container {
 
     private updateWinSequence(): void {
         gsap.to(this.titleText, {
-            duration: 0.45,
+            duration: 0.1,
             alpha: 0,
             onComplete: () => {
                 this.titleText.text = this.winString[this.currentLargeWinSeq - 1];
                 // this.resizeTextToFit();
                 this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
                 // this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
-                this.winMeter.position.set(this.titleText.x + (this.titleText.width - this.winMeter.width) / 2, (window.innerHeight - this.titleText.height) / 2.1);
+                // this.winMeter.position.set(this.titleText.x + (this.titleText.width - this.winMeter.width) / 2, (window.innerHeight - this.titleText.height) / 2.1);
                 gsap.to(this.titleText, {
                     duration: 0.45,
                     alpha: 1
