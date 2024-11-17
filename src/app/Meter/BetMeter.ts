@@ -17,7 +17,7 @@ export class BetMeter extends Container {
         this.addToStage();
         Game.the.app.stage.on(CommonConfig.UPDATE_BET_METER, this.updateBetAmount, this);
         Game.the.app.stage.on(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN, this.checkEnableDisableBtn, this);
-        Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.checkEnableDisableBtn, this);
+        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.checkEnableDisableBtn, this);
 
         // this.winMeterText.x = this.winMeterLabelText.x + this.winMeterLabelText.width + this.gap;
         // Game.the.app.stage.on(CommonConfig.RESET_WIN_METER, this.resetWinAmount, this);

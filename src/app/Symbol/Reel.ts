@@ -28,7 +28,6 @@ export class Reel extends Container {
         super();
         this.reelId = reelId;
         this.init();
-        Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.playAnimation, this);
         Game.the.app.stage.on(CommonConfig.PLAY_DROP_REEL, this.dropWinReel, this);
         Game.the.app.stage.on(CommonConfig.PLAY_STOP_SPIN, this.stopTheReel, this);
         Game.the.app.stage.on(CommonConfig.PLAY_SHUFFLE_REEL, this.playAfterHideCurrentSymbol, this);
@@ -69,7 +68,6 @@ export class Reel extends Container {
             y: this.maxPosition,
             delay: (CommonConfig.symbolsPerReel - i) * this.delayStart,
             ease: "power1.in",
-            // onUpdate: () => this.updatePositi   on(),
             onComplete: () => this.resetPositions(pos, i)
         });
     }
@@ -157,9 +155,8 @@ export class Reel extends Container {
                     ease: "power1.out"
                 });
                 if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
-                    Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-                    // Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
-                    // this.playWinAnim([1]); 
+                    gsap.killTweensOf(this);
+                    Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
                 }
             }
         });
@@ -175,12 +172,7 @@ export class Reel extends Container {
                     duration: 0.25,
                     y: this.positions[i],
                     ease: "power1.out"
-                });
-                if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
-                    // Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-                    // Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
-                    // this.playWinAnim([1]); 
-                }
+                })
             }
         });
     }
@@ -220,20 +212,11 @@ export class Reel extends Container {
     }
 
     public playWinAnim(posId: number[]) {
-        // if(this.noOfTimeWinCount >= 4){
-        //     // this.noOfTimeWinCount = 0;
-        //     // Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-        //     return
-        // }
-        // this.noOfTimeWinCount ++;
         for (let i: number = 0; i < posId.length; i++) {
             gsap.to(this.children[posId[i]], {
                 duration: 0.5,
                 alpha: 0,
-                ease: "power1.inOut",
-                onComplete: () => {
-                    // i === posId.length - 1 && this.playAfterHideCurrentSymbol(posId)
-                }
+                ease: "power1.inOut"
             })
         }
 
@@ -258,10 +241,6 @@ export class Reel extends Container {
             minPos = minPos - CommonConfig.symbolHeight;
         }
         this.reshuffleChildrenInReel(posId[0], posId.length);
-        // for(let i : number = 0; i<this.children.length;i++){
-        //     this.children[i].alpha = 1;
-        // }
-        // gsap.delayedCall(1, () =>)
     }
 
     private dropWinReel(): void {
@@ -296,14 +275,6 @@ export class Reel extends Container {
             }
         }
         pushedToLastChildrens.sort((a, b) => a.y - b.y);
-        // for (let i: number = startingIndex; i < firstIndexToBeReshuffledChildren; i++) {
-        //     fromToBeReshuffledChildrens.push(this.children[i])
-        // }
-        // for (let i: number = 0; i < this.children.length; i++) {
-        //     if(!(i >= startingIndex && i < firstIndexToBeReshuffledChildren)){
-        //         pushedToLastChildrens.push(this.children[i])
-        //     }
-        // }
         let currentIndex: number = 0;
         for (let i = 0; i < pushedToLastChildrens.length; i++) {
             this.setChildIndex(pushedToLastChildrens[i], currentIndex);
@@ -313,20 +284,6 @@ export class Reel extends Container {
             this.setChildIndex(fromToBeReshuffledChildrens[i], currentIndex);
             currentIndex++;
         }
-    }
-
-
-    playAnimation(): void {
-        this.spinClicked = false;
-        this.resetSymbolAlpha();
-        // gsap.delayedCall(0.1, () => {
-        //     if (!this.spinClicked) {
-        //         (this.pos_00.children[0] as StaticSymbol).playSpineAnimation();
-        //         (this.pos_01.children[0] as StaticSymbol).playSpineAnimation();
-        //         (this.pos_02.children[0] as StaticSymbol).playSpineAnimation();
-        //     }
-        // })
-
     }
 
     private resetSymbolAlpha(): void {

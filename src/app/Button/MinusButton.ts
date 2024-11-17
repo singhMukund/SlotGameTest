@@ -28,6 +28,7 @@ export class MinusButton extends Container{
               .on('pointerout', this.onButtonOut , this);
 
         Game.the.app.stage.on(CommonConfig.START_SPIN, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
     }
 
     private onButtonDown() : void{

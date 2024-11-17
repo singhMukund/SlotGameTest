@@ -44,13 +44,18 @@ export class CommonConfig {
     public static UPDATE_BALANCE_TEXT: string = "UPDATE_BALANCE_TEXT";
     public static ENABLE_DISABLE_CHEAT_PANEL: string = "ENABLE_DISABLE_CHEAT_PANEL";
     public static START_AUTOPLAY: string = "START_AUTOPLAY";
-    public static CHECK_WIN: number = 0;
-    public static ANIMATE_WIN_SYMBOL: number = 1;
-    public static CREATE_AND_UPDATE_CASCADE_VIEW: number = 2;
-    public static PLAY_CASCADE_REEL_DROP_ANIMATION: number = 3;
-    public static RECHECK_CASCADE_WIN: number = 2;
-    public static BIG_WIN: number = 3;
-    public static ENABLE_BUTTON_PLAY: number = 4;
+    public static DISABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
+    public static DISABLE_AUTOPLAY_BUTTON: string = "DISABLE_AUTOPLAY_BUTTON";
+    public static ENABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
+    public static ENABLE_AUTOPLAY_BUTTON: string = "ENABLE_AUTOPLAY_BUTTON";
+    public static ENABLE_AUTOPLAY_METER_VIEW: string = "ENABLE_AUTOPLAY_METER_VIEW";
+    public static CHECK_AUTOPLAY_COUNT: number = 0;
+    public static CHECK_WIN: number = 1;
+    public static ANIMATE_WIN_SYMBOL: number = 2;
+    public static RECHECK_CASCADE_WIN: number = 3;
+    public static BIG_WIN: number = 4;
+    public static CHECK_AUTOPLAY: number = 5;
+    public static ENABLE_BUTTON_PLAY: number = 6;
 
     public static TOTAL_ANIMATION_LENGTH: number = 5;
 
@@ -61,8 +66,9 @@ export class CommonConfig {
     private currentWinAmount: number = 0;
     private lineWinAmount: number = 0;
     private currentBetIndex: number = 0;
-    private balance : number = 5000;
-    private autoplayCount : number = 25;
+    private balance: number = 5000;
+    private autoplayCount: number = 25;
+    private isAutoplay: boolean = false;
 
     private symbolWinData: SymbolWinData = {
         1: {
@@ -249,20 +255,28 @@ export class CommonConfig {
         return this.lineWinAmount;
     }
 
-    public setAutoplayCount(value : number) :void{
+    public setAutoplayCount(value: number): void {
         this.autoplayCount = value;
-    } 
+    }
 
-    public getAutoplayCount() :number{
+    public getAutoplayCount(): number {
         return this.autoplayCount;
     }
 
-    public setBalance(value : number) :void{
+    public setBalance(value: number): void {
         this.balance = value;
-    } 
+    }
 
-    public getBalance() :number{
+    public getBalance(): number {
         return this.balance;
+    }
+
+    public setIsAutoplay(value: boolean): void {
+        this.isAutoplay = value;
+    }
+
+    public getIsAutoplay(): boolean {
+        return this.isAutoplay;
     }
 
     public setCurrentBetIndex(value: number): void {

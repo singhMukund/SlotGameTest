@@ -10,7 +10,13 @@ export class WinpresentationController {
     private subscribe(): void {
         Game.the.app.stage.on(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION, this.onShowNextWinPresentation, this);
         Game.the.app.stage.on(CommonConfig.START_SPIN, this.resetsOnSpinClick, this);
+        Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.onSpinStopped, this);
         Game.the.app.stage.on(CommonConfig.UPDATE_BALANCE, this.updateBalance, this);
+    }
+
+    private onSpinStopped() :void{
+        this.onShowNextWinPresentation();
+        Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_BUTTON);
     }
 
     private resetsOnSpinClick(): void {
@@ -19,8 +25,9 @@ export class WinpresentationController {
         CommonConfig.the.setCurrentWinAmount(0);
         CommonConfig.the.setLineWinAmount(0);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
-        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE,-CommonConfig.the.getBet());
+        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
         Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, false);
+        Game.the.app.stage.emit(CommonConfig.DISABLE_ALL_BUTTON);
         // console.clear();
     }
 
@@ -31,25 +38,42 @@ export class WinpresentationController {
         // console.log("Total Wins:", totalWins);
 
         switch (CommonConfig.the.getCurrentWinAnimationIndex()) {
+            case CommonConfig.CHECK_AUTOPLAY_COUNT:
+                this.onCheckAutoplayCount();
+                break;
             case CommonConfig.CHECK_WIN:
                 this.onCheckWin();
                 break;
             case CommonConfig.ANIMATE_WIN_SYMBOL:
                 this.onAnimateWinSymbol();
                 break;
-            // case CommonConfig.CREATE_AND_UPDATE_CASCADE_VIEW:
-            //     break;
-            // case CommonConfig.PLAY_CASCADE_REEL_DROP_ANIMATION:
-            //     break;
             case CommonConfig.RECHECK_CASCADE_WIN:
                 this.recheckWin();
                 break;
             case CommonConfig.BIG_WIN:
                 this.playBigWin();
                 break;
+            case CommonConfig.CHECK_AUTOPLAY:
+                this.onCheckAutoplay();
+                break;
             case CommonConfig.ENABLE_BUTTON_PLAY:
                 this.enableButton();
                 break;
+        }
+    }
+
+    private onCheckAutoplayCount() :void{
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        let autoplayCount = CommonConfig.the.getAutoplayCount() - 1;
+        if(autoplayCount === 0){
+            CommonConfig.the.setIsAutoplay(false);
+            Game.the.app.stage.emit(CommonConfig.RESET_AUTOPLAY_METER);
+            Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_METER_VIEW, false);
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        }else{
+            Game.the.app.stage.emit(CommonConfig.UPDATE_AUTOPLAY_METER);
+            CommonConfig.the.setAutoplayCount(autoplayCount);
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
 
@@ -64,11 +88,26 @@ export class WinpresentationController {
 
     private enableButton(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        CommonConfig.the.setWinGrid(new Map());
-        CommonConfig.the.SetCurrentWinAnimationIndex(0);
-        Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
-        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE,CommonConfig.the.getCurrentWinAmount());
-        Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
+        if (!CommonConfig.the.getIsAutoplay()) {
+            CommonConfig.the.setWinGrid(new Map());
+            CommonConfig.the.SetCurrentWinAnimationIndex(0);
+            Game.the.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
+            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
+            Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
+        }
+    }
+
+    private onCheckAutoplay(): void {
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        if (CommonConfig.the.getIsAutoplay()) {
+            CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+            CommonConfig.the.setWinGrid(new Map());
+            CommonConfig.the.SetCurrentWinAnimationIndex(0);
+            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
+            Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
+        }else{
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        }
     }
 
     private recheckWin(): void {
@@ -107,9 +146,9 @@ export class WinpresentationController {
 
     private onAnimateWinSymbol(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        if(CommonConfig.the.getWinGrid().size){
+        if (CommonConfig.the.getWinGrid().size) {
             Game.the.app.stage.emit(CommonConfig.PLAY_ANIMATED_WIN_SYMBOL);
-        }else {
+        } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
@@ -124,8 +163,8 @@ export class WinpresentationController {
 
     }
 
-    private updateBalance(value : number) :void{
-        let balance : number = CommonConfig.the.getBalance() + value;
+    private updateBalance(value: number): void {
+        let balance: number = CommonConfig.the.getBalance() + value;
         balance = Number(balance.toFixed(2));
         CommonConfig.the.setBalance(balance);
         Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
