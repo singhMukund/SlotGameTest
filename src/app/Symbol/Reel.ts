@@ -155,11 +155,23 @@ export class Reel extends Container {
                     ease: "power1.out"
                 });
                 if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
-                    gsap.killTweensOf(this);
+                    this.killTweens();
                     Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
                 }
             }
         });
+    }
+
+    private killTweens() :void{
+        gsap.killTweensOf(this);
+        gsap.killTweensOf(this.pos_00);
+        gsap.killTweensOf(this.pos_01);
+        gsap.killTweensOf(this.pos_02);
+        gsap.killTweensOf(this.pos_03);
+        gsap.killTweensOf(this.pos_04);
+        gsap.killTweensOf(this.stopTheReel);
+        gsap.killTweensOf(this.spinTheReel);
+        gsap.killTweensOf(this.dropWinReel);
     }
 
     private resetAfterDropStop(pos: Container, i: number): void {

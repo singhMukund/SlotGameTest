@@ -32,11 +32,6 @@ export class WinpresentationController {
     }
 
     private onShowNextWinPresentation(): void {
-        // const win = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
-        // console.log(win);
-        // const totalWins = CommonConfig.the.calculateCascadingWins(CommonConfig.the.getView());
-        // console.log("Total Wins:", totalWins);
-
         switch (CommonConfig.the.getCurrentWinAnimationIndex()) {
             case CommonConfig.CHECK_AUTOPLAY_COUNT:
                 this.onCheckAutoplayCount();
@@ -64,15 +59,19 @@ export class WinpresentationController {
 
     private onCheckAutoplayCount() :void{
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        let autoplayCount = CommonConfig.the.getAutoplayCount() - 1;
-        if(autoplayCount === 0){
-            CommonConfig.the.setIsAutoplay(false);
-            Game.the.app.stage.emit(CommonConfig.RESET_AUTOPLAY_METER);
-            Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_METER_VIEW, false);
-            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        if(CommonConfig.the.getIsAutoplay()){
+            let autoplayCount = CommonConfig.the.getAutoplayCount() - 1;
+            if(autoplayCount === 0){
+                CommonConfig.the.setIsAutoplay(false);
+                Game.the.app.stage.emit(CommonConfig.RESET_AUTOPLAY_METER);
+                Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_METER_VIEW, false);
+                Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+            }else{
+                Game.the.app.stage.emit(CommonConfig.UPDATE_AUTOPLAY_METER);
+                CommonConfig.the.setAutoplayCount(autoplayCount);
+                Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+            }
         }else{
-            Game.the.app.stage.emit(CommonConfig.UPDATE_AUTOPLAY_METER);
-            CommonConfig.the.setAutoplayCount(autoplayCount);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
@@ -93,6 +92,7 @@ export class WinpresentationController {
             CommonConfig.the.SetCurrentWinAnimationIndex(0);
             Game.the.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
+            Game.the.app.stage.emit(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN);
             Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
         }
     }
@@ -113,11 +113,6 @@ export class WinpresentationController {
     private recheckWin(): void {
         let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        //  win = new Set(['0,0', '0,2']);
-        // console.log(win);
-        // win.forEach(position => {
-        //   console.log(position);
-        // })
         if (win.size) {
             CommonConfig.the.SetCurrentWinAnimationIndex(0)
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
@@ -129,19 +124,12 @@ export class WinpresentationController {
     private onCheckWin(): void {
         let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        //  win = new Set(['0,0', '0,2']);
-        // console.log(win);
-        // win.forEach(position => {
-        //     console.log(position);
-        // })
         if (win.size) {
             CommonConfig.the.setWinGrid(win);
-            // CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
-        // console.log(CommonConfig.the.getWinGrid());
     }
 
     private onAnimateWinSymbol(): void {
@@ -159,7 +147,7 @@ export class WinpresentationController {
 
     private onRecheckCascadeWin(): void {
         const win = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
-        console.log(win);
+        // console.log(win);
 
     }
 

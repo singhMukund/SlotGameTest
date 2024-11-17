@@ -79,7 +79,7 @@ export class ReelManager extends Container {
         let winData: Set<string> = winGrid.get(this.symboldWinIds[this.currentIndexSymbolWinIds])!;
         winData.forEach(position => {
             let reelRow: string[] = position.split(",");
-            console.log(reelRow);
+            // console.log(reelRow);
             if (winReelData.hasOwnProperty(Number(reelRow[0]))) {
                 winReelData[Number(reelRow[0])].push(Number(reelRow[1]));
             } else {
@@ -119,7 +119,7 @@ export class ReelManager extends Container {
             winData.forEach(position => {
                 let reelRow: string[] = position.split(",");
                 winGridSet.add(position);
-                console.log(reelRow);
+                // console.log(reelRow);
                 if (winReelData.hasOwnProperty(Number(reelRow[0]))) {
                     winReelData[Number(reelRow[0])].push(Number(reelRow[1]));
                 } else {
