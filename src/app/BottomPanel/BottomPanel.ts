@@ -11,6 +11,8 @@ import { MinusButton } from "../Button/MinusButton";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { BalanceMeter } from "../Meter/BalanceMeter";
 import { AutoplayBtn } from "../Button/AutoplayBtn";
+import { AutoplayController } from "../Symbol/AutoplayController";
+import { AutoplayMeter } from "../Meter/AutoplayMeter";
 
 
 export class BottomPanel extends Container {
@@ -25,6 +27,7 @@ export class BottomPanel extends Container {
     private plusButton !: PlusButton;
     private balanceMeter !: BalanceMeter;
     private autoplayBtn !: AutoplayBtn;
+    private autoplayMeter !: AutoplayMeter;
 
     constructor() {
         super();
@@ -47,6 +50,8 @@ export class BottomPanel extends Container {
         this.plusButton = new PlusButton();
         this.balanceMeter = new BalanceMeter();
         this.autoplayBtn = new AutoplayBtn();
+        this.autoplayMeter = new AutoplayMeter();
+        new AutoplayController();
     }
 
     private addContainerToStage() {
@@ -59,6 +64,7 @@ export class BottomPanel extends Container {
         this.addChild(this.plusButton);
         this.addChild(this.balanceMeter);
         this.addChild(this.autoplayBtn);
+        this.addChild(this.autoplayMeter);
     }
 
 
@@ -90,5 +96,6 @@ export class BottomPanel extends Container {
         this.plusButton.position.set(this.betMeter.x + this.betMeter.width,this.bg.y + (this.bg.height - this.plusButton.height)/2);
         this.balanceMeter.position.set(window.innerWidth - this.balanceMeter.width - 100,this.bg.y + (this.bg.height - this.balanceMeter.height)/2);
         this.autoplayBtn.position.set(this.settingButton.x - this.autoplayBtn.width - 10, this.bg.y - (this.autoplayBtn.height * 1.2));
+        this.autoplayMeter.position.set(this.autoplayBtn.x + (this.autoplayBtn.width - this.autoplayMeter.width)/2, this.autoplayBtn.y - this.autoplayMeter.height);
     }
 }

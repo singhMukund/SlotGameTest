@@ -26,7 +26,8 @@ export class SettingButton extends Container{
               .on('pointerover', this.onButtonOver, this)
               .on('pointerout', this.onButtonOut , this);
 
-        Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.enable, this);
+        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
     }
 
     private onButtonDown() : void{
