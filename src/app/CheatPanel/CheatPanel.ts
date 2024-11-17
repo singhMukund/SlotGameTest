@@ -125,14 +125,14 @@ export class CheatPanel extends Container {
             this.normalWinToggle.position.x = this.normalWinActive ? 240 : 200
             // Set or reset the cheat based on toggle state
             CommonConfig.the.setCheatType(this.normalWinActive ? "normal" : "");
-            console.log(`Normal Win cheat is now ${this.normalWinActive ? "active" : "inactive"}`);
+            // console.log(`Normal Win cheat is now ${this.normalWinActive ? "active" : "inactive"}`);
         } else if (type === "large") {
             this.largeWinActive = !this.largeWinActive;
             this.updateToggleState(this.largeWinToggle, this.largeWinActive);
             this.largeWinToggle.position.x = this.largeWinActive ? 240 : 200
             // Set or reset the cheat based on toggle state
             CommonConfig.the.setCheatType(this.largeWinActive ? "large" : "");
-            console.log(`Large Win cheat is now ${this.largeWinActive ? "active" : "inactive"}`);
+            // console.log(`Large Win cheat is now ${this.largeWinActive ? "active" : "inactive"}`);
         }
     }
 

@@ -235,7 +235,7 @@ export class CommonConfig {
 
             view.push(reelSymbols);
         }
-        console.log(view);
+        // console.log(view);
         return view;
     }
 
@@ -546,7 +546,7 @@ export class CommonConfig {
             const [r, c] = pos.split(',').map(Number);
             view[r][c] = NaN;
         });
-        console.log(view);
+        // console.log(view);
         const outputArray = view.map(innerArray => {
             // Filter out null values, then add them to the beginning of the array
             const nonNullValues = innerArray.filter(value => !isNaN(value));
@@ -554,7 +554,7 @@ export class CommonConfig {
             return [...nullValues, ...nonNullValues];
         });
         // this.setOldView(outputArray);
-        console.log(outputArray);
+        // console.log(outputArray);
         for (let i: number = 0; i < outputArray.length; i++) {
             for (let j: number = 0; j < outputArray[i].length; j++) {
                 if (isNaN(outputArray[i][j])) {
@@ -562,7 +562,7 @@ export class CommonConfig {
                 }
             }
         }
-        console.log(outputArray);
+        // console.log(outputArray);
         this.incrementForLargeWin++;
         return outputArray;
     }
@@ -580,7 +580,7 @@ export class CommonConfig {
     }
 
     getRandomSymbol(reelIndex: number): number {
-        if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1) {
+        if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 2) {
             return 3;
         }
         const reel = CommonConfig.reels[reelIndex];
@@ -596,12 +596,12 @@ export class CommonConfig {
 
             if (winningSymbols.size === 0) break;
 
-            console.log(`Cascade ${++cascadeCount} - Winning Symbols:`, winningSymbols);
+            // console.log(`Cascade ${++cascadeCount} - Winning Symbols:`, winningSymbols);
             totalWins += winningSymbols.size;
 
             // Update the view with cascades
             // view = this.cascade(view, winningSymbols);
-            console.log(`View after Cascade ${cascadeCount}:`, view);
+            // console.log(`View after Cascade ${cascadeCount}:`, view);
         }
 
         return totalWins;
