@@ -296,7 +296,13 @@ export class CommonConfig {
     }
 
     public getWinAmount(id: number, winDataLength: number): number {
-        return this.symbolWinData[id][winDataLength] * this.getBet();
+        let win : number = 0;
+        if(this.symbolWinData[id]){
+           if(this.symbolWinData[id][winDataLength]){
+              win = this.symbolWinData[id][winDataLength] * this.getBet();
+           }
+        }
+        return win;
     }
 
     public setCheatType(value: string): void {
@@ -580,7 +586,7 @@ export class CommonConfig {
     }
 
     getRandomSymbol(reelIndex: number): number {
-        if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 2) {
+        if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1) {
             return 3;
         }
         const reel = CommonConfig.reels[reelIndex];
