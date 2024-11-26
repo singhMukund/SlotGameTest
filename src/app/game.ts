@@ -42,7 +42,7 @@ export class Game {
 
   private async loadImages() {
     await Assets.init({ manifest: "./manifest.json" });
-    await Assets.loadBundle(["background-image", "ReelFrame-Component","static-symbol","static-button","win_animation"]);
+    await Assets.loadBundle(["background-image", "ReelFrame-Component","static-symbol","static-button","win_animation","Feature-Assets"]);
 
     // Assets.events.on('progress', (progress: number) => {
     //   const percentage = Math.round(progress * 100);

@@ -49,6 +49,7 @@ export class CommonConfig {
     public static ENABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
     public static ENABLE_AUTOPLAY_BUTTON: string = "ENABLE_AUTOPLAY_BUTTON";
     public static ENABLE_AUTOPLAY_METER_VIEW: string = "ENABLE_AUTOPLAY_METER_VIEW";
+    public static UPDATE_PENTAGONAL_METER: string = "UPDATE_PENTAGONAL_METER";
     public static CHECK_AUTOPLAY_COUNT: number = 0;
     public static CHECK_WIN: number = 1;
     public static ANIMATE_WIN_SYMBOL: number = 2;
@@ -69,6 +70,7 @@ export class CommonConfig {
     private balance: number = 5000;
     private autoplayCount: number = 25;
     private isAutoplay: boolean = false;
+    private totalWinSymbolCount: number = 0;
 
     private symbolWinData: SymbolWinData = {
         1: {
@@ -279,6 +281,14 @@ export class CommonConfig {
         return this.isAutoplay;
     }
 
+    public setTotalWinSymbolCount(value: number): void {
+        this.totalWinSymbolCount = value;
+    }
+
+    public getTotalWinSymbolCount(): number {
+        return this.totalWinSymbolCount;
+    }
+
     public setCurrentBetIndex(value: number): void {
         this.currentBetIndex = value;
     }
@@ -296,11 +306,11 @@ export class CommonConfig {
     }
 
     public getWinAmount(id: number, winDataLength: number): number {
-        let win : number = 0;
-        if(this.symbolWinData[id]){
-           if(this.symbolWinData[id][winDataLength]){
-              win = this.symbolWinData[id][winDataLength] * this.getBet();
-           }
+        let win: number = 0;
+        if (this.symbolWinData[id]) {
+            if (this.symbolWinData[id][winDataLength]) {
+                win = this.symbolWinData[id][winDataLength] * this.getBet();
+            }
         }
         return win;
     }
