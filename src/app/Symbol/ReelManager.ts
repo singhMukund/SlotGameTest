@@ -94,13 +94,16 @@ export class ReelManager extends Container {
         });
         let reelX :number =  Number(Object.keys(winReelData).sort()[0]);
         let rowY : number =  winReelData[reelX].sort()[0];
+        CommonConfig.the.setTotalWinSymbolCount(CommonConfig.the.getTotalWinSymbolCount() + winData.size);
         let cascadeWinAmount : number = CommonConfig.the.getWinAmount(this.symboldWinIds[this.currentIndexSymbolWinIds], winData.size);
         cascadeWinAmount = Number(cascadeWinAmount.toFixed(2));
         CommonConfig.the.setCurrentWinAmount(CommonConfig.the.getCurrentWinAmount() + cascadeWinAmount);
+        // console.log("Update --------"+ CommonConfig.the.getTotalWinSymbolCount());
         CommonConfig.the.setLineWinAmount(cascadeWinAmount);
         Game.the.app.stage.emit(CommonConfig.UPDATE_LINE_WIN_METER,[reelX,rowY]);
         Game.the.app.stage.emit(CommonConfig.UPDATE_WIN_METER);
         gsap.delayedCall(0.5, () => {
+            Game.the.app.stage.emit(CommonConfig.UPDATE_PENTAGONAL_METER);
             this.currentIndexSymbolWinIds++;
             if (this.currentIndexSymbolWinIds >= this.symboldWinIds.length) {
                 this.shuffleAndCascadeReel();

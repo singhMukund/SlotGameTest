@@ -20,10 +20,12 @@ export class WinpresentationController {
     }
 
     private resetsOnSpinClick(): void {
+        CommonConfig.the.setTotalWinSymbolCount(0);
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
         CommonConfig.the.setWinGrid(new Map());
         CommonConfig.the.setCurrentWinAmount(0);
         CommonConfig.the.setLineWinAmount(0);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_PENTAGONAL_METER);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
         Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
         Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, false);

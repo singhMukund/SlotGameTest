@@ -9,6 +9,7 @@ import { CheatPanel } from "../CheatPanel/CheatPanel";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
 import { BigWinMeter } from "../Meter/BigWinMeter";
 import { LineMeter } from "../Meter/LineMeter";
+import { PentagonalUpdateFeature } from "../FeatureComponent/PentagonalUpdateFeature";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
@@ -23,6 +24,7 @@ export class BaseGame extends Container {
     private bgWinMeter !: BigWinMeter;
     private aspectRatio : number = 0;
     private lineMeter !: LineMeter;
+    private pentagonalUpdateFeature !: PentagonalUpdateFeature;
     
 
     constructor() {
@@ -53,6 +55,7 @@ export class BaseGame extends Container {
         this.initBottomPanel();
         this.initBigWinMeter();
         this.initLineMeter();
+        this.initpentagonalUpdateFeature();
     }
 
     private parentContainer(): void {
@@ -93,6 +96,10 @@ export class BaseGame extends Container {
         this.bottomPanel = new BottomPanel();
     }
 
+    private initpentagonalUpdateFeature() :void{
+        this.pentagonalUpdateFeature = new PentagonalUpdateFeature();
+    }
+
     private addContainerToStage() {
         this.addChild(this.backgroundView);
         this.addChild(this.reelContainer);
@@ -103,6 +110,7 @@ export class BaseGame extends Container {
         this.addChild(this.cheatPanel);
         this.addChild(this.bottomPanel);
         this.addChild(this.bgWinMeter);
+        this.addChild(this.pentagonalUpdateFeature);
     }
 
     private setPosition() {

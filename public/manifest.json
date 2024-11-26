@@ -108,6 +108,15 @@
                "src": "./Spine/BigWin/Bigwin.atlas"
             }
          ]
+      },
+      {
+         "name": "Feature-Assets",
+         "assets": [
+            {
+               "alias": "pentagon_assets",
+               "src": "./StaticImage/pentagon_assets.json"
+            }
+         ]
       }
    ]
 }
