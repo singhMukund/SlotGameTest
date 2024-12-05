@@ -1,7 +1,7 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import { Game } from "../game";
 import { SpinButton } from "../Button/SpinButton";
-import { HomeButton } from "../Button/HomeButton";
+import { ThunderButton } from "../Button/ThunderButton";
 import { SettingButton } from "../Button/SettingButton";
 import { WinMeter } from "../Meter/WinMeter";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
@@ -13,13 +13,15 @@ import { BalanceMeter } from "../Meter/BalanceMeter";
 import { AutoplayBtn } from "../Button/AutoplayBtn";
 import { AutoplayController } from "../Symbol/AutoplayController";
 import { AutoplayMeter } from "../Meter/AutoplayMeter";
+import { SoundButton } from "../Button/SoundButton";
 
 
 export class BottomPanel extends Container {
     private bg !: Sprite;
     private spinBtn !: SpinButton;
-    private homeButton !: HomeButton;
+    private thunderButton !: ThunderButton;
     private settingButton !: SettingButton;
+    private soundButton !: SoundButton;
     private winMeter !: WinMeter;
     private betMeter !: BetMeter;
     private aspectRatio : number =1;
@@ -28,6 +30,7 @@ export class BottomPanel extends Container {
     private balanceMeter !: BalanceMeter;
     private autoplayBtn !: AutoplayBtn;
     private autoplayMeter !: AutoplayMeter;
+    private gap : number = 30;
 
     constructor() {
         super();
@@ -43,7 +46,7 @@ export class BottomPanel extends Container {
     private initButton(): void {
         this.spinBtn = new SpinButton();
         this.settingButton = new SettingButton();
-        this.homeButton = new HomeButton();
+        this.thunderButton = new ThunderButton();
         this.winMeter = new WinMeter();
         this.betMeter = new BetMeter();
         this.minusButton = new MinusButton();
@@ -51,13 +54,14 @@ export class BottomPanel extends Container {
         this.balanceMeter = new BalanceMeter();
         this.autoplayBtn = new AutoplayBtn();
         this.autoplayMeter = new AutoplayMeter();
+        this.soundButton = new SoundButton();
         new AutoplayController();
     }
 
     private addContainerToStage() {
         this.addChild(this.spinBtn);
         this.addChild(this.settingButton);
-        this.addChild(this.homeButton);
+        this.addChild(this.thunderButton);
         this.addChild(this.winMeter);
         this.addChild(this.betMeter);
         this.addChild(this.minusButton);
@@ -65,12 +69,13 @@ export class BottomPanel extends Container {
         this.addChild(this.balanceMeter);
         this.addChild(this.autoplayBtn);
         this.addChild(this.autoplayMeter);
+        this.addChild(this.soundButton);
     }
 
 
     private init(): void {
         this.bg = new Sprite(Assets.get('bottomPanelBg'));
-        this.addChild(this.bg);
+        // this.addChild(this.bg);
     }
 
     private resizeApp() :void{
@@ -82,20 +87,22 @@ export class BottomPanel extends Container {
         this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
         this.spinBtn.scale.set(scale);
         this.settingButton.scale.set(scale);
-        this.homeButton.scale.set(scale);
+        this.thunderButton.scale.set(scale);
         this.minusButton.scale.set(scale);
         this.plusButton.scale.set(scale);
-        this.autoplayBtn.scale.set(scale);
+        this.soundButton.scale.set(scale);
+        this.autoplayBtn.scale.set(scale * 1.2);
         if (window.innerWidth > window.innerHeight) {
-            this.spinBtn.position.set(window.innerWidth - (this.spinBtn.width * 1.5), (window.innerHeight - this.spinBtn.height)/2);
-            this.settingButton.position.set(window.innerWidth - (this.settingButton.width * 2), this.bg.y - (this.settingButton.height * 1.2));
-            this.homeButton.position.set(this.homeButton.width, this.settingButton.y);
         }
-        this.minusButton.position.set(this.minusButton.width + 50, this.bg.y + (this.bg.height - this.minusButton.height)/2);
-        this.betMeter.position.set(this.minusButton.x + this.minusButton.width,this.bg.y + (this.bg.height - this.winMeter.height)/2);
-        this.plusButton.position.set(this.betMeter.x + this.betMeter.width,this.bg.y + (this.bg.height - this.plusButton.height)/2);
-        this.balanceMeter.position.set(window.innerWidth - this.balanceMeter.width - 100,this.bg.y + (this.bg.height - this.balanceMeter.height)/2);
-        this.autoplayBtn.position.set(this.settingButton.x - this.autoplayBtn.width - 10, this.bg.y - (this.autoplayBtn.height * 1.2));
+        this.thunderButton.position.set(window.innerWidth - (this.thunderButton.width *  2), window.innerHeight - (this.thunderButton.height  *  1.2));
+        this.settingButton.position.set(this.settingButton.width, window.innerHeight -  (this.settingButton.height * 1.2));
+        this.soundButton.position.set(this.settingButton.x + this.settingButton.width + (this.soundButton.width/2), window.innerHeight -  (this.settingButton.height * 1.2));
+        this.balanceMeter.position.set(this.soundButton.x + this.soundButton.width + this.gap, window.innerHeight - (this.balanceMeter.height * 1.2));
+        this.betMeter.position.set(this.balanceMeter.x + (this.balanceMeter.width - this.betMeter.width)/2,this.balanceMeter.y - this.winMeter.height);
+        this.autoplayBtn.position.set(this.thunderButton.x - (this.autoplayBtn.width * 1.5), window.innerHeight - (this.autoplayBtn.height * 1.2));
         this.autoplayMeter.position.set(this.autoplayBtn.x + (this.autoplayBtn.width - this.autoplayMeter.width)/2, this.autoplayBtn.y - this.autoplayMeter.height);
+        this.spinBtn.position.set(this.autoplayMeter.x - (this.spinBtn.width * 1.5), window.innerHeight - this.spinBtn.height);
+        this.minusButton.position.set(this.spinBtn.x - this.minusButton.width, window.innerHeight - this.minusButton.height);
+        this.plusButton.position.set(this.minusButton.x,this.minusButton.y - this.plusButton.height);
     }
 }

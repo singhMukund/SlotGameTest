@@ -2,7 +2,6 @@
 node_modules/
 
 # Ignore build artifacts and output folders
-dist/
 build/
 out/
 

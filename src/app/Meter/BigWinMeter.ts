@@ -101,8 +101,8 @@ export class BigWinMeter extends Container {
             repeat: -1,
             onUpdate: () => {
                 this.currentvalue += this.speed;
-                this.currentvalue = Number(this.currentvalue.toFixed(2));
-                this.winMeter.text = `$ ${this.currentvalue.toFixed(2)}`;
+                this.currentvalue = Number(this.currentvalue.toFixed(3));
+                this.winMeter.text = `$ ${this.currentvalue.toFixed(3)}`;
                 this.checkStopTween();
                 this.currentLargeWinSeq = Math.round(this.currentvalue / (this.checkWinMultiplier * this.currentBet));
                 if(this.currentLargeWinSeq > this.winString.length - 1){

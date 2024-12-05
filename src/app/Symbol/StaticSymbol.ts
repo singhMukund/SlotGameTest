@@ -1,15 +1,15 @@
-import { Assets, Container, Loader, Sprite } from "pixi.js";
+import { Assets, Container, Loader, Sprite, Spritesheet } from "pixi.js";
 import { Game } from "../game";
-import { Spine } from "pixi-spine";
 
 export class StaticSymbol extends Container{
     private symbol: Sprite;
-    private spinAnimation !: Spine;
     private symbolName !: string;
+    private staticSymTexture !: Spritesheet;
 
     constructor(texture: string) {
         super();
-        this.symbol = new Sprite(Assets.get(texture));
+        this.staticSymTexture = Assets.get("symbols_atlas") 
+        this.symbol = new Sprite(this.staticSymTexture.textures[`${texture}.png`]);
         // @ts-ignore
         this.symbol.name = "Static_Symbol";
         //  // @ts-ignore
