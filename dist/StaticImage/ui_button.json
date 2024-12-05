@@ -1,0 +1,50 @@
+{"frames": {
+	"button_autoplay.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":333,"w":64,"h":64},
+		"spriteSourceSize": {"x":3,"y":2,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
+	},
+	"button_menu.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":266,"w":65,"h":65},
+		"spriteSourceSize": {"x":2,"y":1,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
+	},
+	"button_minus.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":198,"w":65,"h":66},
+		"spriteSourceSize": {"x":2,"y":1,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
+	},
+	"button_plus.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":130,"w":65,"h":66},
+		"spriteSourceSize": {"x":2,"y":1,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
+	},
+	"button_sound.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":66,"y":333,"w":64,"h":64},
+		"spriteSourceSize": {"x":3,"y":2,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
+	},
+	"button_spin.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":128,"h":128},
+		"spriteSourceSize": {"x":14,"y":14,"w":156,"h":156},
+		"sourceSize": {"w":156,"h":156}
+	},
+	"button_thunder.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":399,"w":64,"h":64},
+		"spriteSourceSize": {"x":3,"y":2,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"image":"ui_button.png",
+	"size": {"w":512,"h":512}
+}
+}
