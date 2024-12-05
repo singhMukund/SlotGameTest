@@ -26,6 +26,10 @@
          "name": "static-symbol",
          "assets": [
             {
+               "alias": "static_symbols",
+               "src": "./StaticImage/static_symbols.json"
+            },
+            {
                "alias": "sym_bonus",
                "src": "./StaticImage/symbols/BONUS.png"
             },
