@@ -8,7 +8,7 @@ export class StaticSymbol extends Container{
 
     constructor(texture: string) {
         super();
-        this.staticSymTexture = Assets.get("static_symbols") 
+        this.staticSymTexture = Assets.get("symbols_atlas") 
         this.symbol = new Sprite(this.staticSymTexture.textures[`${texture}.png`]);
         // @ts-ignore
         this.symbol.name = "Static_Symbol";
