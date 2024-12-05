@@ -4,7 +4,6 @@ node_modules/
 # Ignore build artifacts and output folders
 build/
 out/
-dist/
 
 # Ignore log files
 *.log
