@@ -1,0 +1,602 @@
+  * (Not needed for `loadModuleFromNodeModules` as that looks up the `package.json` as part of resolution.)
+     *
+     * packageDirectory is the directory of the package itself.
+     *   For `blah/node_modules/foo/index.d.ts` this is packageDirectory: "foo"
+     *   For `/node_modules/foo/bar.d.ts` this is packageDirectory: "foo"
+     *   For `/node_modules/@types/foo/bar/index.d.ts` this is packageDirectory: "@types/foo"
+     *   For `/node_modules/foo/bar/index.d.ts` this is packageDirectory: "foo"
+     */
+    /* @internal */
+    function parseNodeModuleFromPath(resolved) {
+        var path = ts.normalizePath(resolved);
+        var idx = path.lastIndexOf(ts.nodeModulesPathPart);
+        if (idx === -1) {
+            return undefined;
+        }
+        var indexAfterNodeModules = idx + ts.nodeModulesPathPart.length;
+        var indexAfterPackageName = moveToNextDirectorySeparatorIfAvailable(path, indexAfterNodeModules);
+        if (path.charCodeAt(indexAfterNodeModules) === 64 /* CharacterCodes.at */) {
+            indexAfterPackageName = moveToNextDirectorySeparatorIfAvailable(path, indexAfterPackageName);
+        }
+        return path.slice(0, indexAfterPackageName);
+    }
+    ts.parseNodeModuleFromPath = parseNodeModuleFromPath;
+    function moveToNextDirectorySeparatorIfAvailable(path, prevSeparatorIndex) {
+        var nextSeparatorIndex = path.indexOf(ts.directorySeparator, prevSeparatorIndex + 1);
+        return nextSeparatorIndex === -1 ? prevSeparatorIndex : nextSeparatorIndex;
+    }
+    function loadModuleFromFileNoPackageId(extensions, candidate, onlyRecordFailures, state) {
+        return noPackageId(loadModuleFromFile(extensions, candidate, onlyRecordFailures, state));
+    }
+    /**
+     * @param {boolean} onlyRecordFailures - if true then function won't try to actually load files but instead record all attempts as failures. This flag is necessary
+     * in cases when we know upfront that all load attempts will fail (because containing folder does not exists) however we still need to record all failed lookup locations.
+     */
+    function loadModuleFromFile(extensions, candidate, onlyRecordFailures, state) {
+        if (extensions === Extensions.Json || extensions === Extensions.TSConfig) {
+            var extensionLess = ts.tryRemoveExtension(candidate, ".json" /* Extension.Json */);
+            var extension = extensionLess ? candidate.substring(extensionLess.length) : "";
+            return (extensionLess === undefined && extensions === Extensions.Json) ? undefined : tryAddingExtensions(extensionLess || candidate, extensions, extension, onlyRecordFailures, state);
+        }
+        // esm mode resolutions don't include automatic extension lookup (without additional flags, at least)
+        if (!(state.features & NodeResolutionFeatures.EsmMode)) {
+            // First, try adding an extension. An import of "foo" could be matched by a file "foo.ts", or "foo.js" by "foo.js.ts"
+            var resolvedByAddingExtension = tryAddingExtensions(candidate, extensions, "", onlyRecordFailures, state);
+            if (resolvedByAddingExtension) {
+                return resolvedByAddingExtension;
+            }
+        }
+        return loadModuleFromFileNoImplicitExtensions(extensions, candidate, onlyRecordFailures, state);
+    }
+    function loadModuleFromFileNoImplicitExtensions(extensions, candidate, onlyRecordFailures, state) {
+        // If that didn't work, try stripping a ".js" or ".jsx" extension and replacing it with a TypeScript one;
+        // e.g. "./foo.js" can be matched by "./foo.ts" or "./foo.d.ts"
+        if (ts.hasJSFileExtension(candidate) || (ts.fileExtensionIs(candidate, ".json" /* Extension.Json */) && state.compilerOptions.resolveJsonModule)) {
+            var extensionless = ts.removeFileExtension(candidate);
+            var extension = candidate.substring(extensionless.length);
+            if (state.traceEnabled) {
+                trace(state.host, ts.Diagnostics.File_name_0_has_a_1_extension_stripping_it, candidate, extension);
+            }
+            return tryAddingExtensions(extensionless, extensions, extension, onlyRecordFailures, state);
+        }
+    }
+    function loadJSOrExactTSFileName(extensions, candidate, onlyRecordFailures, state) {
+        if ((extensions === Extensions.TypeScript || extensions === Extensions.DtsOnly) && ts.fileExtensionIsOneOf(candidate, ts.supportedTSExtensionsFlat)) {
+            var result = tryFile(candidate, onlyRecordFailures, state);
+            return result !== undefined ? { path: candidate, ext: ts.tryExtractTSExtension(candidate) } : undefined;
+        }
+        return loadModuleFromFileNoImplicitExtensions(extensions, candidate, onlyRecordFailures, state);
+    }
+    /** Try to return an existing file that adds one of the `extensions` to `candidate`. */
+    function tryAddingExtensions(candidate, extensions, originalExtension, onlyRecordFailures, state) {
+        if (!onlyRecordFailures) {
+            // check if containing folder exists - if it doesn't then just record failures for all supported extensions without disk probing
+            var directory = ts.getDirectoryPath(candidate);
+            if (directory) {
+                onlyRecordFailures = !ts.directoryProbablyExists(directory, state.host);
+            }
+        }
+        switch (extensions) {
+            case Extensions.DtsOnly:
+                switch (originalExtension) {
+                    case ".mjs" /* Extension.Mjs */:
+                    case ".mts" /* Extension.Mts */:
+                    case ".d.mts" /* Extension.Dmts */:
+                        return tryExtension(".d.mts" /* Extension.Dmts */);
+                    case ".cjs" /* Extension.Cjs */:
+                    case ".cts" /* Extension.Cts */:
+                    case ".d.cts" /* Extension.Dcts */:
+                        return tryExtension(".d.cts" /* Extension.Dcts */);
+                    case ".json" /* Extension.Json */:
+                        candidate += ".json" /* Extension.Json */;
+                        return tryExtension(".d.ts" /* Extension.Dts */);
+                    default: return tryExtension(".d.ts" /* Extension.Dts */);
+                }
+            case Extensions.TypeScript:
+            case Extensions.TsOnly:
+                var useDts = extensions === Extensions.TypeScript;
+                switch (originalExtension) {
+                    case ".mjs" /* Extension.Mjs */:
+                    case ".mts" /* Extension.Mts */:
+                    case ".d.mts" /* Extension.Dmts */:
+                        return tryExtension(".mts" /* Extension.Mts */) || (useDts ? tryExtension(".d.mts" /* Extension.Dmts */) : undefined);
+                    case ".cjs" /* Extension.Cjs */:
+                    case ".cts" /* Extension.Cts */:
+                    case ".d.cts" /* Extension.Dcts */:
+                        return tryExtension(".cts" /* Extension.Cts */) || (useDts ? tryExtension(".d.cts" /* Extension.Dcts */) : undefined);
+                    case ".json" /* Extension.Json */:
+                        candidate += ".json" /* Extension.Json */;
+                        return useDts ? tryExtension(".d.ts" /* Extension.Dts */) : undefined;
+                    default:
+                        return tryExtension(".ts" /* Extension.Ts */) || tryExtension(".tsx" /* Extension.Tsx */) || (useDts ? tryExtension(".d.ts" /* Extension.Dts */) : undefined);
+                }
+            case Extensions.JavaScript:
+                switch (originalExtension) {
+                    case ".mjs" /* Extension.Mjs */:
+                    case ".mts" /* Extension.Mts */:
+                    case ".d.mts" /* Extension.Dmts */:
+                        return tryExtension(".mjs" /* Extension.Mjs */);
+                    case ".cjs" /* Extension.Cjs */:
+                    case ".cts" /* Extension.Cts */:
+                    case ".d.cts" /* Extension.Dcts */:
+                        return tryExtension(".cjs" /* Extension.Cjs */);
+                    case ".json" /* Extension.Json */:
+                        return tryExtension(".json" /* Extension.Json */);
+                    default:
+                        return tryExtension(".js" /* Extension.Js */) || tryExtension(".jsx" /* Extension.Jsx */);
+                }
+            case Extensions.TSConfig:
+            case Extensions.Json:
+                return tryExtension(".json" /* Extension.Json */);
+        }
+        function tryExtension(ext) {
+            var path = tryFile(candidate + ext, onlyRecordFailures, state);
+            return path === undefined ? undefined : { path: path, ext: ext };
+        }
+    }
+    /** Return the file if it exists. */
+    function tryFile(fileName, onlyRecordFailures, state) {
+        var _a, _b;
+        if (!((_a = state.compilerOptions.moduleSuffixes) === null || _a === void 0 ? void 0 : _a.length)) {
+            return tryFileLookup(fileName, onlyRecordFailures, state);
+        }
+        var ext = (_b = ts.tryGetExtensionFromPath(fileName)) !== null && _b !== void 0 ? _b : "";
+        var fileNameNoExtension = ext ? ts.removeExtension(fileName, ext) : fileName;
+        return ts.forEach(state.compilerOptions.moduleSuffixes, function (suffix) { return tryFileLookup(fileNameNoExtension + suffix + ext, onlyRecordFailures, state); });
+    }
+    function tryFileLookup(fileName, onlyRecordFailures, state) {
+        if (!onlyRecordFailures) {
+            if (state.host.fileExists(fileName)) {
+                if (state.traceEnabled) {
+                    trace(state.host, ts.Diagnostics.File_0_exist_use_it_as_a_name_resolution_result, fileName);
+                }
+                return fileName;
+            }
+            else {
+                if (state.traceEnabled) {
+                    trace(state.host, ts.Diagnostics.File_0_does_not_exist, fileName);
+                }
+            }
+        }
+        state.failedLookupLocations.push(fileName);
+        return undefined;
+    }
+    function loadNodeModuleFromDirectory(extensions, candidate, onlyRecordFailures, state, considerPackageJson) {
+        if (considerPackageJson === void 0) { considerPackageJson = true; }
+        var packageInfo = considerPackageJson ? getPackageJsonInfo(candidate, onlyRecordFailures, state) : undefined;
+        var packageJsonContent = packageInfo && packageInfo.contents.packageJsonContent;
+        var versionPaths = packageInfo && packageInfo.contents.versionPaths;
+        return withPackageId(packageInfo, loadNodeModuleFromDirectoryWorker(extensions, candidate, onlyRecordFailures, state, packageJsonContent, versionPaths));
+    }
+    /* @internal */
+    function getEntrypointsFromPackageJsonInfo(packageJsonInfo, options, host, cache, resolveJs) {
+        if (!resolveJs && packageJsonInfo.contents.resolvedEntrypoints !== undefined) {
+            // Cached value excludes resolutions to JS files - those could be
+            // cached separately, but they're used rarely.
+            return packageJsonInfo.contents.resolvedEntrypoints;
+        }
+        var entrypoints;
+        var extensions = resolveJs ? Extensions.JavaScript : Extensions.TypeScript;
+        var features = getDefaultNodeResolutionFeatures(options);
+        var requireState = getTemporaryModuleResolutionState(cache === null || cache === void 0 ? void 0 : cache.getPackageJsonInfoCache(), host, options);
+        requireState.conditions = ["node", "require", "types"];
+        requireState.requestContainingDirectory = packageJsonInfo.packageDirectory;
+        var requireResolution = loadNodeModuleFromDirectoryWorker(extensions, packageJsonInfo.packageDirectory, 
+        /*onlyRecordFailures*/ false, requireState, packageJsonInfo.contents.packageJsonContent, packageJsonInfo.contents.versionPaths);
+        entrypoints = ts.append(entrypoints, requireResolution === null || requireResolution === void 0 ? void 0 : requireResolution.path);
+        if (features & NodeResolutionFeatures.Exports && packageJsonInfo.contents.packageJsonContent.exports) {
+            for (var _i = 0, _a = [["node", "import", "types"], ["node", "require", "types"]]; _i < _a.length; _i++) {
+                var conditions = _a[_i];
+                var exportState = __assign(__assign({}, requireState), { failedLookupLocations: [], conditions: conditions });
+                var exportResolutions = loadEntrypointsFromExportMap(packageJsonInfo, packageJsonInfo.contents.packageJsonContent.exports, exportState, extensions);
+                if (exportResolutions) {
+                    for (var _b = 0, exportResolutions_1 = exportResolutions; _b < exportResolutions_1.length; _b++) {
+                        var resolution = exportResolutions_1[_b];
+                        entrypoints = ts.appendIfUnique(entrypoints, resolution.path);
+                    }
+                }
+            }
+        }
+        return packageJsonInfo.contents.resolvedEntrypoints = entrypoints || false;
+    }
+    ts.getEntrypointsFromPackageJsonInfo = getEntrypointsFromPackageJsonInfo;
+    function loadEntrypointsFromExportMap(scope, exports, state, extensions) {
+        var entrypoints;
+        if (ts.isArray(exports)) {
+            for (var _i = 0, exports_1 = exports; _i < exports_1.length; _i++) {
+                var target = exports_1[_i];
+                loadEntrypointsFromTargetExports(target);
+            }
+        }
+        // eslint-disable-next-line no-null/no-null
+        else if (typeof exports === "object" && exports !== null && allKeysStartWithDot(exports)) {
+            for (var key in exports) {
+                loadEntrypointsFromTargetExports(exports[key]);
+            }
+        }
+        else {
+            loadEntrypointsFromTargetExports(exports);
+        }
+        return entrypoints;
+        function loadEntrypointsFromTargetExports(target) {
+            var _a, _b;
+            if (typeof target === "string" && ts.startsWith(target, "./") && target.indexOf("*") === -1) {
+                var partsAfterFirst = ts.getPathComponents(target).slice(2);
+                if (partsAfterFirst.indexOf("..") >= 0 || partsAfterFirst.indexOf(".") >= 0 || partsAfterFirst.indexOf("node_modules") >= 0) {
+                    return false;
+                }
+                var resolvedTarget = ts.combinePaths(scope.packageDirectory, target);
+                var finalPath = ts.getNormalizedAbsolutePath(resolvedTarget, (_b = (_a = state.host).getCurrentDirectory) === null || _b === void 0 ? void 0 : _b.call(_a));
+                var result = loadJSOrExactTSFileName(extensions, finalPath, /*recordOnlyFailures*/ false, state);
+                if (result) {
+                    entrypoints = ts.appendIfUnique(entrypoints, result, function (a, b) { return a.path === b.path; });
+                    return true;
+                }
+            }
+            else if (Array.isArray(target)) {
+                for (var _i = 0, target_1 = target; _i < target_1.length; _i++) {
+                    var t = target_1[_i];
+                    var success = loadEntrypointsFromTargetExports(t);
+                    if (success) {
+                        return true;
+                    }
+                }
+            }
+            // eslint-disable-next-line no-null/no-null
+            else if (typeof target === "object" && target !== null) {
+                return ts.forEach(ts.getOwnKeys(target), function (key) {
+                    if (key === "default" || ts.contains(state.conditions, key) || isApplicableVersionedTypesKey(state.conditions, key)) {
+                        loadEntrypointsFromTargetExports(target[key]);
+                        return true;
+                    }
+                });
+            }
+        }
+    }
+    /*@internal*/
+    function getTemporaryModuleResolutionState(packageJsonInfoCache, host, options) {
+        return {
+            host: host,
+            compilerOptions: options,
+            traceEnabled: isTraceEnabled(options, host),
+            failedLookupLocations: ts.noopPush,
+            affectingLocations: ts.noopPush,
+            packageJsonInfoCache: packageJsonInfoCache,
+            features: NodeResolutionFeatures.None,
+            conditions: ts.emptyArray,
+            requestContainingDirectory: undefined,
+            reportDiagnostic: ts.noop
+        };
+    }
+    ts.getTemporaryModuleResolutionState = getTemporaryModuleResolutionState;
+    /**
+     * A function for locating the package.json scope for a given path
+     */
+    /*@internal*/
+    function getPackageScopeForPath(fileName, state) {
+        var parts = ts.getPathComponents(fileName);
+        parts.pop();
+        while (parts.length > 0) {
+            var pkg = getPackageJsonInfo(ts.getPathFromPathComponents(parts), /*onlyRecordFailures*/ false, state);
+            if (pkg) {
+                return pkg;
+            }
+            parts.pop();
+        }
+        return undefined;
+    }
+    ts.getPackageScopeForPath = getPackageScopeForPath;
+    /*@internal*/
+    function getPackageJsonInfo(packageDirectory, onlyRecordFailures, state) {
+        var _a, _b, _c;
+        var host = state.host, traceEnabled = state.traceEnabled;
+        var packageJsonPath = ts.combinePaths(packageDirectory, "package.json");
+        if (onlyRecordFailures) {
+            state.failedLookupLocations.push(packageJsonPath);
+            return undefined;
+        }
+        var existing = (_a = state.packageJsonInfoCache) === null || _a === void 0 ? void 0 : _a.getPackageJsonInfo(packageJsonPath);
+        if (existing !== undefined) {
+            if (typeof existing !== "boolean") {
+                if (traceEnabled)
+                    trace(host, ts.Diagnostics.File_0_exists_according_to_earlier_cached_lookups, packageJsonPath);
+                state.affectingLocations.push(packageJsonPath);
+                return existing.packageDirectory === packageDirectory ?
+                    existing :
+                    { packageDirectory: packageDirectory, contents: existing.contents };
+            }
+            else {
+                if (existing && traceEnabled)
+                    trace(host, ts.Diagnostics.File_0_does_not_exist_according_to_earlier_cached_lookups, packageJsonPath);
+                state.failedLookupLocations.push(packageJsonPath);
+                return undefined;
+            }
+        }
+        var directoryExists = ts.directoryProbablyExists(packageDirectory, host);
+        if (directoryExists && host.fileExists(packageJsonPath)) {
+            var packageJsonContent = ts.readJson(packageJsonPath, host);
+            if (traceEnabled) {
+                trace(host, ts.Diagnostics.Found_package_json_at_0, packageJsonPath);
+            }
+            var versionPaths = readPackageJsonTypesVersionPaths(packageJsonContent, state);
+            var result = { packageDirectory: packageDirectory, contents: { packageJsonContent: packageJsonContent, versionPaths: versionPaths, resolvedEntrypoints: undefined } };
+            (_b = state.packageJsonInfoCache) === null || _b === void 0 ? void 0 : _b.setPackageJsonInfo(packageJsonPath, result);
+            state.affectingLocations.push(packageJsonPath);
+            return result;
+        }
+        else {
+            if (directoryExists && traceEnabled) {
+                trace(host, ts.Diagnostics.File_0_does_not_exist, packageJsonPath);
+            }
+            (_c = state.packageJsonInfoCache) === null || _c === void 0 ? void 0 : _c.setPackageJsonInfo(packageJsonPath, directoryExists);
+            // record package json as one of failed lookup locations - in the future if this file will appear it will invalidate resolution results
+            state.failedLookupLocations.push(packageJsonPath);
+        }
+    }
+    ts.getPackageJsonInfo = getPackageJsonInfo;
+    function loadNodeModuleFromDirectoryWorker(extensions, candidate, onlyRecordFailures, state, jsonContent, versionPaths) {
+        var packageFile;
+        if (jsonContent) {
+            switch (extensions) {
+                case Extensions.JavaScript:
+                case Extensions.Json:
+                case Extensions.TsOnly:
+                    packageFile = readPackageJsonMainField(jsonContent, candidate, state);
+                    break;
+                case Extensions.TypeScript:
+                    // When resolving typescript modules, try resolving using main field as well
+                    packageFile = readPackageJsonTypesFields(jsonContent, candidate, state) || readPackageJsonMainField(jsonContent, candidate, state);
+                    break;
+                case Extensions.DtsOnly:
+                    packageFile = readPackageJsonTypesFields(jsonContent, candidate, state);
+                    break;
+                case Extensions.TSConfig:
+                    packageFile = readPackageJsonTSConfigField(jsonContent, candidate, state);
+                    break;
+                default:
+                    return ts.Debug.assertNever(extensions);
+            }
+        }
+        var loader = function (extensions, candidate, onlyRecordFailures, state) {
+            var fromFile = tryFile(candidate, onlyRecordFailures, state);
+            if (fromFile) {
+                var resolved = resolvedIfExtensionMatches(extensions, fromFile);
+                if (resolved) {
+                    return noPackageId(resolved);
+                }
+                if (state.traceEnabled) {
+                    trace(state.host, ts.Diagnostics.File_0_has_an_unsupported_extension_so_skipping_it, fromFile);
+                }
+            }
+            // Even if extensions is DtsOnly, we can still look up a .ts file as a result of package.json "types"
+            var nextExtensions = extensions === Extensions.DtsOnly ? Extensions.TypeScript : extensions;
+            // Don't do package.json lookup recursively, because Node.js' package lookup doesn't.
+            // Disable `EsmMode` for the resolution of the package path for cjs-mode packages (so the `main` field can omit extensions)
+            // (technically it only emits a deprecation warning in esm packages right now, but that's probably
+            // enough to mean we don't need to support it)
+            var features = state.features;
+            if ((jsonContent === null || jsonContent === void 0 ? void 0 : jsonContent.type) !== "module") {
+                state.features &= ~NodeResolutionFeatures.EsmMode;
+            }
+            var result = nodeLoadModuleByRelativeName(nextExtensions, candidate, onlyRecordFailures, state, /*considerPackageJson*/ false);
+            state.features = features;
+            return result;
+        };
+        var onlyRecordFailuresForPackageFile = packageFile ? !ts.directoryProbablyExists(ts.getDirectoryPath(packageFile), state.host) : undefined;
+        var onlyRecordFailuresForIndex = onlyRecordFailures || !ts.directoryProbablyExists(candidate, state.host);
+        var indexPath = ts.combinePaths(candidate, extensions === Extensions.TSConfig ? "tsconfig" : "index");
+        if (versionPaths && (!packageFile || ts.containsPath(candidate, packageFile))) {
+            var moduleName = ts.getRelativePathFromDirectory(candidate, packageFile || indexPath, /*ignoreCase*/ false);
+            if (state.traceEnabled) {
+                trace(state.host, ts.Diagnostics.package_json_has_a_typesVersions_entry_0_that_matches_compiler_version_1_looking_for_a_pattern_to_match_module_name_2, versionPaths.version, ts.version, moduleName);
+            }
+            var result = tryLoadModuleUsingPaths(extensions, moduleName, candidate, versionPaths.paths, /*pathPatterns*/ undefined, loader, onlyRecordFailuresForPackageFile || onlyRecordFailuresForIndex, state);
+            if (result) {
+                return removeIgnoredPackageId(result.value);
+            }
+        }
+        // It won't have a `packageId` set, because we disabled `considerPackageJson`.
+        var packageFileResult = packageFile && removeIgnoredPackageId(loader(extensions, packageFile, onlyRecordFailuresForPackageFile, state));
+        if (packageFileResult)
+            return packageFileResult;
+        // esm mode resolutions don't do package `index` lookups
+        if (!(state.features & NodeResolutionFeatures.EsmMode)) {
+            return loadModuleFromFile(extensions, indexPath, onlyRecordFailuresForIndex, state);
+        }
+    }
+    /** Resolve from an arbitrarily specified file. Return `undefined` if it has an unsupported extension. */
+    function resolvedIfExtensionMatches(extensions, path) {
+        var ext = ts.tryGetExtensionFromPath(path);
+        return ext !== undefined && extensionIsOk(extensions, ext) ? { path: path, ext: ext } : undefined;
+    }
+    /** True if `extension` is one of the supported `extensions`. */
+    function extensionIsOk(extensions, extension) {
+        switch (extensions) {
+            case Extensions.JavaScript:
+                return extension === ".js" /* Extension.Js */ || extension === ".jsx" /* Extension.Jsx */ || extension === ".mjs" /* Extension.Mjs */ || extension === ".cjs" /* Extension.Cjs */;
+            case Extensions.TSConfig:
+            case Extensions.Json:
+                return extension === ".json" /* Extension.Json */;
+            case Extensions.TypeScript:
+                return extension === ".ts" /* Extension.Ts */ || extension === ".tsx" /* Extension.Tsx */ || extension === ".mts" /* Extension.Mts */ || extension === ".cts" /* Extension.Cts */ || extension === ".d.ts" /* Extension.Dts */ || extension === ".d.mts" /* Extension.Dmts */ || extension === ".d.cts" /* Extension.Dcts */;
+            case Extensions.TsOnly:
+                return extension === ".ts" /* Extension.Ts */ || extension === ".tsx" /* Extension.Tsx */ || extension === ".mts" /* Extension.Mts */ || extension === ".cts" /* Extension.Cts */;
+            case Extensions.DtsOnly:
+                return extension === ".d.ts" /* Extension.Dts */ || extension === ".d.mts" /* Extension.Dmts */ || extension === ".d.cts" /* Extension.Dcts */;
+        }
+    }
+    /* @internal */
+    function parsePackageName(moduleName) {
+        var idx = moduleName.indexOf(ts.directorySeparator);
+        if (moduleName[0] === "@") {
+            idx = moduleName.indexOf(ts.directorySeparator, idx + 1);
+        }
+        return idx === -1 ? { packageName: moduleName, rest: "" } : { packageName: moduleName.slice(0, idx), rest: moduleName.slice(idx + 1) };
+    }
+    ts.parsePackageName = parsePackageName;
+    /* @internal */
+    function allKeysStartWithDot(obj) {
+        return ts.every(ts.getOwnKeys(obj), function (k) { return ts.startsWith(k, "."); });
+    }
+    ts.allKeysStartWithDot = allKeysStartWithDot;
+    function noKeyStartsWithDot(obj) {
+        return !ts.some(ts.getOwnKeys(obj), function (k) { return ts.startsWith(k, "."); });
+    }
+    function loadModuleFromSelfNameReference(extensions, moduleName, directory, state, cache, redirectedReference) {
+        var _a, _b;
+        var directoryPath = ts.getNormalizedAbsolutePath(ts.combinePaths(directory, "dummy"), (_b = (_a = state.host).getCurrentDirectory) === null || _b === void 0 ? void 0 : _b.call(_a));
+        var scope = getPackageScopeForPath(directoryPath, state);
+        if (!scope || !scope.contents.packageJsonContent.exports) {
+            return undefined;
+        }
+        if (typeof scope.contents.packageJsonContent.name !== "string") {
+            return undefined;
+        }
+        var parts = ts.getPathComponents(moduleName); // unrooted paths should have `""` as their 0th entry
+        var nameParts = ts.getPathComponents(scope.contents.packageJsonContent.name);
+        if (!ts.every(nameParts, function (p, i) { return parts[i] === p; })) {
+            return undefined;
+        }
+        var trailingParts = parts.slice(nameParts.length);
+        return loadModuleFromExports(scope, extensions, !ts.length(trailingParts) ? "." : ".".concat(ts.directorySeparator).concat(trailingParts.join(ts.directorySeparator)), state, cache, redirectedReference);
+    }
+    function loadModuleFromExports(scope, extensions, subpath, state, cache, redirectedReference) {
+        if (!scope.contents.packageJsonContent.exports) {
+            return undefined;
+        }
+        if (subpath === ".") {
+            var mainExport = void 0;
+            if (typeof scope.contents.packageJsonContent.exports === "string" || Array.isArray(scope.contents.packageJsonContent.exports) || (typeof scope.contents.packageJsonContent.exports === "object" && noKeyStartsWithDot(scope.contents.packageJsonContent.exports))) {
+                mainExport = scope.contents.packageJsonContent.exports;
+            }
+            else if (ts.hasProperty(scope.contents.packageJsonContent.exports, ".")) {
+                mainExport = scope.contents.packageJsonContent.exports["."];
+            }
+            if (mainExport) {
+                var loadModuleFromTargetImportOrExport = getLoadModuleFromTargetImportOrExport(extensions, state, cache, redirectedReference, subpath, scope, /*isImports*/ false);
+                return loadModuleFromTargetImportOrExport(mainExport, "", /*pattern*/ false, ".");
+            }
+        }
+        else if (allKeysStartWithDot(scope.contents.packageJsonContent.exports)) {
+            if (typeof scope.contents.packageJsonContent.exports !== "object") {
+                if (state.traceEnabled) {
+                    trace(state.host, ts.Diagnostics.Export_specifier_0_does_not_exist_in_package_json_scope_at_path_1, subpath, scope.packageDirectory);
+                }
+                return toSearchResult(/*value*/ undefined);
+            }
+            var result = loadModuleFromImportsOrExports(extensions, state, cache, redirectedReference, subpath, scope.contents.packageJsonContent.exports, scope, /*isImports*/ false);
+            if (result) {
+                return result;
+            }
+        }
+        if (state.traceEnabled) {
+            trace(state.host, ts.Diagnostics.Export_specifier_0_does_not_exist_in_package_json_scope_at_path_1, subpath, scope.packageDirectory);
+        }
+        return toSearchResult(/*value*/ undefined);
+    }
+    function loadModuleFromImports(extensions, moduleName, directory, state, cache, redirectedReference) {
+        var _a, _b;
+        if (moduleName === "#" || ts.startsWith(moduleName, "#/")) {
+            if (state.traceEnabled) {
+                trace(state.host, ts.Diagnostics.Invalid_import_specifier_0_has_no_possible_resolutions, moduleName);
+            }
+            return toSearchResult(/*value*/ undefined);
+        }
+        var directoryPath = ts.getNormalizedAbsolutePath(ts.combinePaths(directory, "dummy"), (_b = (_a = state.host).getCurrentDirectory) === null || _b === void 0 ? void 0 : _b.call(_a));
+        var scope = getPackageScopeForPath(directoryPath, state);
+        if (!scope) {
+            if (state.traceEnabled) {
+                trace(state.host, ts.Diagnostics.Directory_0_has_no_containing_package_json_scope_Imports_will_not_resolve, directoryPath);
+            }
+            return toSearchResult(/*value*/ undefined);
+        }
+        if (!scope.contents.packageJsonContent.imports) {
+            if (state.traceEnabled) {
+                trace(state.host, ts.Diagnostics.package_json_scope_0_has_no_imports_defined, scope.packageDirectory);
+            }
+            return toSearchResult(/*value*/ undefined);
+        }
+        var result = loadModuleFromImportsOrExports(extensions, state, cache, redirectedReference, moduleName, scope.contents.packageJsonContent.imports, scope, /*isImports*/ true);
+        if (result) {
+            return result;
+        }
+        if (state.traceEnabled) {
+            trace(state.host, ts.Diagnostics.Import_specifier_0_does_not_exist_in_package_json_scope_at_path_1, moduleName, scope.packageDirectory);
+        }
+        return toSearchResult(/*value*/ undefined);
+    }
+    /**
+     * @internal
+     * From https://github.com/nodejs/node/blob/8f39f51cbbd3b2de14b9ee896e26421cc5b20121/lib/internal/modules/esm/resolve.js#L722 -
+     * "longest" has some nuance as to what "longest" means in the presence of pattern trailers
+     */
+    function comparePatternKeys(a, b) {
+        var aPatternIndex = a.indexOf("*");
+        var bPatternIndex = b.indexOf("*");
+        var baseLenA = aPatternIndex === -1 ? a.length : aPatternIndex + 1;
+        var baseLenB = bPatternIndex === -1 ? b.length : bPatternIndex + 1;
+        if (baseLenA > baseLenB)
+            return -1;
+        if (baseLenB > baseLenA)
+            return 1;
+        if (aPatternIndex === -1)
+            return 1;
+        if (bPatternIndex === -1)
+            return -1;
+        if (a.length > b.length)
+            return -1;
+        if (b.length > a.length)
+            return 1;
+        return 0;
+    }
+    ts.comparePatternKeys = comparePatternKeys;
+    function loadModuleFromImportsOrExports(extensions, state, cache, redirectedReference, moduleName, lookupTable, scope, isImports) {
+        var loadModuleFromTargetImportOrExport = getLoadModuleFromTargetImportOrExport(extensions, state, cache, redirectedReference, moduleName, scope, isImports);
+        if (!ts.endsWith(moduleName, ts.directorySeparator) && moduleName.indexOf("*") === -1 && ts.hasProperty(lookupTable, moduleName)) {
+            var target = lookupTable[moduleName];
+            return loadModuleFromTargetImportOrExport(target, /*subpath*/ "", /*pattern*/ false, moduleName);
+        }
+        var expandingKeys = ts.sort(ts.filter(ts.getOwnKeys(lookupTable), function (k) { return k.indexOf("*") !== -1 || ts.endsWith(k, "/"); }), comparePatternKeys);
+        for (var _i = 0, expandingKeys_1 = expandingKeys; _i < expandingKeys_1.length; _i++) {
+            var potentialTarget = expandingKeys_1[_i];
+            if (state.features & NodeResolutionFeatures.ExportsPatternTrailers && matchesPatternWithTrailer(potentialTarget, moduleName)) {
+                var target = lookupTable[potentialTarget];
+                var starPos = potentialTarget.indexOf("*");
+                var subpath = moduleName.substring(potentialTarget.substring(0, starPos).length, moduleName.length - (potentialTarget.length - 1 - starPos));
+                return loadModuleFromTargetImportOrExport(target, subpath, /*pattern*/ true, potentialTarget);
+            }
+            else if (ts.endsWith(potentialTarget, "*") && ts.startsWith(moduleName, potentialTarget.substring(0, potentialTarget.length - 1))) {
+                var target = lookupTable[potentialTarget];
+                var subpath = moduleName.substring(potentialTarget.length - 1);
+                return loadModuleFromTargetImportOrExport(target, subpath, /*pattern*/ true, potentialTarget);
+            }
+            else if (ts.startsWith(moduleName, potentialTarget)) {
+                var target = lookupTable[potentialTarget];
+                var subpath = moduleName.substring(potentialTarget.length);
+                return loadModuleFromTargetImportOrExport(target, subpath, /*pattern*/ false, potentialTarget);
+            }
+        }
+        function matchesPatternWithTrailer(target, name) {
+            if (ts.endsWith(target, "*"))
+                return false; // handled by next case in loop
+            var starPos = target.indexOf("*");
+            if (starPos === -1)
+                return false; // handled by last case in loop
+            return ts.startsWith(name, target.substring(0, starPos)) && ts.endsWith(name, target.substring(starPos + 1));
+        }
+    }
+    /**
+     * Gets the self-recursive function specialized to retrieving the targeted import/export element for the given resolution configuration
+     */
+    function getLoadModuleFromTargetImportOrExport(extensions, state, cache, redirectedReference, moduleName, scope, isImports) {
+        return loadModuleFromTargetImportOrExport;
+        function loadModuleFromTargetImportOrExport(target, subpath, pattern, key) {
+            if (typeof target === "string") {
+                if (!pattern && subpath.length > 0 && !ts.endsWith(target, "/")) {
+                    if (state.traceEnabled) {
+                        trace(state.host, ts.Diagnostics.package_json_scope_0_has_invalid_type_for_target_of_specifier_1, scope.packageDirectory, moduleName);
+                    }
+                    return toSearchResult(/*value*/ undefined);
+                }
+                if (!ts.startsWith(target, "./")) {
+                    if (isImports && !ts.startsWith(target, "../") && !ts.startsWith(target, "/") && !ts.isRootedDiskPath(target
