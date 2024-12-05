@@ -5,7 +5,7 @@
          "assets": [
             {
                "alias": "background",
-               "src": "./StaticImage/gameplay_background.png"
+               "src": "./StaticImage/gameplay_backgrounds.png"
             },
             {
                "alias": "bottomPanelBg",
@@ -18,7 +18,7 @@
          "assets": [
             {
                "alias": "reelFrameImage",
-               "src": "./StaticImage/reelFrame.png"
+               "src": "./StaticImage/reel_regular_frame.png"
             }
          ]
       },

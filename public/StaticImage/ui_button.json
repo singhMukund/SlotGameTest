@@ -1,44 +1,50 @@
 {"frames": {
-	"Autoplay_btn.png":{
+	"button_autoplay.png":{
 		"rotated": false,"trimmed": true,
-		"frame": {"x":0,"y":370,"w":120,"h":120},
-		"spriteSourceSize": {"x":0,"y":0,"w":120,"h":120},
-		"sourceSize": {"w":120,"h":120}
+		"frame": {"x":0,"y":333,"w":64,"h":64},
+		"spriteSourceSize": {"x":3,"y":2,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
 	},
-	"Minus_btn.png":{
+	"button_menu.png":{
 		"rotated": false,"trimmed": true,
-		"frame": {"x":122,"y":370,"w":83,"h":97},
-		"spriteSourceSize": {"x":0,"y":0,"w":83,"h":97},
-		"sourceSize": {"w":83,"h":97}
+		"frame": {"x":0,"y":266,"w":65,"h":65},
+		"spriteSourceSize": {"x":2,"y":1,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
 	},
-	"Plus_btn.png":{
+	"button_minus.png":{
 		"rotated": false,"trimmed": true,
-		"frame": {"x":207,"y":370,"w":83,"h":97},
-		"spriteSourceSize": {"x":0,"y":0,"w":83,"h":97},
-		"sourceSize": {"w":83,"h":97}
+		"frame": {"x":0,"y":198,"w":65,"h":66},
+		"spriteSourceSize": {"x":2,"y":1,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
 	},
-	"btn_home.png":{
+	"button_plus.png":{
 		"rotated": false,"trimmed": true,
-		"frame": {"x":142,"y":223,"w":140,"h":145},
-		"spriteSourceSize": {"x":0,"y":0,"w":140,"h":145},
-		"sourceSize": {"w":140,"h":145}
+		"frame": {"x":0,"y":130,"w":65,"h":66},
+		"spriteSourceSize": {"x":2,"y":1,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
 	},
-	"btn_menu.png":{
+	"button_sound.png":{
 		"rotated": false,"trimmed": true,
-		"frame": {"x":0,"y":223,"w":140,"h":144},
-		"spriteSourceSize": {"x":0,"y":0,"w":140,"h":144},
-		"sourceSize": {"w":140,"h":144}
+		"frame": {"x":66,"y":333,"w":64,"h":64},
+		"spriteSourceSize": {"x":3,"y":2,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
 	},
-	"btn_spin.png":{
+	"button_spin.png":{
 		"rotated": false,"trimmed": true,
-		"frame": {"x":0,"y":0,"w":220,"h":221},
-		"spriteSourceSize": {"x":0,"y":0,"w":220,"h":221},
-		"sourceSize": {"w":220,"h":221}
+		"frame": {"x":0,"y":0,"w":128,"h":128},
+		"spriteSourceSize": {"x":14,"y":14,"w":156,"h":156},
+		"sourceSize": {"w":156,"h":156}
+	},
+	"button_thunder.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":399,"w":64,"h":64},
+		"spriteSourceSize": {"x":3,"y":2,"w":69,"h":68},
+		"sourceSize": {"w":69,"h":68}
 	}
 },
 "meta": {
 	"app": "ShoeBox",
-	"image" :"ui_button.png",
+	"image":"ui_button.png",
 	"size": {"w":512,"h":512}
 }
 }

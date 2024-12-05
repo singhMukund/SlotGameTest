@@ -10,6 +10,7 @@ import { BottomPanel } from "../BottomPanel/BottomPanel";
 import { BigWinMeter } from "../Meter/BigWinMeter";
 import { LineMeter } from "../Meter/LineMeter";
 import { PentagonalUpdateFeature } from "../FeatureComponent/PentagonalUpdateFeature";
+import { Character } from "../Character/Character";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
@@ -25,6 +26,7 @@ export class BaseGame extends Container {
     private aspectRatio : number = 0;
     private lineMeter !: LineMeter;
     private pentagonalUpdateFeature !: PentagonalUpdateFeature;
+    private character !: Character;
     
 
     constructor() {
@@ -56,6 +58,11 @@ export class BaseGame extends Container {
         this.initBigWinMeter();
         this.initLineMeter();
         this.initpentagonalUpdateFeature();
+        this.initCharacter();
+    }
+
+    private initCharacter() :void{
+        this.character = new Character();
     }
 
     private parentContainer(): void {
@@ -111,11 +118,12 @@ export class BaseGame extends Container {
         this.addChild(this.bottomPanel);
         this.addChild(this.bgWinMeter);
         this.addChild(this.pentagonalUpdateFeature);
+        this.addChild(this.character);
     }
 
     private setPosition() {
-        this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2);
-        this.reelManager.position.set(370, 385);
+        this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2 - 100);
+        this.reelManager.position.set(190, 200);
         this.lineMeter.position.set(370, 385);
         this.reelContainer.scale.set(0.6);
         this.aspectRatio = this.reelContainer.height / 919;
@@ -130,7 +138,7 @@ export class BaseGame extends Container {
         currentScale = assumedHeight / height;
         this.reelContainer.scale.set(currentScale);
         let currentPanelHeight = this.cheatPanel.height;
-        this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
+        this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2 - 30);
         if (window.innerWidth < window.innerHeight) {
             this.reelContainer.scale.set(0.37);
             this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);

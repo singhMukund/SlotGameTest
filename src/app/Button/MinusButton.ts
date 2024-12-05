@@ -15,7 +15,7 @@ export class MinusButton extends Container{
     }
 
     private initializeButton() :void{
-        this.buttton = new Sprite(this.buttonTexture.textures['Minus_btn.png']);
+        this.buttton = new Sprite(this.buttonTexture.textures['button_minus.png']);
         this.addChild(this.buttton);
         this.buttton.scale.set(0.9);
     }
@@ -32,32 +32,32 @@ export class MinusButton extends Container{
     }
 
     private onButtonDown() : void{
-        this.buttton.texture = this.buttonTexture.textures['Minus_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
     }
 
     private onButtonUp() :void{
-        this.buttton.texture = this.buttonTexture.textures['Minus_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
         Game.the.app.stage.emit(CommonConfig.UPDATE_BET_METER, -1);
         // Game.the.app.stage.emit(CommonConfig.START_SPIN);
         // this.disable();
     }
 
     private onButtonOver() :void{
-        this.buttton.texture = this.buttonTexture.textures['Minus_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
     }
 
     private onButtonOut() :void{
-        this.buttton.texture = this.buttonTexture.textures['Minus_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
     }
 
     private disable() :void{
-        this.buttton.texture = this.buttonTexture.textures['Minus_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
         this.interactive = false;
         this.alpha = 0.65;
     }
 
     private enable() :void{
-        this.buttton.texture = this.buttonTexture.textures['Minus_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
         this.interactive = true;
         this.alpha = 1;
     }

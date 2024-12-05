@@ -14,7 +14,7 @@ export class SettingButton extends Container{
     }
 
     private initializeButton() :void{
-        this.buttton = new Sprite(this.buttonTexture.textures['btn_menu.png']);
+        this.buttton = new Sprite(this.buttonTexture.textures['button_menu.png']);
         this.addChild(this.buttton);
         this.buttton.scale.set(0.9);
     }
@@ -31,30 +31,30 @@ export class SettingButton extends Container{
     }
 
     private onButtonDown() : void{
-        this.buttton.texture = this.buttonTexture.textures['btn_menu.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
     }
 
     private onButtonUp() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_menu.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
         // Game.the.app.stage.emit(CommonConfig.START_SPIN);
         // this.disable();
     }
 
     private onButtonOver() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_menu.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
     }
 
     private onButtonOut() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_menu.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
     }
 
     disable() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_menu.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
         this.interactive = false;
     }
 
     enable() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_menu.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
         this.interactive = true;
     }
     

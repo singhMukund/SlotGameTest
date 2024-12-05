@@ -14,7 +14,7 @@ export class SpinButton extends Container{
     }
 
     private initializeButton() :void{
-        this.buttton = new Sprite(this.buttonTexture.textures['btn_spin.png']);
+        this.buttton = new Sprite(this.buttonTexture.textures['button_spin.png']);
         this.addChild(this.buttton);
         this.buttton.scale.set(0.9);
     }
@@ -31,25 +31,25 @@ export class SpinButton extends Container{
     }
 
     private onButtonDown() : void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
     }
 
     private onButtonUp() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
         Game.the.app.stage.emit(CommonConfig.START_SPIN);
         this.disable();
     }
 
     private onButtonOver() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
     }
 
     private onButtonOut() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
     }
 
     disable() :void{
-        this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
         this.interactive = false;
     }
 
@@ -57,7 +57,7 @@ export class SpinButton extends Container{
         if(CommonConfig.the.getIsAutoplay()){
             this.disable();
         }else{
-            this.buttton.texture = this.buttonTexture.textures['btn_spin.png'];
+            this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
             this.interactive = true;
         }
     }

@@ -15,8 +15,8 @@ export class AutoplayBtn extends Container {
     }
 
     private initializeButton(): void {
-        this.buttton = new Sprite(this.buttonTexture.textures['Autoplay_btn.png']);
-        this.autoPlayOffBtn = new Sprite(this.buttonTexture.textures['Autoplay_btn.png']);
+        this.buttton = new Sprite(this.buttonTexture.textures['button_autoplay.png']);
+        this.autoPlayOffBtn = new Sprite(this.buttonTexture.textures['button_autoplay.png']);
         this.addChild(this.buttton);
         this.addChild(this.autoPlayOffBtn);
         this.buttton.scale.set(0.9);
@@ -51,63 +51,63 @@ export class AutoplayBtn extends Container {
     }
 
     private onButtonDown(): void {
-        this.buttton.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];
     }
 
     private onButtonDownOffBtn(): void {
-        this.autoPlayOffBtn.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.autoPlayOffBtn.texture = this.buttonTexture.textures['button_autoplay.png'];
     }
 
     private onButtonUp(): void {
-        this.buttton.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];
         Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
         this.autoPlayOffBtn.visible = true;
         this.buttton.visible = false;
     }
 
     private onButtonUpOffBtn(): void {
-        this.autoPlayOffBtn.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.autoPlayOffBtn.texture = this.buttonTexture.textures['button_autoplay.png'];
         Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, false);
         this.autoPlayOffBtn.visible = false;
         this.buttton.visible = true;
     }
 
     private onButtonOver(): void {
-        this.buttton.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];
     }
 
     private onButtonOverOffBtn(): void {
-        this.autoPlayOffBtn.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.autoPlayOffBtn.texture = this.buttonTexture.textures['button_autoplay.png'];
     }
 
     private onButtonOut(): void {
-        this.buttton.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];
     }
 
     private onButtonOutOffBtn(): void {
-        this.autoPlayOffBtn.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.autoPlayOffBtn.texture = this.buttonTexture.textures['button_autoplay.png'];
     }
 
     private disable(): void {
-        this.buttton.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];
         this.buttton.interactive = false;
         this.buttton.alpha = 0.65;
     }
 
     private enable(): void {
-        this.buttton.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];
         this.buttton.interactive = true;
         this.buttton.alpha = 1;
     }
 
     private disableOffBtn(): void {
-        this.autoPlayOffBtn.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.autoPlayOffBtn.texture = this.buttonTexture.textures['button_autoplay.png'];
         this.autoPlayOffBtn.interactive = false;
         this.autoPlayOffBtn.alpha = 0.65;
     }
 
     private enableOffBtn(): void {
-        this.autoPlayOffBtn.texture = this.buttonTexture.textures['Autoplay_btn.png'];
+        this.autoPlayOffBtn.texture = this.buttonTexture.textures['button_autoplay.png'];
         this.autoPlayOffBtn.interactive = true;
         this.autoPlayOffBtn.alpha = 1;
     }
