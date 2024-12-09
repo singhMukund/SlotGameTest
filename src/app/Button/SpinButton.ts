@@ -28,6 +28,16 @@ export class SpinButton extends Container{
 
         Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
         Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
+        document.body.onkeyup = (e)=> {
+            if (e.key == " " ||
+                e.code == "Space" ||      
+                e.keyCode == 32      
+            ) {
+                if(this.interactive){
+                    this.onButtonUp();
+                }
+            }
+          }
     }
 
     private onButtonDown() : void{
