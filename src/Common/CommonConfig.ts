@@ -9,7 +9,7 @@ interface SymbolWinData {
 export class CommonConfig {
     protected static _the: CommonConfig;
     public static symbolIds: string[] = [
-        'sym_wild', 'sym_bike', 'sym_book', 'sym_dirtypan',
+       'sym_wild',  'sym_bike', 'sym_book', 'sym_dirtypan',
         'sym_gate', 'sym_monitor', 'sym_mop', 'sym_plane',
         'sym_slotmachine'];
 
@@ -358,60 +358,8 @@ export class CommonConfig {
         return this.winGrid;
     }
 
-    // findWinningGroups(view: number[][]): Map<number, Set<string>> {
-    //     const winningGroups: Map<number, Set<string>> = new Map();
-    //     const rows = view.length;
-    //     const cols = view[0].length;
-    //     const visited = new Set<string>();
-
-    //     // DFS to explore all connected cells with the same symbol
-    //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
-    //         const posKey = `${r},${c}`;
-    //         if (
-    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
-    //             view[r][c] !== symbol ||                   // Different symbol
-    //             visited.has(posKey)                        // Already visited
-    //         ) return;
-
-    //         // Mark as visited and add to current group
-    //         visited.add(posKey);
-    //         group.add(posKey);
-
-    //         // Explore neighbors in all 4 directions
-    //         dfs(r + 1, c, symbol, group);
-    //         dfs(r - 1, c, symbol, group);
-    //         dfs(r, c + 1, symbol, group);
-    //         dfs(r, c - 1, symbol, group);
-    //     }
-
-    //     // Traverse each cell to find connected groups of 4 or more
-    //     for (let r = 0; r < rows; r++) {
-    //         for (let c = 0; c < cols; c++) {
-    //             const symbol = view[r][c];
-    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
-
-    //             // Initialize a new group to collect connected symbols
-    //             const currentGroup: Set<string> = new Set();
-    //             dfs(r, c, symbol, currentGroup);
-
-    //             // If group has 4 or more connected symbols, add to winningGroups map
-    //             if (currentGroup.size >= 4) {
-    //                 if (!winningGroups.has(symbol)) {
-    //                     winningGroups.set(symbol, new Set());
-    //                 }
-    //                 // Add the positions of the current group to the symbol's set in the map
-    //                 const symbolGroup = winningGroups.get(symbol)!;
-    //                 currentGroup.forEach(pos => symbolGroup.add(pos));
-    //             }
-    //         }
-    //     }
-
-    //     return winningGroups;
-    // }
-
-
-    findWinningGroups(view: number[][]): Map<number, Set<string[]>> {
-        const winningGroups: Map<number, Set<string[]>> = new Map();
+    findWinningGroups(view: number[][]): Map<number, Set<string>> {
+        const winningGroups: Map<number, Set<string>> = new Map();
         const rows = view.length;
         const cols = view[0].length;
         const visited = new Set<string>();
@@ -446,18 +394,70 @@ export class CommonConfig {
                 const currentGroup: Set<string> = new Set();
                 dfs(r, c, symbol, currentGroup);
 
-                // If group has 4 or more connected symbols, add it to winningGroups map
+                // If group has 4 or more connected symbols, add to winningGroups map
                 if (currentGroup.size >= 4) {
                     if (!winningGroups.has(symbol)) {
                         winningGroups.set(symbol, new Set());
                     }
-                    winningGroups.get(symbol)!.add([...currentGroup]);
+                    // Add the positions of the current group to the symbol's set in the map
+                    const symbolGroup = winningGroups.get(symbol)!;
+                    currentGroup.forEach(pos => symbolGroup.add(pos));
                 }
             }
         }
 
         return winningGroups;
     }
+
+
+    // findWinningGroups(view: number[][]): Map<number, Set<string[]>> {
+    //     const winningGroups: Map<number, Set<string[]>> = new Map();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+    //     const visited = new Set<string>();
+
+    //     // DFS to explore all connected cells with the same symbol
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             view[r][c] !== symbol ||                   // Different symbol
+    //             visited.has(posKey)                        // Already visited
+    //         ) return;
+
+    //         // Mark as visited and add to current group
+    //         visited.add(posKey);
+    //         group.add(posKey);
+
+    //         // Explore neighbors in all 4 directions
+    //         dfs(r + 1, c, symbol, group);
+    //         dfs(r - 1, c, symbol, group);
+    //         dfs(r, c + 1, symbol, group);
+    //         dfs(r, c - 1, symbol, group);
+    //     }
+
+    //     // Traverse each cell to find connected groups of 4 or more
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
+
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             dfs(r, c, symbol, currentGroup);
+
+    //             // If group has 4 or more connected symbols, add it to winningGroups map
+    //             if (currentGroup.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 winningGroups.get(symbol)!.add([...currentGroup]);
+    //             }
+    //         }
+    //     }
+
+    //     return winningGroups;
+    // }
 
 
     // findWinningGroups(view: number[][]): Set<string[]> {
