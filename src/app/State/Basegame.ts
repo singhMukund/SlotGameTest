@@ -124,7 +124,7 @@ export class BaseGame extends Container {
     private setPosition() {
         this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2 - 100);
         this.reelManager.position.set(190, 200);
-        this.lineMeter.position.set(370, 385);
+        this.lineMeter.position.set(190, 200);
         this.reelContainer.scale.set(0.6);
         this.aspectRatio = this.reelContainer.height / 919;
         // this.bottomPanelButton.position.set(0, (window.innerHeight - this.bottomPanelButton.height));
