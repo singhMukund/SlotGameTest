@@ -15,6 +15,7 @@ export class PentagonalUpdateFeature extends Container {
     private filledPentagonalContainer !: Container;
     private feature_Texture !: Spritesheet;
     private pentagon_fill_image !: Sprite;
+    private pentagon_center_frame !: Sprite;
     private maskContainer !: Container;
     private maskGraphics !: Graphics;
     private filledtextureArray: string[] = ['pentagon_fill_1', 'pentagon_fill_2', 'pentagon_fill_3', 'pentagon_fill_4', 'pentagon_fill_5'];
@@ -55,13 +56,13 @@ export class PentagonalUpdateFeature extends Container {
         let pentagon_frame: Sprite = new Sprite(this.feature_Texture.textures['pentagon_back.png']);
         this.pentagon_fill_image = new Sprite(this.feature_Texture.textures['pentagon_fill_5.png']);
         let pentagon_front_frame: Sprite = new Sprite(this.feature_Texture.textures['pentagon_front.png']);
-        let pentagon_center_frame: Sprite = new Sprite(this.feature_Texture.textures['pentagon_middle_icon.png']);
+        this.pentagon_center_frame = new Sprite(this.feature_Texture.textures['pentagon_middle_icon.png']);
         this.pentagonalBackContainer.addChild(pentagon_back_black_bg);
         this.filledPentagonalContainer.addChild(this.pentagon_fill_image);
         this.pentagonalTopContainer.addChild(pentagon_frame);
         this.pentagonalTopContainer.addChild(pentagon_front_frame);
-        this.pentagonalTopContainer.addChild(pentagon_center_frame);
-        pentagon_center_frame.position.set((pentagon_back_black_bg.width - pentagon_center_frame.width) / 2, (pentagon_front_frame.height - pentagon_center_frame.height) / 2 + 5);
+        this.pentagonalTopContainer.addChild(this.pentagon_center_frame);
+        this.pentagon_center_frame.position.set((pentagon_back_black_bg.width - this.pentagon_center_frame.width) / 2, (pentagon_front_frame.height - this.pentagon_center_frame.height) / 2 + 5);
 
         this.maskGraphics = new Graphics()
             .arc(0, 0, pentagon_back_black_bg.width / 2, 0, this.returnRadian(180))
@@ -69,7 +70,7 @@ export class PentagonalUpdateFeature extends Container {
         this.maskGraphics.position.set(this.maskGraphics.width / 2, this.maskGraphics.height / 2);
 
         this.counterMeter = new PentagonalMeter();
-        this.counterMeter.position.set(pentagon_center_frame.x + (pentagon_center_frame.width - this.counterMeter.width) / 2, pentagon_center_frame.y + (pentagon_center_frame.height - this.counterMeter.height) / 2);
+        this.counterMeter.position.set(this.pentagon_center_frame.x + (this.pentagon_center_frame.width - this.counterMeter.width) / 2, this.pentagon_center_frame.y + (this.pentagon_center_frame.height - this.counterMeter.height) / 2);
         // this.maskContainer.addChild(this.maskGraphics);
 
         // this.filledPentagonalContainer.mask = this.maskContainer;
@@ -101,6 +102,7 @@ export class PentagonalUpdateFeature extends Container {
         let index: number = this.getFilledTextureIndex(CommonConfig.the.getTotalWinSymbolCount());
         this.pentagon_fill_image.texture = this.feature_Texture.textures[`${this.filledtextureArray[index - 1]}.png`];
         this.counterMeter.updatePentagonalCount(CommonConfig.the.getTotalWinSymbolCount());
+        this.counterMeter.position.set(this.pentagon_center_frame.x + (this.pentagon_center_frame.width - this.counterMeter.width) / 2, this.pentagon_center_frame.y + (this.pentagon_center_frame.height - this.counterMeter.height) / 2);
     }
 
     private getFilledTextureIndex(input: number) {

@@ -226,7 +226,7 @@ export class Reel extends Container {
     public playWinAnim(posId: number[]) {
         for (let i: number = 0; i < posId.length; i++) {
             gsap.to(this.children[posId[i]], {
-                duration: 0.5,
+                duration: 1,
                 alpha: 0,
                 ease: "power1.inOut"
             })
