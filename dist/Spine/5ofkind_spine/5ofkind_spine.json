@@ -1,0 +1,409 @@
+{
+    "skeleton": {
+        "hash": "agdC+d74KCo",
+        "spine": "4.1.19",
+        "x": -453,
+        "y": -157,
+        "width": 907,
+        "height": 313,
+        "fps": 24,
+        "images": "./images/",
+        "audio": "D:/1. Riseup Labs/1. Crazy Slot/Spine animations/Special Text/5 of a kind"
+    },       
+    "bones": [
+        {
+            "name": "root"
+        },
+        {
+            "name": "5",
+            "parent": "root",
+            "length": 72.2,
+            "rotation": 90,
+            "x": -303.85,
+            "y": -8.78
+        },
+        {
+            "name": "Layer 3",
+            "parent": "root",
+            "length": 118,
+            "rotation": 89.14,
+            "x": -59.06,
+            "y": 14.12
+        },
+        {
+            "name": "Layer 4",
+            "parent": "root",
+            "length": 123.27,
+            "rotation": 90,
+            "x": 189.24,
+            "y": 10.6
+        },
+        {
+            "name": "Layer 5",
+            "parent": "root",
+            "length": 237.75,
+            "rotation": 0.42,
+            "x": -154.16,
+            "y": -75.7
+        },
+        {
+            "name": "Layer 7",
+            "parent": "root",
+            "length": 110.89,
+            "rotation": 32.68,
+            "x": 220.94,
+            "y": 52.86
+        },
+        {
+            "name": "Layer 6",
+            "parent": "root",
+            "length": 211.46,
+            "rotation": 12.99,
+            "x": 201.57,
+            "y": -49.28
+        },
+        {
+            "name": "Shine",
+            "parent": "root",
+            "length": 84.99,
+            "rotation": 124.02,
+            "x": -613.79,
+            "y": -8.78
+        }
+    ],
+    "slots": [
+        {
+            "name": "Layer 6",
+            "bone": "Layer 6",
+            "attachment": "Layer 6"
+        },
+        {
+            "name": "Layer 7",
+            "bone": "Layer 7",
+            "attachment": "Layer 7"
+        },
+        {
+            "name": "Layer 3",
+            "bone": "Layer 3",
+            "attachment": "Layer 3"
+        },
+        {
+            "name": "Layer 4",
+            "bone": "Layer 4",
+            "attachment": "Layer 4"
+        },
+        {
+            "name": "Layer 5",
+            "bone": "Layer 5",
+            "attachment": "Layer 5"
+        },
+        {
+            "name": "5",
+            "bone": "5",
+            "attachment": "5"
+        },
+        {
+            "name": "Mask_1",
+            "bone": "root",
+            "attachment": "Mask_1"
+        },
+        {
+            "name": "Shine",
+            "bone": "Shine",
+            "color": "ffffff78",
+            "attachment": "Shine",
+            "blend": "additive"
+        }
+    ],
+    "skins": [
+        {
+            "name": "default",
+            "attachments": {
+                "5": {
+                    "5": {
+                        "x": 8.28,
+                        "y": -3.85,
+                        "rotation": -90,
+                        "width": 306,
+                        "height": 313
+                    }
+                },
+                "Layer 3": {
+                    "Layer 3": {
+                        "x": 55.84,
+                        "y": -30.23,
+                        "rotation": -89.14,
+                        "width": 278,
+                        "height": 173
+                    }
+                },
+                "Layer 4": {
+                    "Layer 4": {
+                        "x": 58.9,
+                        "y": -0.26,
+                        "rotation": -90,
+                        "width": 177,
+                        "height": 169
+                    }
+                },
+                "Layer 5": {
+                    "Layer 5": {
+                        "x": 209.15,
+                        "y": -1.85,
+                        "rotation": -0.42,
+                        "width": 444,
+                        "height": 162
+                    }
+                },
+                "Layer 6": {
+                    "Layer 6": {
+                        "x": 102.6,
+                        "y": 0.21,
+                        "rotation": -12.99,
+                        "width": 305,
+                        "height": 216
+                    }
+                },
+                "Layer 7": {
+                    "Layer 7": {
+                        "x": 52.78,
+                        "y": 2.54,
+                        "rotation": -32.68,
+                        "width": 158,
+                        "height": 121
+                    }
+                },
+                "Mask_1": {
+                    "Mask_1": {
+                        "type": "clipping",
+                        "end": "Mask_1",
+                        "vertexCount": 37,
+                        "vertices": [
+                            -278.34,
+                            59.3,
+                            -185.93,
+                            60.52,
+                            -176.14,
+                            68.48,
+                            -173.69,
+                            80.72,
+                            -173.69,
+                            126.62,
+                            -176.75,
+                            138.24,
+                            -186.54,
+                            143.14,
+                            -406.85,
+                            143.75,
+                            -417.87,
+                            137.63,
+                            -423.99,
+                            127.84,
+                            -424.6,
+                            -6.79,
+                            -421.54,
+                            -19.64,
+                            -411.75,
+                            -25.15,
+                            -394,
+                            -28.21,
+                            -306.49,
+                            -27.6,
+                            -304.65,
+                            -40.45,
+                            -309.55,
+                            -49.02,
+                            -337.09,
+                            -47.18,
+                            -355.45,
+                            -42.9,
+                            -418.48,
+                            -42.29,
+                            -430.72,
+                            -49.63,
+                            -435.61,
+                            -63.09,
+                            -433.78,
+                            -107.15,
+                            -430.1,
+                            -118.78,
+                            -418.48,
+                            -124.9,
+                            -372.58,
+                            -131.63,
+                            -299.76,
+                            -134.08,
+                            -245.29,
+                            -132.86,
+                            -205.52,
+                            -117.56,
+                            -181.04,
+                            -96.75,
+                            -168.8,
+                            -68.6,
+                            -164.51,
+                            -29.43,
+                            -171.86,
+                            2.39,
+                            -180.43,
+                            23.19,
+                            -201.84,
+                            40.94,
+                            -225.1,
+                            50.73,
+                            -279.56,
+                            49.51
+                        ],
+                        "color": "ce3a3aff"
+                    }
+                },
+                "Shine": {
+                    "Shine": {
+                        "x": 20.13,
+                        "y": 1.75,
+                        "scaleX": 1.5231,
+                        "scaleY": 1.5231,
+                        "rotation": -124.02,
+                        "width": 197,
+                        "height": 282
+                    }
+                }
+            }
+        }
+    ],
+    "animations": {
+        "FiveOfAKind": {
+            "bones": {
+                "5": {
+                    "scale": [
+                        {
+                            "x": 0,
+                            "y": 0
+                        },
+                        {
+                            "time": 0.1667
+                        },
+                        {
+                            "time": 0.25,
+                            "x": 0.8,
+                            "y": 0.8
+                        },
+                        {
+                            "time": 0.3333,
+                            "curve": "stepped"
+                        },
+                        {
+                            "time": 2.5
+                        }
+                    ]
+                },
+                "Layer 3": {
+                    "scale": [
+                        {
+                            "x": 0
+                        },
+                        {
+                            "time": 0.1667
+                        },
+                        {
+                            "time": 0.25,
+                            "x": 0.8
+                        },
+                        {
+                            "time": 0.3333
+                        }
+                    ]
+                },
+                "Layer 4": {
+                    "scale": [
+                        {
+                            "x": 0
+                        },
+                        {
+                            "time": 0.1667
+                        },
+                        {
+                            "time": 0.25,
+                            "x": 0.8
+                        },
+                        {
+                            "time": 0.3333
+                        }
+                    ]
+                },
+                "Layer 5": {
+                    "scale": [
+                        {
+                            "x": 0,
+                            "curve": "stepped"
+                        },
+                        {
+                            "time": 0.1667,
+                            "x": 0
+                        },
+                        {
+                            "time": 0.3333,
+                            "x": 1.2
+                        },
+                        {
+                            "time": 0.5,
+                            "x": 0.8
+                        },
+                        {
+                            "time": 0.5833
+                        }
+                    ]
+                },
+                "Layer 6": {
+                    "scale": [
+                        {
+                            "x": 0,
+                            "curve": "stepped"
+                        },
+                        {
+                            "time": 0.5833,
+                            "x": 0
+                        },
+                        {
+                            "time": 0.75,
+                            "x": 1.3
+                        },
+                        {
+                            "time": 0.8333
+                        }
+                    ]
+                },
+                "Layer 7": {
+                    "scale": [
+                        {
+                            "x": 0,
+                            "curve": "stepped"
+                        },
+                        {
+                            "time": 0.4167,
+                            "x": 0
+                        },
+                        {
+                            "time": 0.6667,
+                            "x": 1.3
+                        },
+                        {
+                            "time": 0.75
+                        }
+                    ]
+                },
+                "Shine": {
+                    "translate": [
+                        {
+                            "time": 1
+                        },
+                        {
+                            "time": 2,
+                            "x": 581.91
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

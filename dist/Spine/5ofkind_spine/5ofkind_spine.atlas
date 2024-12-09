@@ -1,0 +1,29 @@
+5ofkind_spine.png
+size:948,444
+filter:Linear,Linear
+pma:true
+5
+bounds:2,140,300,307
+offsets:3,3,306,313
+rotate:90
+Layer 3
+bounds:774,168,272,167
+offsets:3,3,278,173
+rotate:90
+Layer 4
+bounds:774,3,171,163
+offsets:3,3,177,169
+Layer 5
+bounds:616,2,438,156
+offsets:3,3,444,162
+rotate:90
+Layer 6
+bounds:311,226,303,214
+offsets:1,1,305,216
+Layer 7
+bounds:2,19,156,119
+offsets:1,1,158,121
+Shine
+bounds:311,31,193,278
+offsets:2,2,197,282
+rotate:90

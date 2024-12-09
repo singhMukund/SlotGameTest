@@ -1,0 +1,584 @@
+Kind.TypeLiteral */:
+                case 325 /* SyntaxKind.JSDocTypeLiteral */:
+                case 289 /* SyntaxKind.JsxAttributes */:
+                    return 1 /* ContainerFlags.IsContainer */;
+                case 261 /* SyntaxKind.InterfaceDeclaration */:
+                    return 1 /* ContainerFlags.IsContainer */ | 64 /* ContainerFlags.IsInterface */;
+                case 264 /* SyntaxKind.ModuleDeclaration */:
+                case 262 /* SyntaxKind.TypeAliasDeclaration */:
+                case 197 /* SyntaxKind.MappedType */:
+                case 178 /* SyntaxKind.IndexSignature */:
+                    return 1 /* ContainerFlags.IsContainer */ | 32 /* ContainerFlags.HasLocals */;
+                case 308 /* SyntaxKind.SourceFile */:
+                    return 1 /* ContainerFlags.IsContainer */ | 4 /* ContainerFlags.IsControlFlowContainer */ | 32 /* ContainerFlags.HasLocals */;
+                case 174 /* SyntaxKind.GetAccessor */:
+                case 175 /* SyntaxKind.SetAccessor */:
+                case 171 /* SyntaxKind.MethodDeclaration */:
+                    if (ts.isObjectLiteralOrClassExpressionMethodOrAccessor(node)) {
+                        return 1 /* ContainerFlags.IsContainer */ | 4 /* ContainerFlags.IsControlFlowContainer */ | 32 /* ContainerFlags.HasLocals */ | 8 /* ContainerFlags.IsFunctionLike */ | 128 /* ContainerFlags.IsObjectLiteralOrClassExpressionMethodOrAccessor */;
+                    }
+                // falls through
+                case 173 /* SyntaxKind.Constructor */:
+                case 259 /* SyntaxKind.FunctionDeclaration */:
+                case 170 /* SyntaxKind.MethodSignature */:
+                case 176 /* SyntaxKind.CallSignature */:
+                case 326 /* SyntaxKind.JSDocSignature */:
+                case 320 /* SyntaxKind.JSDocFunctionType */:
+                case 181 /* SyntaxKind.FunctionType */:
+                case 177 /* SyntaxKind.ConstructSignature */:
+                case 182 /* SyntaxKind.ConstructorType */:
+                case 172 /* SyntaxKind.ClassStaticBlockDeclaration */:
+                    return 1 /* ContainerFlags.IsContainer */ | 4 /* ContainerFlags.IsControlFlowContainer */ | 32 /* ContainerFlags.HasLocals */ | 8 /* ContainerFlags.IsFunctionLike */;
+                case 215 /* SyntaxKind.FunctionExpression */:
+                case 216 /* SyntaxKind.ArrowFunction */:
+                    return 1 /* ContainerFlags.IsContainer */ | 4 /* ContainerFlags.IsControlFlowContainer */ | 32 /* ContainerFlags.HasLocals */ | 8 /* ContainerFlags.IsFunctionLike */ | 16 /* ContainerFlags.IsFunctionExpression */;
+                case 265 /* SyntaxKind.ModuleBlock */:
+                    return 4 /* ContainerFlags.IsControlFlowContainer */;
+                case 169 /* SyntaxKind.PropertyDeclaration */:
+                    return node.initializer ? 4 /* ContainerFlags.IsControlFlowContainer */ : 0;
+                case 295 /* SyntaxKind.CatchClause */:
+                case 245 /* SyntaxKind.ForStatement */:
+                case 246 /* SyntaxKind.ForInStatement */:
+                case 247 /* SyntaxKind.ForOfStatement */:
+                case 266 /* SyntaxKind.CaseBlock */:
+                    return 2 /* ContainerFlags.IsBlockScopedContainer */;
+                case 238 /* SyntaxKind.Block */:
+                    // do not treat blocks directly inside a function as a block-scoped-container.
+                    // Locals that reside in this block should go to the function locals. Otherwise 'x'
+                    // would not appear to be a redeclaration of a block scoped local in the following
+                    // example:
+                    //
+                    //      function foo() {
+                    //          var x;
+                    //          let x;
+                    //      }
+                    //
+                    // If we placed 'var x' into the function locals and 'let x' into the locals of
+                    // the block, then there would be no collision.
+                    //
+                    // By not creating a new block-scoped-container here, we ensure that both 'var x'
+                    // and 'let x' go into the Function-container's locals, and we do get a collision
+                    // conflict.
+                    return ts.isFunctionLike(node.parent) || ts.isClassStaticBlockDeclaration(node.parent) ? 0 /* ContainerFlags.None */ : 2 /* ContainerFlags.IsBlockScopedContainer */;
+            }
+            return 0 /* ContainerFlags.None */;
+        }
+        function addToContainerChain(next) {
+            if (lastContainer) {
+                lastContainer.nextContainer = next;
+            }
+            lastContainer = next;
+        }
+        function declareSymbolAndAddToSymbolTable(node, symbolFlags, symbolExcludes) {
+            switch (container.kind) {
+                // Modules, source files, and classes need specialized handling for how their
+                // members are declared (for example, a member of a class will go into a specific
+                // symbol table depending on if it is static or not). We defer to specialized
+                // handlers to take care of declaring these child members.
+                case 264 /* SyntaxKind.ModuleDeclaration */:
+                    return declareModuleMember(node, symbolFlags, symbolExcludes);
+                case 308 /* SyntaxKind.SourceFile */:
+                    return declareSourceFileMember(node, symbolFlags, symbolExcludes);
+                case 228 /* SyntaxKind.ClassExpression */:
+                case 260 /* SyntaxKind.ClassDeclaration */:
+                    return declareClassMember(node, symbolFlags, symbolExcludes);
+                case 263 /* SyntaxKind.EnumDeclaration */:
+                    return declareSymbol(container.symbol.exports, container.symbol, node, symbolFlags, symbolExcludes);
+                case 184 /* SyntaxKind.TypeLiteral */:
+                case 325 /* SyntaxKind.JSDocTypeLiteral */:
+                case 207 /* SyntaxKind.ObjectLiteralExpression */:
+                case 261 /* SyntaxKind.InterfaceDeclaration */:
+                case 289 /* SyntaxKind.JsxAttributes */:
+                    // Interface/Object-types always have their children added to the 'members' of
+                    // their container. They are only accessible through an instance of their
+                    // container, and are never in scope otherwise (even inside the body of the
+                    // object / type / interface declaring them). An exception is type parameters,
+                    // which are in scope without qualification (similar to 'locals').
+                    return declareSymbol(container.symbol.members, container.symbol, node, symbolFlags, symbolExcludes);
+                case 181 /* SyntaxKind.FunctionType */:
+                case 182 /* SyntaxKind.ConstructorType */:
+                case 176 /* SyntaxKind.CallSignature */:
+                case 177 /* SyntaxKind.ConstructSignature */:
+                case 326 /* SyntaxKind.JSDocSignature */:
+                case 178 /* SyntaxKind.IndexSignature */:
+                case 171 /* SyntaxKind.MethodDeclaration */:
+                case 170 /* SyntaxKind.MethodSignature */:
+                case 173 /* SyntaxKind.Constructor */:
+                case 174 /* SyntaxKind.GetAccessor */:
+                case 175 /* SyntaxKind.SetAccessor */:
+                case 259 /* SyntaxKind.FunctionDeclaration */:
+                case 215 /* SyntaxKind.FunctionExpression */:
+                case 216 /* SyntaxKind.ArrowFunction */:
+                case 320 /* SyntaxKind.JSDocFunctionType */:
+                case 348 /* SyntaxKind.JSDocTypedefTag */:
+                case 341 /* SyntaxKind.JSDocCallbackTag */:
+                case 172 /* SyntaxKind.ClassStaticBlockDeclaration */:
+                case 262 /* SyntaxKind.TypeAliasDeclaration */:
+                case 197 /* SyntaxKind.MappedType */:
+                    // All the children of these container types are never visible through another
+                    // symbol (i.e. through another symbol's 'exports' or 'members').  Instead,
+                    // they're only accessed 'lexically' (i.e. from code that exists underneath
+                    // their container in the tree). To accomplish this, we simply add their declared
+                    // symbol to the 'locals' of the container.  These symbols can then be found as
+                    // the type checker walks up the containers, checking them for matching names.
+                    return declareSymbol(container.locals, /*parent*/ undefined, node, symbolFlags, symbolExcludes);
+            }
+        }
+        function declareClassMember(node, symbolFlags, symbolExcludes) {
+            return ts.isStatic(node)
+                ? declareSymbol(container.symbol.exports, container.symbol, node, symbolFlags, symbolExcludes)
+                : declareSymbol(container.symbol.members, container.symbol, node, symbolFlags, symbolExcludes);
+        }
+        function declareSourceFileMember(node, symbolFlags, symbolExcludes) {
+            return ts.isExternalModule(file)
+                ? declareModuleMember(node, symbolFlags, symbolExcludes)
+                : declareSymbol(file.locals, /*parent*/ undefined, node, symbolFlags, symbolExcludes);
+        }
+        function hasExportDeclarations(node) {
+            var body = ts.isSourceFile(node) ? node : ts.tryCast(node.body, ts.isModuleBlock);
+            return !!body && body.statements.some(function (s) { return ts.isExportDeclaration(s) || ts.isExportAssignment(s); });
+        }
+        function setExportContextFlag(node) {
+            // A declaration source file or ambient module declaration that contains no export declarations (but possibly regular
+            // declarations with export modifiers) is an export context in which declarations are implicitly exported.
+            if (node.flags & 16777216 /* NodeFlags.Ambient */ && !hasExportDeclarations(node)) {
+                node.flags |= 64 /* NodeFlags.ExportContext */;
+            }
+            else {
+                node.flags &= ~64 /* NodeFlags.ExportContext */;
+            }
+        }
+        function bindModuleDeclaration(node) {
+            setExportContextFlag(node);
+            if (ts.isAmbientModule(node)) {
+                if (ts.hasSyntacticModifier(node, 1 /* ModifierFlags.Export */)) {
+                    errorOnFirstToken(node, ts.Diagnostics.export_modifier_cannot_be_applied_to_ambient_modules_and_module_augmentations_since_they_are_always_visible);
+                }
+                if (ts.isModuleAugmentationExternal(node)) {
+                    declareModuleSymbol(node);
+                }
+                else {
+                    var pattern = void 0;
+                    if (node.name.kind === 10 /* SyntaxKind.StringLiteral */) {
+                        var text = node.name.text;
+                        pattern = ts.tryParsePattern(text);
+                        if (pattern === undefined) {
+                            errorOnFirstToken(node.name, ts.Diagnostics.Pattern_0_can_have_at_most_one_Asterisk_character, text);
+                        }
+                    }
+                    var symbol = declareSymbolAndAddToSymbolTable(node, 512 /* SymbolFlags.ValueModule */, 110735 /* SymbolFlags.ValueModuleExcludes */);
+                    file.patternAmbientModules = ts.append(file.patternAmbientModules, pattern && !ts.isString(pattern) ? { pattern: pattern, symbol: symbol } : undefined);
+                }
+            }
+            else {
+                var state = declareModuleSymbol(node);
+                if (state !== 0 /* ModuleInstanceState.NonInstantiated */) {
+                    var symbol = node.symbol;
+                    // if module was already merged with some function, class or non-const enum, treat it as non-const-enum-only
+                    symbol.constEnumOnlyModule = (!(symbol.flags & (16 /* SymbolFlags.Function */ | 32 /* SymbolFlags.Class */ | 256 /* SymbolFlags.RegularEnum */)))
+                        // Current must be `const enum` only
+                        && state === 2 /* ModuleInstanceState.ConstEnumOnly */
+                        // Can't have been set to 'false' in a previous merged symbol. ('undefined' OK)
+                        && symbol.constEnumOnlyModule !== false;
+                }
+            }
+        }
+        function declareModuleSymbol(node) {
+            var state = getModuleInstanceState(node);
+            var instantiated = state !== 0 /* ModuleInstanceState.NonInstantiated */;
+            declareSymbolAndAddToSymbolTable(node, instantiated ? 512 /* SymbolFlags.ValueModule */ : 1024 /* SymbolFlags.NamespaceModule */, instantiated ? 110735 /* SymbolFlags.ValueModuleExcludes */ : 0 /* SymbolFlags.NamespaceModuleExcludes */);
+            return state;
+        }
+        function bindFunctionOrConstructorType(node) {
+            // For a given function symbol "<...>(...) => T" we want to generate a symbol identical
+            // to the one we would get for: { <...>(...): T }
+            //
+            // We do that by making an anonymous type literal symbol, and then setting the function
+            // symbol as its sole member. To the rest of the system, this symbol will be indistinguishable
+            // from an actual type literal symbol you would have gotten had you used the long form.
+            var symbol = createSymbol(131072 /* SymbolFlags.Signature */, getDeclarationName(node)); // TODO: GH#18217
+            addDeclarationToSymbol(symbol, node, 131072 /* SymbolFlags.Signature */);
+            var typeLiteralSymbol = createSymbol(2048 /* SymbolFlags.TypeLiteral */, "__type" /* InternalSymbolName.Type */);
+            addDeclarationToSymbol(typeLiteralSymbol, node, 2048 /* SymbolFlags.TypeLiteral */);
+            typeLiteralSymbol.members = ts.createSymbolTable();
+            typeLiteralSymbol.members.set(symbol.escapedName, symbol);
+        }
+        function bindObjectLiteralExpression(node) {
+            return bindAnonymousDeclaration(node, 4096 /* SymbolFlags.ObjectLiteral */, "__object" /* InternalSymbolName.Object */);
+        }
+        function bindJsxAttributes(node) {
+            return bindAnonymousDeclaration(node, 4096 /* SymbolFlags.ObjectLiteral */, "__jsxAttributes" /* InternalSymbolName.JSXAttributes */);
+        }
+        function bindJsxAttribute(node, symbolFlags, symbolExcludes) {
+            return declareSymbolAndAddToSymbolTable(node, symbolFlags, symbolExcludes);
+        }
+        function bindAnonymousDeclaration(node, symbolFlags, name) {
+            var symbol = createSymbol(symbolFlags, name);
+            if (symbolFlags & (8 /* SymbolFlags.EnumMember */ | 106500 /* SymbolFlags.ClassMember */)) {
+                symbol.parent = container.symbol;
+            }
+            addDeclarationToSymbol(symbol, node, symbolFlags);
+            return symbol;
+        }
+        function bindBlockScopedDeclaration(node, symbolFlags, symbolExcludes) {
+            switch (blockScopeContainer.kind) {
+                case 264 /* SyntaxKind.ModuleDeclaration */:
+                    declareModuleMember(node, symbolFlags, symbolExcludes);
+                    break;
+                case 308 /* SyntaxKind.SourceFile */:
+                    if (ts.isExternalOrCommonJsModule(container)) {
+                        declareModuleMember(node, symbolFlags, symbolExcludes);
+                        break;
+                    }
+                // falls through
+                default:
+                    if (!blockScopeContainer.locals) {
+                        blockScopeContainer.locals = ts.createSymbolTable();
+                        addToContainerChain(blockScopeContainer);
+                    }
+                    declareSymbol(blockScopeContainer.locals, /*parent*/ undefined, node, symbolFlags, symbolExcludes);
+            }
+        }
+        function delayedBindJSDocTypedefTag() {
+            if (!delayedTypeAliases) {
+                return;
+            }
+            var saveContainer = container;
+            var saveLastContainer = lastContainer;
+            var saveBlockScopeContainer = blockScopeContainer;
+            var saveParent = parent;
+            var saveCurrentFlow = currentFlow;
+            for (var _i = 0, delayedTypeAliases_1 = delayedTypeAliases; _i < delayedTypeAliases_1.length; _i++) {
+                var typeAlias = delayedTypeAliases_1[_i];
+                var host = typeAlias.parent.parent;
+                container = ts.findAncestor(host.parent, function (n) { return !!(getContainerFlags(n) & 1 /* ContainerFlags.IsContainer */); }) || file;
+                blockScopeContainer = ts.getEnclosingBlockScopeContainer(host) || file;
+                currentFlow = initFlowNode({ flags: 2 /* FlowFlags.Start */ });
+                parent = typeAlias;
+                bind(typeAlias.typeExpression);
+                var declName = ts.getNameOfDeclaration(typeAlias);
+                if ((ts.isJSDocEnumTag(typeAlias) || !typeAlias.fullName) && declName && ts.isPropertyAccessEntityNameExpression(declName.parent)) {
+                    // typedef anchored to an A.B.C assignment - we need to bind into B's namespace under name C
+                    var isTopLevel = isTopLevelNamespaceAssignment(declName.parent);
+                    if (isTopLevel) {
+                        bindPotentiallyMissingNamespaces(file.symbol, declName.parent, isTopLevel, !!ts.findAncestor(declName, function (d) { return ts.isPropertyAccessExpression(d) && d.name.escapedText === "prototype"; }), /*containerIsClass*/ false);
+                        var oldContainer = container;
+                        switch (ts.getAssignmentDeclarationPropertyAccessKind(declName.parent)) {
+                            case 1 /* AssignmentDeclarationKind.ExportsProperty */:
+                            case 2 /* AssignmentDeclarationKind.ModuleExports */:
+                                if (!ts.isExternalOrCommonJsModule(file)) {
+                                    container = undefined;
+                                }
+                                else {
+                                    container = file;
+                                }
+                                break;
+                            case 4 /* AssignmentDeclarationKind.ThisProperty */:
+                                container = declName.parent.expression;
+                                break;
+                            case 3 /* AssignmentDeclarationKind.PrototypeProperty */:
+                                container = declName.parent.expression.name;
+                                break;
+                            case 5 /* AssignmentDeclarationKind.Property */:
+                                container = isExportsOrModuleExportsOrAlias(file, declName.parent.expression) ? file
+                                    : ts.isPropertyAccessExpression(declName.parent.expression) ? declName.parent.expression.name
+                                        : declName.parent.expression;
+                                break;
+                            case 0 /* AssignmentDeclarationKind.None */:
+                                return ts.Debug.fail("Shouldn't have detected typedef or enum on non-assignment declaration");
+                        }
+                        if (container) {
+                            declareModuleMember(typeAlias, 524288 /* SymbolFlags.TypeAlias */, 788968 /* SymbolFlags.TypeAliasExcludes */);
+                        }
+                        container = oldContainer;
+                    }
+                }
+                else if (ts.isJSDocEnumTag(typeAlias) || !typeAlias.fullName || typeAlias.fullName.kind === 79 /* SyntaxKind.Identifier */) {
+                    parent = typeAlias.parent;
+                    bindBlockScopedDeclaration(typeAlias, 524288 /* SymbolFlags.TypeAlias */, 788968 /* SymbolFlags.TypeAliasExcludes */);
+                }
+                else {
+                    bind(typeAlias.fullName);
+                }
+            }
+            container = saveContainer;
+            lastContainer = saveLastContainer;
+            blockScopeContainer = saveBlockScopeContainer;
+            parent = saveParent;
+            currentFlow = saveCurrentFlow;
+        }
+        // The binder visits every node in the syntax tree so it is a convenient place to perform a single localized
+        // check for reserved words used as identifiers in strict mode code, as well as `yield` or `await` in
+        // [Yield] or [Await] contexts, respectively.
+        function checkContextualIdentifier(node) {
+            // Report error only if there are no parse errors in file
+            if (!file.parseDiagnostics.length &&
+                !(node.flags & 16777216 /* NodeFlags.Ambient */) &&
+                !(node.flags & 8388608 /* NodeFlags.JSDoc */) &&
+                !ts.isIdentifierName(node)) {
+                // strict mode identifiers
+                if (inStrictMode &&
+                    node.originalKeywordKind >= 117 /* SyntaxKind.FirstFutureReservedWord */ &&
+                    node.originalKeywordKind <= 125 /* SyntaxKind.LastFutureReservedWord */) {
+                    file.bindDiagnostics.push(createDiagnosticForNode(node, getStrictModeIdentifierMessage(node), ts.declarationNameToString(node)));
+                }
+                else if (node.originalKeywordKind === 133 /* SyntaxKind.AwaitKeyword */) {
+                    if (ts.isExternalModule(file) && ts.isInTopLevelContext(node)) {
+                        file.bindDiagnostics.push(createDiagnosticForNode(node, ts.Diagnostics.Identifier_expected_0_is_a_reserved_word_at_the_top_level_of_a_module, ts.declarationNameToString(node)));
+                    }
+                    else if (node.flags & 32768 /* NodeFlags.AwaitContext */) {
+                        file.bindDiagnostics.push(createDiagnosticForNode(node, ts.Diagnostics.Identifier_expected_0_is_a_reserved_word_that_cannot_be_used_here, ts.declarationNameToString(node)));
+                    }
+                }
+                else if (node.originalKeywordKind === 125 /* SyntaxKind.YieldKeyword */ && node.flags & 8192 /* NodeFlags.YieldContext */) {
+                    file.bindDiagnostics.push(createDiagnosticForNode(node, ts.Diagnostics.Identifier_expected_0_is_a_reserved_word_that_cannot_be_used_here, ts.declarationNameToString(node)));
+                }
+            }
+        }
+        function getStrictModeIdentifierMessage(node) {
+            // Provide specialized messages to help the user understand why we think they're in
+            // strict mode.
+            if (ts.getContainingClass(node)) {
+                return ts.Diagnostics.Identifier_expected_0_is_a_reserved_word_in_strict_mode_Class_definitions_are_automatically_in_strict_mode;
+            }
+            if (file.externalModuleIndicator) {
+                return ts.Diagnostics.Identifier_expected_0_is_a_reserved_word_in_strict_mode_Modules_are_automatically_in_strict_mode;
+            }
+            return ts.Diagnostics.Identifier_expected_0_is_a_reserved_word_in_strict_mode;
+        }
+        // The binder visits every node, so this is a good place to check for
+        // the reserved private name (there is only one)
+        function checkPrivateIdentifier(node) {
+            if (node.escapedText === "#constructor") {
+                // Report error only if there are no parse errors in file
+                if (!file.parseDiagnostics.length) {
+                    file.bindDiagnostics.push(createDiagnosticForNode(node, ts.Diagnostics.constructor_is_a_reserved_word, ts.declarationNameToString(node)));
+                }
+            }
+        }
+        function checkStrictModeBinaryExpression(node) {
+            if (inStrictMode && ts.isLeftHandSideExpression(node.left) && ts.isAssignmentOperator(node.operatorToken.kind)) {
+                // ECMA 262 (Annex C) The identifier eval or arguments may not appear as the LeftHandSideExpression of an
+                // Assignment operator(11.13) or of a PostfixExpression(11.3)
+                checkStrictModeEvalOrArguments(node, node.left);
+            }
+        }
+        function checkStrictModeCatchClause(node) {
+            // It is a SyntaxError if a TryStatement with a Catch occurs within strict code and the Identifier of the
+            // Catch production is eval or arguments
+            if (inStrictMode && node.variableDeclaration) {
+                checkStrictModeEvalOrArguments(node, node.variableDeclaration.name);
+            }
+        }
+        function checkStrictModeDeleteExpression(node) {
+            // Grammar checking
+            if (inStrictMode && node.expression.kind === 79 /* SyntaxKind.Identifier */) {
+                // When a delete operator occurs within strict mode code, a SyntaxError is thrown if its
+                // UnaryExpression is a direct reference to a variable, function argument, or function name
+                var span = ts.getErrorSpanForNode(file, node.expression);
+                file.bindDiagnostics.push(ts.createFileDiagnostic(file, span.start, span.length, ts.Diagnostics.delete_cannot_be_called_on_an_identifier_in_strict_mode));
+            }
+        }
+        function isEvalOrArgumentsIdentifier(node) {
+            return ts.isIdentifier(node) && (node.escapedText === "eval" || node.escapedText === "arguments");
+        }
+        function checkStrictModeEvalOrArguments(contextNode, name) {
+            if (name && name.kind === 79 /* SyntaxKind.Identifier */) {
+                var identifier = name;
+                if (isEvalOrArgumentsIdentifier(identifier)) {
+                    // We check first if the name is inside class declaration or class expression; if so give explicit message
+                    // otherwise report generic error message.
+                    var span = ts.getErrorSpanForNode(file, name);
+                    file.bindDiagnostics.push(ts.createFileDiagnostic(file, span.start, span.length, getStrictModeEvalOrArgumentsMessage(contextNode), ts.idText(identifier)));
+                }
+            }
+        }
+        function getStrictModeEvalOrArgumentsMessage(node) {
+            // Provide specialized messages to help the user understand why we think they're in
+            // strict mode.
+            if (ts.getContainingClass(node)) {
+                return ts.Diagnostics.Code_contained_in_a_class_is_evaluated_in_JavaScript_s_strict_mode_which_does_not_allow_this_use_of_0_For_more_information_see_https_Colon_Slash_Slashdeveloper_mozilla_org_Slashen_US_Slashdocs_SlashWeb_SlashJavaScript_SlashReference_SlashStrict_mode;
+            }
+            if (file.externalModuleIndicator) {
+                return ts.Diagnostics.Invalid_use_of_0_Modules_are_automatically_in_strict_mode;
+            }
+            return ts.Diagnostics.Invalid_use_of_0_in_strict_mode;
+        }
+        function checkStrictModeFunctionName(node) {
+            if (inStrictMode) {
+                // It is a SyntaxError if the identifier eval or arguments appears within a FormalParameterList of a strict mode FunctionDeclaration or FunctionExpression (13.1))
+                checkStrictModeEvalOrArguments(node, node.name);
+            }
+        }
+        function getStrictModeBlockScopeFunctionDeclarationMessage(node) {
+            // Provide specialized messages to help the user understand why we think they're in
+            // strict mode.
+            if (ts.getContainingClass(node)) {
+                return ts.Diagnostics.Function_declarations_are_not_allowed_inside_blocks_in_strict_mode_when_targeting_ES3_or_ES5_Class_definitions_are_automatically_in_strict_mode;
+            }
+            if (file.externalModuleIndicator) {
+                return ts.Diagnostics.Function_declarations_are_not_allowed_inside_blocks_in_strict_mode_when_targeting_ES3_or_ES5_Modules_are_automatically_in_strict_mode;
+            }
+            return ts.Diagnostics.Function_declarations_are_not_allowed_inside_blocks_in_strict_mode_when_targeting_ES3_or_ES5;
+        }
+        function checkStrictModeFunctionDeclaration(node) {
+            if (languageVersion < 2 /* ScriptTarget.ES2015 */) {
+                // Report error if function is not top level function declaration
+                if (blockScopeContainer.kind !== 308 /* SyntaxKind.SourceFile */ &&
+                    blockScopeContainer.kind !== 264 /* SyntaxKind.ModuleDeclaration */ &&
+                    !ts.isFunctionLikeOrClassStaticBlockDeclaration(blockScopeContainer)) {
+                    // We check first if the name is inside class declaration or class expression; if so give explicit message
+                    // otherwise report generic error message.
+                    var errorSpan = ts.getErrorSpanForNode(file, node);
+                    file.bindDiagnostics.push(ts.createFileDiagnostic(file, errorSpan.start, errorSpan.length, getStrictModeBlockScopeFunctionDeclarationMessage(node)));
+                }
+            }
+        }
+        function checkStrictModeNumericLiteral(node) {
+            if (languageVersion < 1 /* ScriptTarget.ES5 */ && inStrictMode && node.numericLiteralFlags & 32 /* TokenFlags.Octal */) {
+                file.bindDiagnostics.push(createDiagnosticForNode(node, ts.Diagnostics.Octal_literals_are_not_allowed_in_strict_mode));
+            }
+        }
+        function checkStrictModePostfixUnaryExpression(node) {
+            // Grammar checking
+            // The identifier eval or arguments may not appear as the LeftHandSideExpression of an
+            // Assignment operator(11.13) or of a PostfixExpression(11.3) or as the UnaryExpression
+            // operated upon by a Prefix Increment(11.4.4) or a Prefix Decrement(11.4.5) operator.
+            if (inStrictMode) {
+                checkStrictModeEvalOrArguments(node, node.operand);
+            }
+        }
+        function checkStrictModePrefixUnaryExpression(node) {
+            // Grammar checking
+            if (inStrictMode) {
+                if (node.operator === 45 /* SyntaxKind.PlusPlusToken */ || node.operator === 46 /* SyntaxKind.MinusMinusToken */) {
+                    checkStrictModeEvalOrArguments(node, node.operand);
+                }
+            }
+        }
+        function checkStrictModeWithStatement(node) {
+            // Grammar checking for withStatement
+            if (inStrictMode) {
+                errorOnFirstToken(node, ts.Diagnostics.with_statements_are_not_allowed_in_strict_mode);
+            }
+        }
+        function checkStrictModeLabeledStatement(node) {
+            // Grammar checking for labeledStatement
+            if (inStrictMode && ts.getEmitScriptTarget(options) >= 2 /* ScriptTarget.ES2015 */) {
+                if (ts.isDeclarationStatement(node.statement) || ts.isVariableStatement(node.statement)) {
+                    errorOnFirstToken(node.label, ts.Diagnostics.A_label_is_not_allowed_here);
+                }
+            }
+        }
+        function errorOnFirstToken(node, message, arg0, arg1, arg2) {
+            var span = ts.getSpanOfTokenAtPosition(file, node.pos);
+            file.bindDiagnostics.push(ts.createFileDiagnostic(file, span.start, span.length, message, arg0, arg1, arg2));
+        }
+        function errorOrSuggestionOnNode(isError, node, message) {
+            errorOrSuggestionOnRange(isError, node, node, message);
+        }
+        function errorOrSuggestionOnRange(isError, startNode, endNode, message) {
+            addErrorOrSuggestionDiagnostic(isError, { pos: ts.getTokenPosOfNode(startNode, file), end: endNode.end }, message);
+        }
+        function addErrorOrSuggestionDiagnostic(isError, range, message) {
+            var diag = ts.createFileDiagnostic(file, range.pos, range.end - range.pos, message);
+            if (isError) {
+                file.bindDiagnostics.push(diag);
+            }
+            else {
+                file.bindSuggestionDiagnostics = ts.append(file.bindSuggestionDiagnostics, __assign(__assign({}, diag), { category: ts.DiagnosticCategory.Suggestion }));
+            }
+        }
+        function bind(node) {
+            if (!node) {
+                return;
+            }
+            ts.setParent(node, parent);
+            if (ts.tracing)
+                node.tracingPath = file.path;
+            var saveInStrictMode = inStrictMode;
+            // Even though in the AST the jsdoc @typedef node belongs to the current node,
+            // its symbol might be in the same scope with the current node's symbol. Consider:
+            //
+            //     /** @typedef {string | number} MyType */
+            //     function foo();
+            //
+            // Here the current node is "foo", which is a container, but the scope of "MyType" should
+            // not be inside "foo". Therefore we always bind @typedef before bind the parent node,
+            // and skip binding this tag later when binding all the other jsdoc tags.
+            // First we bind declaration nodes to a symbol if possible. We'll both create a symbol
+            // and then potentially add the symbol to an appropriate symbol table. Possible
+            // destination symbol tables are:
+            //
+            //  1) The 'exports' table of the current container's symbol.
+            //  2) The 'members' table of the current container's symbol.
+            //  3) The 'locals' table of the current container.
+            //
+            // However, not all symbols will end up in any of these tables. 'Anonymous' symbols
+            // (like TypeLiterals for example) will not be put in any table.
+            bindWorker(node);
+            // Then we recurse into the children of the node to bind them as well. For certain
+            // symbols we do specialized work when we recurse. For example, we'll keep track of
+            // the current 'container' node when it changes. This helps us know which symbol table
+            // a local should go into for example. Since terminal nodes are known not to have
+            // children, as an optimization we don't process those.
+            if (node.kind > 162 /* SyntaxKind.LastToken */) {
+                var saveParent = parent;
+                parent = node;
+                var containerFlags = getContainerFlags(node);
+                if (containerFlags === 0 /* ContainerFlags.None */) {
+                    bindChildren(node);
+                }
+                else {
+                    bindContainer(node, containerFlags);
+                }
+                parent = saveParent;
+            }
+            else {
+                var saveParent = parent;
+                if (node.kind === 1 /* SyntaxKind.EndOfFileToken */)
+                    parent = node;
+                bindJSDoc(node);
+                parent = saveParent;
+            }
+            inStrictMode = saveInStrictMode;
+        }
+        function bindJSDoc(node) {
+            if (ts.hasJSDocNodes(node)) {
+                if (ts.isInJSFile(node)) {
+                    for (var _i = 0, _a = node.jsDoc; _i < _a.length; _i++) {
+                        var j = _a[_i];
+                        bind(j);
+                    }
+                }
+                else {
+                    for (var _b = 0, _c = node.jsDoc; _b < _c.length; _b++) {
+                        var j = _c[_b];
+                        ts.setParent(j, node);
+                        ts.setParentRecursive(j, /*incremental*/ false);
+                    }
+                }
+            }
+        }
+        function updateStrictModeStatementList(statements) {
+            if (!inStrictMode) {
+                for (var _i = 0, statements_3 = statements; _i < statements_3.length; _i++) {
+                    var statement = statements_3[_i];
+                    if (!ts.isPrologueDirective(statement)) {
+                        return;
+                    }
+                    if (isUseStrictPrologueDirective(statement)) {
+                        inStrictMode = true;
+                        return;
+                    }
+                }
+            }
+        }
+        /// Should be called only on prologue directives (isPrologueDirective(node) should be true)
+        function isUseStrictPrologueDirective(node) {
+            var nodeText = ts.getSourceTextOfNodeFromSourceFile(file, node.expression);
+            // Note: the node text must be exactly "use strict" or 'use strict'.  It is not ok for the
+            // string to contain unicode escapes (as per ES5).
+            return nodeText === '"use strict"' || nodeText === "'use strict'";
+        }
+        function bindWorker(nod

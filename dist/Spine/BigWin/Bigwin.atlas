@@ -1,0 +1,106 @@
+Bigwin.png
+size:996,972
+filter:Linear,Linear
+pma:true
+Energy Slash (1)
+bounds:146,690,190,186
+offsets:27,27,244,239
+Energy Slash (12)
+bounds:648,595,346,249
+offsets:35,33,381,311
+Energy Slash (13)
+bounds:338,629,308,223
+offsets:43,43,351,301
+big/txt
+bounds:2,220,880,195
+offsets:3,1,884,205
+blue light 2
+bounds:2,2,880,216
+offsets:10,8,900,227
+flying_coin_1
+bounds:53,896,71,80
+offsets:2,2,75,84
+rotate:90
+flying_coin_2
+bounds:764,846,158,121
+offsets:1,2,160,124
+flying_coin_3
+bounds:135,894,73,96
+offsets:2,2,76,100
+rotate:90
+flying_coin_4
+bounds:452,859,173,108
+offsets:1,1,175,111
+flying_coin_5
+bounds:627,854,113,135
+offsets:1,2,115,139
+rotate:90
+flying_coin_6
+bounds:342,875,92,108
+offsets:1,2,95,112
+rotate:90
+flying_coin_8
+bounds:233,878,89,107
+offsets:2,1,92,110
+rotate:90
+flying_coin_9
+bounds:2,768,142,124
+offsets:2,2,146,128
+mega/txt
+bounds:2,417,903,176
+offsets:3,1,907,187
+sparkle
+bounds:2,918,49,49
+
+Bigwin_2.png
+size:916,872
+filter:Linear,Linear
+pma:true
+Energy Slash (5)
+bounds:2,582,912,285
+offsets:28,14,957,314
+Energy Slash (6)
+bounds:2,290,906,290
+offsets:29,13,936,318
+Energy Slash (7)
+bounds:2,2,878,286
+offsets:34,14,912,316
+
+Bigwin_3.png
+size:872,936
+filter:Linear,Linear
+pma:true
+Energy Slash (4)
+bounds:2,644,865,287
+offsets:25,14,911,314
+Energy Slash (8)
+bounds:2,2,848,275
+offsets:45,14,893,305
+blue light 1
+bounds:2,279,784,363
+offsets:8,52,800,426
+
+Bigwin_4.png
+size:956,848
+filter:Linear,Linear
+pma:true
+Energy Slash (11)
+bounds:2,2,507,279
+offsets:33,19,540,319
+Energy Slash (2)
+bounds:511,16,442,265
+offsets:26,21,490,303
+Energy Slash (3)
+bounds:2,283,758,287
+offsets:25,18,806,319
+Energy Slash (9)
+bounds:2,572,813,273
+offsets:53,14,866,308
+
+Bigwin_5.png
+size:540,284
+filter:Linear,Linear
+pma:true
+Energy Slash (10)
+bounds:2,2,536,277
+offsets:24,16,560,314
