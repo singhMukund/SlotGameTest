@@ -9,7 +9,7 @@ interface SymbolWinData {
 export class CommonConfig {
     protected static _the: CommonConfig;
     public static symbolIds: string[] = [
-        'sym_bike', 'sym_book', 'sym_dirtypan',
+       'sym_wild',  'sym_bike', 'sym_book', 'sym_dirtypan',
         'sym_gate', 'sym_monitor', 'sym_mop', 'sym_plane',
         'sym_slotmachine'];
 
@@ -217,7 +217,7 @@ export class CommonConfig {
         const view: number[][] = [];
         if (this.getCheatType().length && this.getCheatType() === "normal") {
             let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
-            // winresponse = CommonConfig.NormalWinResponse5;
+            // winresponse = CommonConfig.NormalWinResponse4;
             return this.returnCloneArray(winresponse);
         } else if (this.getCheatType().length && this.getCheatType() === "large") {
             let winresponse = CommonConfig.NormalWinResponse3;
@@ -342,6 +342,113 @@ export class CommonConfig {
         return this.oldView;
     }
 
+    findWinningGroups(view: number[][]): Map<number, Set<string>> {
+        const winningGroups: Map<number, Set<string>> = new Map();
+        const rows = view.length;
+        const cols = view[0].length;
+        const visited = new Set<string>();
+    
+        // DFS to explore all connected cells with the same symbol or Wild symbol (0)
+        function dfs(r: number, c: number, symbol: number, group: Set<string>, wildUsed: boolean) {
+            const posKey = `${r},${c}`;
+            if (
+                r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+                visited.has(posKey)                          // Already visited
+            ) return;
+    
+            const currentSymbol = view[r][c];
+    
+            // If it's the Wild symbol (0), allow it to replace a missing symbol
+            if (currentSymbol === 0 && !wildUsed) {
+                group.add(posKey); // Add wild to the group
+                wildUsed = true;  // Mark the Wild symbol as used
+            } else if (currentSymbol === symbol || currentSymbol === 0) {
+                // If the symbol matches or it's a Wild symbol (0), proceed
+                visited.add(posKey);
+                group.add(posKey);
+    
+                // Explore neighbors in all 4 directions
+                dfs(r + 1, c, symbol, group, wildUsed);
+                dfs(r - 1, c, symbol, group, wildUsed);
+                dfs(r, c + 1, symbol, group, wildUsed);
+                dfs(r, c - 1, symbol, group, wildUsed);
+            }
+        }
+    
+        // Helper function to check a line (horizontal or vertical) for potential Wild symbol replacement
+        function checkLineForWildSymbols(r: number, c: number, dx: number, dy: number, symbol: number): Set<string> {
+            const linePositions = new Set<string>();
+            let wildUsed = false;
+            let symbolCount = 0;
+            let checkR = r;
+            let checkC = c;
+    
+            // Check in both directions
+            while (checkR >= 0 && checkR < rows && checkC >= 0 && checkC < cols && symbolCount < 4) {
+                const currentSymbol = view[checkR][checkC];
+                if (currentSymbol === symbol || currentSymbol === 0) {
+                    linePositions.add(`${checkR},${checkC}`);
+                    if (currentSymbol === symbol) symbolCount++;
+                } else if (currentSymbol === 0 && !wildUsed) {
+                    wildUsed = true;
+                    linePositions.add(`${checkR},${checkC}`);
+                    symbolCount++;
+                } else {
+                    break;
+                }
+                checkR += dx;
+                checkC += dy;
+            }
+    
+            return symbolCount >= 4 ? linePositions : new Set<string>(); // Return only if valid line
+        }
+    
+        // Traverse each cell to find connected groups of 4 or more
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const symbol = view[r][c];
+                if (symbol === null || visited.has(`${r},${c}`)) continue;
+    
+                // Initialize a new group to collect connected symbols
+                const currentGroup: Set<string> = new Set();
+                let wildUsed = false;
+    
+                dfs(r, c, symbol, currentGroup, wildUsed);
+    
+                // If group has 4 or more connected symbols, add to winningGroups map
+                if (currentGroup.size >= 4) {
+                    if (!winningGroups.has(symbol)) {
+                        winningGroups.set(symbol, new Set());
+                    }
+                    const symbolGroup = winningGroups.get(symbol)!;
+                    currentGroup.forEach(pos => symbolGroup.add(pos));
+                }
+    
+                // Check horizontally and vertically for Wild symbol extension
+                const horizontalLine = checkLineForWildSymbols(r, c, 1, 0, symbol); // Check horizontally (dx=1, dy=0)
+                const verticalLine = checkLineForWildSymbols(r, c, 0, 1, symbol);   // Check vertically (dx=0, dy=1)
+    
+                // If we found a valid line with Wild symbol, add it to winningGroups
+                if (horizontalLine.size >= 4) {
+                    if (!winningGroups.has(symbol)) {
+                        winningGroups.set(symbol, new Set());
+                    }
+                    const symbolGroup = winningGroups.get(symbol)!;
+                    horizontalLine.forEach(pos => symbolGroup.add(pos));
+                }
+                if (verticalLine.size >= 4) {
+                    if (!winningGroups.has(symbol)) {
+                        winningGroups.set(symbol, new Set());
+                    }
+                    const symbolGroup = winningGroups.get(symbol)!;
+                    verticalLine.forEach(pos => symbolGroup.add(pos));
+                }
+            }
+        }
+    
+        return winningGroups;
+    }
+
     public setView(value: number[][]): void {
         this.view = value
     }
@@ -349,6 +456,107 @@ export class CommonConfig {
     public getView(): number[][] {
         return this.view;
     }
+
+    // findWinningGroups(view: number[][]): Map<number, Set<string>> {
+    //     const winningGroups: Map<number, Set<string>> = new Map();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+    //     const visited = new Set<string>();
+    
+    //     // DFS to explore all connected cells with the same symbol or Wild symbol (0)
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>, isWildUsed: boolean) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             visited.has(posKey)                          // Already visited
+    //         ) return;
+    
+    //         const currentSymbol = view[r][c];
+            
+    //         // If it's the Wild symbol (0), mark it as used but allow it to replace other symbols
+    //         if (currentSymbol === 0 && !isWildUsed) {
+    //             group.add(posKey); // Add wild to the group
+    //             isWildUsed = true;  // Mark the Wild symbol as used
+    //         } else if (currentSymbol === symbol || currentSymbol === 0) {
+    //             // If the symbol matches or it's a Wild symbol (0), proceed
+    //             visited.add(posKey);
+    //             group.add(posKey);
+    
+    //             // Explore neighbors in all 4 directions
+    //             dfs(r + 1, c, symbol, group, isWildUsed);
+    //             dfs(r - 1, c, symbol, group, isWildUsed);
+    //             dfs(r, c + 1, symbol, group, isWildUsed);
+    //             dfs(r, c - 1, symbol, group, isWildUsed);
+    //         }
+    //     }
+    
+    //     // Traverse each cell to find connected groups of 4 or more
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
+    
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             let isWildUsed = false;
+    
+    //             dfs(r, c, symbol, currentGroup, isWildUsed);
+    
+    //             // If group has 4 or more connected symbols, add to winningGroups map
+    //             if (currentGroup.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 const symbolGroup = winningGroups.get(symbol)!;
+    //                 currentGroup.forEach(pos => symbolGroup.add(pos));
+    //             }
+    
+    //             // Special logic for checking 3 identical symbols + 1 Wild symbol
+    //             if (currentGroup.size === 3) {
+    //                 // Check horizontally and vertically for wild symbol extension
+    //                 const potentialWins = [
+    //                     { dx: 1, dy: 0 }, // Horizontal check
+    //                     { dx: 0, dy: 1 }  // Vertical check
+    //                 ];
+    
+    //                 for (const { dx, dy } of potentialWins) {
+    //                     const wildPositions: Set<string> = new Set();
+    
+    //                     // Check in the forward direction (dx, dy)
+    //                     let count = 0;
+    //                     let wildFound = false;
+    //                     let checkR = r;
+    //                     let checkC = c;
+    
+    //                     while (count < 3 && checkR >= 0 && checkR < rows && checkC >= 0 && checkC < cols) {
+    //                         const currentPos = `${checkR},${checkC}`;
+    //                         if (view[checkR][checkC] === 0) {
+    //                             wildFound = true;
+    //                             wildPositions.add(currentPos);
+    //                         } else if (view[checkR][checkC] === symbol) {
+    //                             count++;
+    //                         }
+    //                         checkR += dx;
+    //                         checkC += dy;
+    //                     }
+    
+    //                     // Check if the 3 symbols + 1 Wild (ID 0) form a valid group
+    //                     if (count === 3 && wildFound) {
+    //                         currentGroup.forEach(pos => wildPositions.add(pos)); // Add 3 symbols with the Wild
+    //                         if (!winningGroups.has(symbol)) {
+    //                             winningGroups.set(symbol, new Set());
+    //                         }
+    //                         const symbolGroup = winningGroups.get(symbol)!;
+    //                         wildPositions.forEach(pos => symbolGroup.add(pos));
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    
+    //     return winningGroups;
+    // }
+    
 
     public setWinGrid(value: Map<number, Set<string>>): void {
         this.winGrid = value
@@ -358,56 +566,56 @@ export class CommonConfig {
         return this.winGrid;
     }
 
-    findWinningGroups(view: number[][]): Map<number, Set<string>> {
-        const winningGroups: Map<number, Set<string>> = new Map();
-        const rows = view.length;
-        const cols = view[0].length;
-        const visited = new Set<string>();
+    // findWinningGroups(view: number[][]): Map<number, Set<string>> {
+    //     const winningGroups: Map<number, Set<string>> = new Map();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+    //     const visited = new Set<string>();
 
-        // DFS to explore all connected cells with the same symbol
-        function dfs(r: number, c: number, symbol: number, group: Set<string>) {
-            const posKey = `${r},${c}`;
-            if (
-                r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
-                view[r][c] !== symbol ||                   // Different symbol
-                visited.has(posKey)                        // Already visited
-            ) return;
+    //     // DFS to explore all connected cells with the same symbol
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             view[r][c] !== symbol ||                // Different symbol
+    //             visited.has(posKey)                        // Already visited
+    //         ) return;
 
-            // Mark as visited and add to current group
-            visited.add(posKey);
-            group.add(posKey);
+    //         // Mark as visited and add to current group
+    //         visited.add(posKey);
+    //         group.add(posKey);
 
-            // Explore neighbors in all 4 directions
-            dfs(r + 1, c, symbol, group);
-            dfs(r - 1, c, symbol, group);
-            dfs(r, c + 1, symbol, group);
-            dfs(r, c - 1, symbol, group);
-        }
+    //         // Explore neighbors in all 4 directions
+    //         dfs(r + 1, c, symbol, group);
+    //         dfs(r - 1, c, symbol, group);
+    //         dfs(r, c + 1, symbol, group);
+    //         dfs(r, c - 1, symbol, group);
+    //     }
 
-        // Traverse each cell to find connected groups of 4 or more
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                const symbol = view[r][c];
-                if (symbol === null || visited.has(`${r},${c}`)) continue;
+    //     // Traverse each cell to find connected groups of 4 or more
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
 
-                // Initialize a new group to collect connected symbols
-                const currentGroup: Set<string> = new Set();
-                dfs(r, c, symbol, currentGroup);
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             dfs(r, c, symbol, currentGroup);
 
-                // If group has 4 or more connected symbols, add to winningGroups map
-                if (currentGroup.size >= 4) {
-                    if (!winningGroups.has(symbol)) {
-                        winningGroups.set(symbol, new Set());
-                    }
-                    // Add the positions of the current group to the symbol's set in the map
-                    const symbolGroup = winningGroups.get(symbol)!;
-                    currentGroup.forEach(pos => symbolGroup.add(pos));
-                }
-            }
-        }
+    //             // If group has 4 or more connected symbols, add to winningGroups map
+    //             if (currentGroup.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 // Add the positions of the current group to the symbol's set in the map
+    //                 const symbolGroup = winningGroups.get(symbol)!;
+    //                 currentGroup.forEach(pos => symbolGroup.add(pos));
+    //             }
+    //         }
+    //     }
 
-        return winningGroups;
-    }
+    //     return winningGroups;
+    // }
 
 
     // findWinningGroups(view: number[][]): Map<number, Set<string[]>> {

@@ -102,7 +102,7 @@ export class ReelManager extends Container {
         CommonConfig.the.setLineWinAmount(cascadeWinAmount);
         Game.the.app.stage.emit(CommonConfig.UPDATE_LINE_WIN_METER,[reelX,rowY]);
         Game.the.app.stage.emit(CommonConfig.UPDATE_WIN_METER);
-        gsap.delayedCall(0.5, () => {
+        gsap.delayedCall(1, () => {
             Game.the.app.stage.emit(CommonConfig.UPDATE_PENTAGONAL_METER);
             this.currentIndexSymbolWinIds++;
             if (this.currentIndexSymbolWinIds >= this.symboldWinIds.length) {
@@ -140,7 +140,7 @@ export class ReelManager extends Container {
         let response: number[][] = CommonConfig.the.cascade(CommonConfig.the.getView(), winGridSet);
         this.updateView(response);
         Game.the.app.stage.emit(CommonConfig.PLAY_DROP_REEL);
-        gsap.delayedCall(0.5, () => {
+        gsap.delayedCall(1, () => {
             // CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         })

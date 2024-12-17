@@ -19,8 +19,8 @@ export class BackgroundView extends Container{
     private resizeApp() :void{
         let scaleX: number = 0;
         let scaleY: number = 0;
-        this.width = 1921;
-        this.height = 1081;
+        this.width = 1920;
+        this.height = 1080;
         if (window.innerHeight > window.innerWidth && this) {
             scaleX = window.innerWidth / this.width;
             scaleY = window.innerHeight / this.height;
