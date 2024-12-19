@@ -31,6 +31,7 @@ export class ReelManager extends Container {
         Game.the.app.stage.on(CommonConfig.SET_RESPONSE_AT_REEL, this.setSymbolAtReel, this);
         Game.the.app.stage.on(CommonConfig.START_SPIN, this.spinTheReels, this);
         Game.the.app.stage.on(CommonConfig.PLAY_ANIMATED_WIN_SYMBOL, this.onPlayWinSymbol, this);
+        Game.the.app.stage.on(CommonConfig.UPDATE_VIEW_ON_REEL, this.updateView, this);
     }
 
     private initGraphics(): void {
@@ -271,39 +272,39 @@ export class ReelManager extends Container {
     }
 
     private insertReel2(): void {
-        let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[0]);
+        let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[5]);
         this.reel2.updatePos_00WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[1]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[5]);
         this.reel2.updatePos_01WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[6]);
         this.reel2.updatePos_02WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[7]);
         this.reel2.updatePos_03WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[0]);
         this.reel2.updatePos_04WithSym(symbol);
     }
 
     private insertReel3(): void {
         let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[0]);
         this.reel3.updatePos_00WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[1]);
-        this.reel3.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
-        this.reel3.updatePos_02WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
-        this.reel3.updatePos_03WithSym(symbol);
+        this.reel3.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        this.reel3.updatePos_02WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[5]);
+        this.reel3.updatePos_03WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[6]);
         this.reel3.updatePos_04WithSym(symbol);
     }
 
     private insertReel4(): void {
         let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[0]);
         this.reel4.updatePos_00WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[1]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[7]);
         this.reel4.updatePos_01WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[7]);
         this.reel4.updatePos_02WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[8]);
         this.reel4.updatePos_03WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
         this.reel4.updatePos_04WithSym(symbol);
@@ -312,13 +313,13 @@ export class ReelManager extends Container {
     private insertReel5(): void {
         let symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[0]);
         this.reel5.updatePos_00WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[1]);
-        this.reel5.updatePos_01WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[2]);
+        this.reel5.updatePos_01WithSym(symbol);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
         this.reel5.updatePos_02WithSym(symbol);
         symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
         this.reel5.updatePos_03WithSym(symbol);
-        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[4]);
+        symbol = SymbolPool.the.getSymbol(CommonConfig.symbolIds[3]);
         this.reel5.updatePos_04WithSym(symbol);
     }
 

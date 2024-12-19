@@ -123,7 +123,7 @@ export class BaseGame extends Container {
 
     private setPosition() {
         this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2 - 100);
-        this.reelManager.position.set(190, 200);
+        this.reelManager.position.set(135, 135);
         this.lineMeter.position.set(190, 200);
         this.reelContainer.scale.set(0.6);
         this.aspectRatio = this.reelContainer.height / 919;
@@ -133,7 +133,7 @@ export class BaseGame extends Container {
     private resizeApp(): void {
         let currentScale : number = 1;
         let assumedHeight : number = window.innerHeight  * this.aspectRatio;
-        this.reelContainer.scale.set(1);
+        this.reelContainer.scale.set(0.8);
         let height = this.reelContainer.height;
         currentScale = assumedHeight / height;
         this.reelContainer.scale.set(currentScale);

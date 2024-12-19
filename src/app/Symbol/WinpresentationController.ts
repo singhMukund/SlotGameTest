@@ -1,6 +1,6 @@
 import { CommonConfig } from "@/Common/CommonConfig";
 import { Game } from "../game";
-import { Container } from "pixi.js";
+import gsap from "gsap";
 
 export class WinpresentationController {
     constructor() {
@@ -14,7 +14,7 @@ export class WinpresentationController {
         Game.the.app.stage.on(CommonConfig.UPDATE_BALANCE, this.updateBalance, this);
     }
 
-    private onSpinStopped() :void{
+    private onSpinStopped(): void {
         this.onShowNextWinPresentation();
         Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_BUTTON);
     }
@@ -47,6 +47,12 @@ export class WinpresentationController {
             case CommonConfig.RECHECK_CASCADE_WIN:
                 this.recheckWin();
                 break;
+            case CommonConfig.CHECK_PLAY_RANDOM_FEATURE_ZWOOM:
+                this.onStartZwoomFeature();
+                break;
+            case CommonConfig.RECHECK_WIN:
+                this.recheckAnimateWinSymbol();
+                break;
             case CommonConfig.BIG_WIN:
                 this.playBigWin();
                 break;
@@ -59,21 +65,21 @@ export class WinpresentationController {
         }
     }
 
-    private onCheckAutoplayCount() :void{
+    private onCheckAutoplayCount(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        if(CommonConfig.the.getIsAutoplay()){
+        if (CommonConfig.the.getIsAutoplay()) {
             let autoplayCount = CommonConfig.the.getAutoplayCount() - 1;
-            if(autoplayCount === 0){
+            if (autoplayCount === 0) {
                 CommonConfig.the.setIsAutoplay(false);
                 Game.the.app.stage.emit(CommonConfig.RESET_AUTOPLAY_METER);
                 Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_METER_VIEW, false);
                 Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-            }else{
+            } else {
                 Game.the.app.stage.emit(CommonConfig.UPDATE_AUTOPLAY_METER);
                 CommonConfig.the.setAutoplayCount(autoplayCount);
                 Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
             }
-        }else{
+        } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
@@ -107,7 +113,7 @@ export class WinpresentationController {
             CommonConfig.the.SetCurrentWinAnimationIndex(0);
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
-        }else{
+        } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
@@ -143,6 +149,17 @@ export class WinpresentationController {
         }
     }
 
+    private recheckAnimateWinSymbol() :void{
+        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        if (win.size) {
+            CommonConfig.the.setWinGrid(win);
+            Game.the.app.stage.emit(CommonConfig.PLAY_ANIMATED_WIN_SYMBOL);
+        } else {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        }
+    }
+
     private onCreateAndUpdateCascadeView(): void {
 
     }
@@ -158,5 +175,24 @@ export class WinpresentationController {
         balance = Number(balance.toFixed(2));
         CommonConfig.the.setBalance(balance);
         Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
+    }
+
+    // subscribeEvent() :void{
+    // }
+
+    private onStartZwoomFeature(): void {
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        let randomWild: number[][] = [
+            [4, 5, 4, 6, 3],
+            [0, 6, 0, 0, 4],
+            [4, 0, 3, 3, 0],
+            [0, 3, 3, 4, 0],
+            [0, 0, 0, 3, 4]
+        ];
+        CommonConfig.the.setView(randomWild);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 }
