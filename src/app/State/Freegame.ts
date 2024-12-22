@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { BackgroundView } from "../Background/BackgroundView";
 import { ReelView } from "../Background/ReelView";
 import { ReelManager } from "../BaseGame/ReelManager";
@@ -11,23 +11,30 @@ import { BigWinMeter } from "../Meter/BigWinMeter";
 import { LineMeter } from "../Meter/LineMeter";
 import { PentagonalUpdateFeature } from "../FeatureComponent/PentagonalUpdateFeature";
 import { Character } from "../Character/Character";
+import { WinpresentationControllerFG } from "../FreeGame/WinpresentationControllerFG";
+import { ReelManagerFG } from "../FreeGame/ReelManagerFG";
+import { BackgroundViewFG } from "../Background/BackgroundViewFG";
+import { ReelViewFG } from "../Background/ReelViewFG";
+import { FreeGameLeftMeter } from "../Meter/FreeGameLeftMeter";
+import { GlowFilter } from "pixi-filters";
 
-export class BaseGame extends Container {
-    private backgroundView !: BackgroundView;
-    private reelView !: ReelView;
-    private reelManager !: ReelManager;
+export class FreeGame extends Container {
+    private backgroundView !: BackgroundViewFG;
+    private reelView !: ReelViewFG;
+    private reelManager !: ReelManagerFG;
     private reelContainer !: Container;
     private bottomPanelButton !: Container;
-    private winpresentationController !: WinpresentationController;
+    private winpresentationController !: WinpresentationControllerFG;
     private cheatPanel !: CheatPanel;
-    private normalRation : number = 1920/919;
+    private normalRation: number = 1920 / 919;
     private bottomPanel !: BottomPanel;
     private bgWinMeter !: BigWinMeter;
-    private aspectRatio : number = 0;
+    private aspectRatio: number = 0;
     private lineMeter !: LineMeter;
     private pentagonalUpdateFeature !: PentagonalUpdateFeature;
     private character !: Character;
-    
+    private freeGameLeftMeter !: FreeGameLeftMeter;
+
 
     constructor() {
         super();
@@ -39,7 +46,7 @@ export class BaseGame extends Container {
         Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
-    private subscribeEvent() :void{
+    private subscribeEvent(): void {
         // window.addEventListener("keydown", (event) => {
         //     if (event.key === "c") { // Press 'C' to toggle the cheat panel
         //         this.cheatPanel.visible = !this.cheatPanel.visible;
@@ -59,9 +66,12 @@ export class BaseGame extends Container {
         this.initLineMeter();
         this.initpentagonalUpdateFeature();
         this.initCharacter();
+        this.freeGameLeftMeter = new FreeGameLeftMeter();
+
+       
     }
 
-    private initCharacter() :void{
+    private initCharacter(): void {
         this.character = new Character();
     }
 
@@ -71,26 +81,26 @@ export class BaseGame extends Container {
     }
 
     private initBackground() {
-        this.backgroundView = new BackgroundView();
+        this.backgroundView = new BackgroundViewFG();
     }
 
     private initReelView() {
-        this.reelView = new ReelView();
+        this.reelView = new ReelViewFG();
     }
 
     private initReelManager() {
-        this.reelManager = new ReelManager();
+        this.reelManager = new ReelManagerFG();
     }
 
     private initWinpresentationController(): void {
-        this.winpresentationController = new WinpresentationController();
+        this.winpresentationController = new WinpresentationControllerFG();
     }
 
-    private initBigWinMeter() :void{
+    private initBigWinMeter(): void {
         this.bgWinMeter = new BigWinMeter();
     }
 
-    private initLineMeter() :void{
+    private initLineMeter(): void {
         this.lineMeter = new LineMeter();
     }
 
@@ -99,11 +109,11 @@ export class BaseGame extends Container {
         this.cheatPanel.position.set(50, 50); // Position the panel in the top-left corner
     }
 
-    private initBottomPanel() :void{
+    private initBottomPanel(): void {
         this.bottomPanel = new BottomPanel();
     }
 
-    private initpentagonalUpdateFeature() :void{
+    private initpentagonalUpdateFeature(): void {
         this.pentagonalUpdateFeature = new PentagonalUpdateFeature();
     }
 
@@ -119,6 +129,19 @@ export class BaseGame extends Container {
         this.addChild(this.bgWinMeter);
         this.addChild(this.pentagonalUpdateFeature);
         this.addChild(this.character);
+        this.addChild(this.freeGameLeftMeter);
+        
+        // Create the GlowFilter
+        // const glowFilter = new GlowFilter({
+        //     color: 0xff00ff, // Glow color
+        //     distance: 15,    // Glow distance
+        //     outerStrength: 2, // Outer strength of the glow
+        //     innerStrength: 1, // Inner strength of the glow
+        // });
+        
+        // // Apply the filter to the line
+        // line.filters = [glowFilter];
+
     }
 
     private setPosition() {
@@ -131,8 +154,8 @@ export class BaseGame extends Container {
     }
 
     private resizeApp(): void {
-        let currentScale : number = 1;
-        let assumedHeight : number = window.innerHeight  * this.aspectRatio;
+        let currentScale: number = 1;
+        let assumedHeight: number = window.innerHeight * this.aspectRatio;
         this.reelContainer.scale.set(0.8);
         let height = this.reelContainer.height;
         currentScale = assumedHeight / height;
@@ -143,5 +166,6 @@ export class BaseGame extends Container {
             this.reelContainer.scale.set(0.37);
             this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2);
         }
+        this.freeGameLeftMeter.position.set(this.reelContainer.x + (this.reelContainer.width - this.freeGameLeftMeter.width)/2,this.reelContainer.y + this.reelContainer.height + this.freeGameLeftMeter.height);
     }
 }

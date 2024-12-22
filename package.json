@@ -10,6 +10,7 @@
     "@esotericsoftware/spine-pixi-v8": "~4.2.0",
     "gsap": "^3.12.5",
     "mobile-detect": "^1.4.5",
+    "pixi-filters": "^6.0.5",
     "vite-plugin-static-copy": "^2.0.0"
   },
   "devDependencies": {

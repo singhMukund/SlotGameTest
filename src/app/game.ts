@@ -4,6 +4,8 @@ import { CommonConfig } from '../Common/CommonConfig';
 import { CommonEvents } from '@/Common/CommonEvents';
 import { BaseGame } from './State/Basegame';
 import { GameConfig } from './GameConfiguration/GameConfig';
+import { FreeGame } from './State/Freegame';
+import { StateManagement } from './State/StateManagement';
 // import manifest from "../../public/manifest.json";
 export class Game {
   protected static _the: Game;
@@ -69,7 +71,7 @@ export class Game {
 
 
   private onLoadComplete() {
-    this.app.stage.addChild(new BaseGame());
+    this.app.stage.addChild(new StateManagement());
   }
 
 
