@@ -1,6 +1,6 @@
 import { Assets, Container, Sprite } from "pixi.js";
 
-export class ReelView extends Container{
+export class ReelViewFG extends Container{
     private reelBg! : Sprite;
     private logo !: Sprite;
 
@@ -12,8 +12,9 @@ export class ReelView extends Container{
     }
 
     private initialiZeReelView() : void{
-       this.reelBg = new Sprite(Assets.get("reelFrameImage")); 
-       this.reelBg.scale.set(1,1);
+       this.reelBg = new Sprite(Assets.get("freegamereelFrameImage")); 
+       this.reelBg.scale.set(0.98,0.98);
+       this.reelBg.position.set(-26,-16);
     }
 
     private setPosition() :void{

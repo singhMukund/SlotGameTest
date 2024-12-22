@@ -8,31 +8,44 @@ interface SymbolWinData {
 
 export class CommonConfig {
     protected static _the: CommonConfig;
-    public static symbolIds: string[] = [
-       'sym_wild',  'sym_bike', 'sym_book', 'sym_dirtypan',
-        'sym_gate', 'sym_monitor', 'sym_mop', 'sym_plane',
-        'sym_slotmachine'];
+    public static highValueSymbolIds : number[] = [2,3,4,5];
+    public static lowValueSymbolIds : number[] = [6,7,8,9];
+    public static symbolIds: string[] = ['sym_musicalnotes1', 'sym_wild','sym_basculohead','sym_slotmachine','sym_plane','sym_bike','sym_gate','sym_monitor','sym_dirtypan','sym_mop'];
 
     public static symbolsPerReel: number = 5;
     public static totalReel: number = 5;
-    public static reelWidth: number = 228.8;
-    public static symbolHeight: number = 212.33;
+    public static reelWidth: number = 169;
+    public static symbolHeight: number = 166.2;
 
     public static START_SPIN: string = "START_SPIN";
+    public static FG_START_SPIN: string = "FG_START_SPIN";
     public static SET_RESPONSE_AT_REEL: string = "SET_RESPONSE_AT_REEL";
+    public static FG_SET_RESPONSE_AT_REEL: string = "FG_SET_RESPONSE_AT_REEL";
     public static PAYTABLE_NAV_BTN_CLICKED: string = "PAYTABLE_NAV_BTN_CLICKED";
     public static PAYTABLE_CROSS_BTN_CLICKED: string = "PAYTABLE_CROSS_BTN_CLICKED";
     public static ENABLE_INFO_BUTTON: string = "ENABLE_INFO_BUTTON";
     public static INFO_BTN_CLICKED: string = "INFO_BTN_CLICKED";
     public static SPIN_STOPPED: string = "SPIN_STOPPED";
+    public static FG_SPIN_STOPPED: string = "FG_SPIN_STOPPED";
     public static PLAY_DROP_REEL: string = "PLAY_DROP_REEL";
+    public static FG_PLAY_DROP_REEL: string = "FG_PLAY_DROP_REEL";
     public static PLAY_ANIMATED_WIN_SYMBOL: string = "PLAY_ANIMATED_WIN_SYMBOL";
+    public static FG_PLAY_ANIMATED_WIN_SYMBOL: string = "FG_PLAY_ANIMATED_WIN_SYMBOL";
+    public static UPDATE_VIEW_ON_REEL: string = "UPDATE_VIEW_ON_REEL";
+    public static FG_UPDATE_VIEW_ON_REEL: string = "FG_UPDATE_VIEW_ON_REEL";
     public static PLAY_BIG_WIN: string = "PLAY_BIG_WIN";
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
+    public static FG_ON_SHOW_NEXT_WIN_PRESENTAION: string = "FG_ON_SHOW_NEXT_WIN_PRESENTAION";
+
     public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
+    public static FG_PLAY_STOP_SPIN: string = "FG_PLAY_STOP_SPIN";
     public static PLAY_SHUFFLE_REEL: string = "PLAY_SHUFFLE_REEL";
+    public static FG_PLAY_SHUFFLE_REEL: string = "FG_PLAY_SHUFFLE_REEL";
     public static UPDATE_WIN_METER: string = "UPDATE_WIN_METER";
+    public static FG_UPDATE_WIN_METER: string = "FG_UPDATE_WIN_METER";
+    public static UPDATE_FREEGAME_LEFT_METER: string = "UPDATE_FREEGAME_LEFT_METER";
     public static UPDATE_LINE_WIN_METER: string = "UPDATE_LINE_WIN_METER";
+    public static FG_UPDATE_LINE_WIN_METER: string = "FG_UPDATE_LINE_WIN_METER";
     public static UPDATE_AUTOPLAY_METER: string = "UPDATE_AUTOPLAY_METER";
     public static RESET_AUTOPLAY_METER: string = "RESET_AUTOPLAY_METER";
     public static UPDATE_BET_METER: string = "UPDATE_BET_METER";
@@ -40,37 +53,62 @@ export class CommonConfig {
     public static ENABLE_DISABLE_PLUS_BTN: string = "ENABLE_DISABLE_PLUS_BTN";
     public static CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN: string = "CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN";
     public static RESET_WIN_METER: string = "RESET_WIN_METER";
+    public static FG_RESET_WIN_METER: string = "FG_RESET_WIN_METER";
     public static UPDATE_BALANCE: string = "UPDATE_BALANCE";
     public static UPDATE_BALANCE_TEXT: string = "UPDATE_BALANCE_TEXT";
     public static ENABLE_DISABLE_CHEAT_PANEL: string = "ENABLE_DISABLE_CHEAT_PANEL";
     public static START_AUTOPLAY: string = "START_AUTOPLAY";
     public static DISABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
+    public static FG_DISABLE_ALL_BUTTON: string = "FG_DISABLE_ALL_BUTTON";
     public static DISABLE_AUTOPLAY_BUTTON: string = "DISABLE_AUTOPLAY_BUTTON";
-    public static ENABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
+    public static ENABLE_ALL_BUTTON: string = "ENABLE_ALL_BUTTON";
+    public static FG_ENABLE_ALL_BUTTON: string = "FG_ENABLE_ALL_BUTTON";
     public static ENABLE_AUTOPLAY_BUTTON: string = "ENABLE_AUTOPLAY_BUTTON";
     public static ENABLE_AUTOPLAY_METER_VIEW: string = "ENABLE_AUTOPLAY_METER_VIEW";
     public static UPDATE_PENTAGONAL_METER: string = "UPDATE_PENTAGONAL_METER";
+    public static FG_UPDATE_PENTAGONAL_METER: string = "FG_UPDATE_PENTAGONAL_METER";
+    public static START_ZWOOM_FEATURE: string = "START_ZWOOM_FEATURE";
+    public static SHOW_HIDE_BASEGAME: string = "SHOW_HIDE_BASEGAME";
+    public static BASE_GAME: string = "basegame";
+    public static FREE_Game: string = "freegame";
+
+    //-----------------Win Animation BaseGame----------------
     public static CHECK_AUTOPLAY_COUNT: number = 0;
-    public static CHECK_WIN: number = 1;
-    public static ANIMATE_WIN_SYMBOL: number = 2;
-    public static RECHECK_CASCADE_WIN: number = 3;
-    public static BIG_WIN: number = 4;
-    public static CHECK_AUTOPLAY: number = 5;
-    public static ENABLE_BUTTON_PLAY: number = 6;
+    public static ANIMATE_WIN_SYMBOL: number = 1;
+    public static RECHECK_CASCADE_WIN: number = 2;
+    public static CHECK_PLAY_RANDOM_FEATURE_ZWOOM: number = 3;
+    public static RECHECK_WIN: number = 4;
+    public static BIG_WIN: number = 5;
+    public static CHECK_AUTOPLAY: number = 6;
+    public static ENABLE_BUTTON_PLAY: number = 7;
+
+    //-------------Win Animation Freegame----------------
+    public static FG_ANIMATE_WIN_SYMBOL: number = 0;
+    public static FG_RECHECK_CASCADE_WIN: number = 1;
+    public static FG_CHECK_PLAY_RANDOM_FEATURE_ZWOOM: number = 2;
+    public static FG_RECHECK_WIN: number = 3;
+    public static FG_BIG_WIN: number = 4;
+    public static FG_DO_NEXT_SPIN_IF_REQUIRED: number = 5;
+    public static FG_HIDE_FREEGAME_VIEW_AND_SHOW_BASEGAME_VIEW: number = 6;
+    //---------
+
 
     public static TOTAL_ANIMATION_LENGTH: number = 5;
 
     private currentWinAnimationIndex: number = 0;
+    private currentFGWinAnimationIndex: number = 0;
     private incrementForLargeWin: number = 0;
 
     private bet: number = 1;
     private currentWinAmount: number = 0;
+    private freeSpinsLeftValue: number = 10;
     private lineWinAmount: number = 0;
     private currentBetIndex: number = 0;
     private balance: number = 5000;
     private autoplayCount: number = 25;
     private isAutoplay: boolean = false;
     private totalWinSymbolCount: number = 0;
+    private currentState: string = "basegame";
 
     private symbolWinData: SymbolWinData = {
         0: {
@@ -113,12 +151,30 @@ export class CommonConfig {
 
     private winGrid: Map<number, Set<string>> = new Map();
 
+    private randomWildGridIds: number[] = [];
+
     public SetCurrentWinAnimationIndex(value: number): void {
         this.currentWinAnimationIndex = value;
     }
 
     public getCurrentWinAnimationIndex(): number {
         return this.currentWinAnimationIndex;
+    }
+
+    public setCurrentFGWinAnimationIndex(value: number): void {
+        this.currentFGWinAnimationIndex = value;
+    }
+
+    public getCurrentFGWinAnimationIndex(): number {
+        return this.currentFGWinAnimationIndex;
+    }
+
+    public setCurrentState(value: string): void {
+        this.currentState = value;
+    }
+
+    public getCurrentState(): string {
+        return this.currentState;
     }
 
 
@@ -145,6 +201,14 @@ export class CommonConfig {
 
     public getwinningSymbolIdFromUser(): number {
         return this.winningSymbolIdFromUser;
+    }
+
+    public setRandomWildGridIds(value: number[]): void {
+        this.randomWildGridIds = value;
+    }
+
+    public getRandomWildGridIds(): number[] {
+        return this.randomWildGridIds;
     }
     public static NormalWinResponse: number[][] = [
         [4, 5, 4, 6, 3],
@@ -184,20 +248,20 @@ export class CommonConfig {
     private winResponses: number[][][] = [CommonConfig.NormalWinResponse, CommonConfig.NormalWinResponse2, CommonConfig.NormalWinResponse3, CommonConfig.NormalWinResponse4, CommonConfig.NormalWinResponse5]
 
     public static reels: number[][] = [
-        [6, 7, 2, 3, 1, 2, 4, 4, 5, 0, 6, 3, 7, 2, 2, 5, 4, 1, 4, 7, 6, 3, 2, 4, 2, 4, 7, 1, 6, 5,
-            3, 4, 2, 0, 4, 2, 1, 7, 6, 5, 3, 4, 4, 2, 2, 5, 1, 0, 6, 7, 3, 2, 2, 4, 4, 1, 7, 6, 5, 0],
-        
-        [3, 2, 4, 1, 2, 7, 6, 4, 0, 5, 2, 4, 1, 2, 3, 6, 7, 4, 5, 6, 3, 0, 4, 1, 7, 2, 5, 2, 4, 6,
-            4, 3, 7, 1, 4, 2, 0, 2, 5, 6, 3, 4, 2, 1, 4, 7, 0, 5, 2, 6, 3, 2, 4, 4, 5, 1, 7, 2, 6, 0],
-        
-        [5, 6, 3, 2, 1, 2, 4, 0, 4, 7, 5, 2, 2, 3, 6, 4, 1, 7, 4, 6, 5, 3, 4, 1, 2, 4, 2, 7, 0, 5,
-            4, 3, 6, 1, 4, 2, 7, 2, 5, 6, 3, 0, 7, 4, 4, 2, 2, 1, 6, 5, 3, 4, 4, 2, 1, 7, 2, 6, 5, 0],
-        
-        [7, 4, 6, 1, 5, 2, 3, 0, 2, 4, 6, 4, 7, 1, 2, 3, 4, 2, 5, 6, 7, 4, 0, 4, 3, 1, 6, 5, 2, 2,
-            4, 7, 0, 3, 4, 1, 6, 2, 2, 5, 4, 7, 4, 3, 1, 0, 6, 5, 2, 4, 2, 3, 7, 1, 4, 6, 2, 5, 4, 0],
-        
-        [2, 5, 4, 1, 4, 7, 2, 3, 0, 6, 5, 3, 2, 2, 4, 7, 1, 4, 6, 5, 2, 3, 0, 2, 4, 4, 1, 7, 6, 5,
-            4, 4, 3, 1, 2, 6, 0, 7, 5, 2, 4, 2, 4, 3, 6, 0, 1, 7, 4, 5, 2, 2, 4, 6, 0, 3, 7, 1, 5, 4]
+        [6, 7, 2, 3, 1, 8, 9, 4, 5, 0, 6, 3, 7, 2, 8, 5, 9, 1, 4, 7, 6, 3, 8, 4, 2, 9, 7, 1, 6, 5,
+            3, 9, 8, 0, 4, 2, 1, 7, 6, 5, 3, 4, 9, 2, 8, 5, 1, 0, 6, 7, 3, 8, 2, 9, 4, 1, 7, 6, 5, 0],
+
+        [3, 8, 9, 1, 2, 7, 6, 4, 0, 5, 2, 9, 1, 8, 3, 6, 7, 4, 5, 6, 3, 0, 9, 1, 7, 8, 5, 2, 4, 6,
+            9, 3, 7, 1, 4, 8, 0, 2, 5, 6, 3, 9, 8, 1, 4, 7, 0, 5, 2, 6, 3, 8, 4, 9, 5, 1, 7, 2, 6, 0],
+
+        [5, 6, 3, 2, 1, 8, 9, 0, 4, 7, 5, 2, 8, 3, 6, 9, 1, 7, 4, 6, 5, 3, 9, 1, 8, 4, 2, 7, 0, 5,
+            9, 3, 6, 1, 4, 8, 7, 2, 5, 6, 3, 0, 7, 9, 4, 2, 8, 1, 6, 5, 3, 4, 9, 8, 1, 7, 2, 6, 5, 0],
+
+        [7, 4, 6, 1, 5, 8, 3, 0, 2, 9, 6, 4, 7, 1, 8, 3, 9, 2, 5, 6, 7, 4, 0, 9, 3, 1, 6, 5, 2, 8,
+            4, 7, 0, 3, 9, 1, 6, 2, 8, 5, 4, 7, 9, 3, 1, 0, 6, 5, 2, 4, 8, 3, 7, 1, 9, 6, 2, 5, 4, 0],
+
+        [2, 5, 9, 1, 4, 7, 8, 3, 0, 6, 5, 3, 2, 8, 4, 7, 1, 9, 6, 5, 2, 3, 0, 8, 9, 4, 1, 7, 6, 5,
+            4, 9, 3, 1, 8, 6, 0, 7, 5, 2, 4, 8, 9, 3, 6, 0, 1, 7, 4, 5, 8, 2, 9, 6, 0, 3, 7, 1, 5, 4]
     ];
     static get the(): CommonConfig {
         if (!CommonConfig._the) {
@@ -308,6 +372,14 @@ export class CommonConfig {
         return this.currentWinAmount;
     }
 
+    public setFreeSpinsLeftValue(value: number): void {
+        this.freeSpinsLeftValue = value;
+    }
+
+    public getFreeSpinsLeftValue(): number {
+        return this.freeSpinsLeftValue;
+    }
+
     public getWinAmount(id: number, winDataLength: number): number {
         let win: number = 0;
         if (this.symbolWinData[id]) {
@@ -341,113 +413,158 @@ export class CommonConfig {
     public getOldView(): number[][] {
         return this.oldView;
     }
-
-    findWinningGroups(view: number[][]): Map<number, Set<string>> {
-        const winningGroups: Map<number, Set<string>> = new Map();
-        const rows = view.length;
-        const cols = view[0].length;
-        const visited = new Set<string>();
+    findWinningGroups(reel: number[][]): Map<number, Set<string>> {
+        const rows = reel.length;
+        const cols = reel[0].length;
+        const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+        const directions = [
+            [0, 1],  // Right
+            [1, 0],  // Down
+            [0, -1], // Left
+            [-1, 0], // Up
+        ];
     
-        // DFS to explore all connected cells with the same symbol or Wild symbol (0)
-        function dfs(r: number, c: number, symbol: number, group: Set<string>, wildUsed: boolean) {
-            const posKey = `${r},${c}`;
-            if (
-                r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
-                visited.has(posKey)                          // Already visited
-            ) return;
+        const result: Map<number, Set<string>> = new Map();
     
-            const currentSymbol = view[r][c];
+        function dfs(x: number, y: number, target: number, group: Set<string>) {
+            if (x < 0 || y < 0 || x >= rows || y >= cols || visited[x][y]) return;
+            if (reel[x][y] !== target && reel[x][y] !== 0) return;
     
-            // If it's the Wild symbol (0), allow it to replace a missing symbol
-            if (currentSymbol === 0 && !wildUsed) {
-                group.add(posKey); // Add wild to the group
-                wildUsed = true;  // Mark the Wild symbol as used
-            } else if (currentSymbol === symbol || currentSymbol === 0) {
-                // If the symbol matches or it's a Wild symbol (0), proceed
-                visited.add(posKey);
-                group.add(posKey);
+            visited[x][y] = true;
+            group.add(`${x},${y}`);
     
-                // Explore neighbors in all 4 directions
-                dfs(r + 1, c, symbol, group, wildUsed);
-                dfs(r - 1, c, symbol, group, wildUsed);
-                dfs(r, c + 1, symbol, group, wildUsed);
-                dfs(r, c - 1, symbol, group, wildUsed);
+            for (const [dx, dy] of directions) {
+                dfs(x + dx, y + dy, target, group);
             }
         }
     
-        // Helper function to check a line (horizontal or vertical) for potential Wild symbol replacement
-        function checkLineForWildSymbols(r: number, c: number, dx: number, dy: number, symbol: number): Set<string> {
-            const linePositions = new Set<string>();
-            let wildUsed = false;
-            let symbolCount = 0;
-            let checkR = r;
-            let checkC = c;
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                if (!visited[i][j] && reel[i][j] !== 1) {
+                    const group: Set<string> = new Set();
+                    dfs(i, j, reel[i][j], group);
     
-            // Check in both directions
-            while (checkR >= 0 && checkR < rows && checkC >= 0 && checkC < cols && symbolCount < 4) {
-                const currentSymbol = view[checkR][checkC];
-                if (currentSymbol === symbol || currentSymbol === 0) {
-                    linePositions.add(`${checkR},${checkC}`);
-                    if (currentSymbol === symbol) symbolCount++;
-                } else if (currentSymbol === 0 && !wildUsed) {
-                    wildUsed = true;
-                    linePositions.add(`${checkR},${checkC}`);
-                    symbolCount++;
-                } else {
-                    break;
-                }
-                checkR += dx;
-                checkC += dy;
-            }
-    
-            return symbolCount >= 4 ? linePositions : new Set<string>(); // Return only if valid line
-        }
-    
-        // Traverse each cell to find connected groups of 4 or more
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                const symbol = view[r][c];
-                if (symbol === null || visited.has(`${r},${c}`)) continue;
-    
-                // Initialize a new group to collect connected symbols
-                const currentGroup: Set<string> = new Set();
-                let wildUsed = false;
-    
-                dfs(r, c, symbol, currentGroup, wildUsed);
-    
-                // If group has 4 or more connected symbols, add to winningGroups map
-                if (currentGroup.size >= 4) {
-                    if (!winningGroups.has(symbol)) {
-                        winningGroups.set(symbol, new Set());
+                    if (group.size >= 4) {
+                        if (!result.has(reel[i][j])) {
+                            result.set(reel[i][j], new Set());
+                        }
+                        for (const pos of group) {
+                            result.get(reel[i][j])?.add(pos);
+                        }
                     }
-                    const symbolGroup = winningGroups.get(symbol)!;
-                    currentGroup.forEach(pos => symbolGroup.add(pos));
-                }
-    
-                // Check horizontally and vertically for Wild symbol extension
-                const horizontalLine = checkLineForWildSymbols(r, c, 1, 0, symbol); // Check horizontally (dx=1, dy=0)
-                const verticalLine = checkLineForWildSymbols(r, c, 0, 1, symbol);   // Check vertically (dx=0, dy=1)
-    
-                // If we found a valid line with Wild symbol, add it to winningGroups
-                if (horizontalLine.size >= 4) {
-                    if (!winningGroups.has(symbol)) {
-                        winningGroups.set(symbol, new Set());
-                    }
-                    const symbolGroup = winningGroups.get(symbol)!;
-                    horizontalLine.forEach(pos => symbolGroup.add(pos));
-                }
-                if (verticalLine.size >= 4) {
-                    if (!winningGroups.has(symbol)) {
-                        winningGroups.set(symbol, new Set());
-                    }
-                    const symbolGroup = winningGroups.get(symbol)!;
-                    verticalLine.forEach(pos => symbolGroup.add(pos));
                 }
             }
         }
     
-        return winningGroups;
+        return result;
     }
+
+    // findWinningGroups(view: number[][]): Map<number, Set<string>> {
+    //     const winningGroups: Map<number, Set<string>> = new Map();
+    //     const rows = view.length;
+    //     const cols = view[0].length;
+    //     const visited = new Set<string>();
+
+    //     // DFS to explore all connected cells with the same symbol or Wild symbol (0)
+    //     function dfs(r: number, c: number, symbol: number, group: Set<string>, wildUsed: boolean) {
+    //         const posKey = `${r},${c}`;
+    //         if (
+    //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
+    //             visited.has(posKey)                          // Already visited
+    //         ) return;
+
+    //         const currentSymbol = view[r][c];
+
+    //         // If it's the Wild symbol (0), allow it to replace a missing symbol
+    //         if (currentSymbol === 0 && !wildUsed) {
+    //             group.add(posKey); // Add wild to the group
+    //             wildUsed = true;  // Mark the Wild symbol as used
+    //         } else if (currentSymbol === symbol || currentSymbol === 0) {
+    //             // If the symbol matches or it's a Wild symbol (0), proceed
+    //             visited.add(posKey);
+    //             group.add(posKey);
+
+    //             // Explore neighbors in all 4 directions
+    //             dfs(r + 1, c, symbol, group, wildUsed);
+    //             dfs(r - 1, c, symbol, group, wildUsed);
+    //             dfs(r, c + 1, symbol, group, wildUsed);
+    //             dfs(r, c - 1, symbol, group, wildUsed);
+    //         }
+    //     }
+
+    //     // Helper function to check a line (horizontal or vertical) for potential Wild symbol replacement
+    //     function checkLineForWildSymbols(r: number, c: number, dx: number, dy: number, symbol: number): Set<string> {
+    //         const linePositions = new Set<string>();
+    //         let wildUsed = false;
+    //         let symbolCount = 0;
+    //         let checkR = r;
+    //         let checkC = c;
+
+    //         // Check in both directions
+    //         while (checkR >= 0 && checkR < rows && checkC >= 0 && checkC < cols && symbolCount < 4) {
+    //             const currentSymbol = view[checkR][checkC];
+    //             if (currentSymbol === symbol || currentSymbol === 0) {
+    //                 linePositions.add(`${checkR},${checkC}`);
+    //                 if (currentSymbol === symbol) symbolCount++;
+    //             } else if (currentSymbol === 0 && !wildUsed) {
+    //                 wildUsed = true;
+    //                 linePositions.add(`${checkR},${checkC}`);
+    //                 symbolCount++;
+    //             } else {
+    //                 break;
+    //             }
+    //             checkR += dx;
+    //             checkC += dy;
+    //         }
+
+    //         return symbolCount >= 4 ? linePositions : new Set<string>(); // Return only if valid line
+    //     }
+
+    //     // Traverse each cell to find connected groups of 4 or more
+    //     for (let r = 0; r < rows; r++) {
+    //         for (let c = 0; c < cols; c++) {
+    //             const symbol = view[r][c];
+    //             if (symbol === null || visited.has(`${r},${c}`)) continue;
+
+    //             // Initialize a new group to collect connected symbols
+    //             const currentGroup: Set<string> = new Set();
+    //             let wildUsed = false;
+
+    //             dfs(r, c, symbol, currentGroup, wildUsed);
+
+    //             // If group has 4 or more connected symbols, add to winningGroups map
+    //             if (currentGroup.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 const symbolGroup = winningGroups.get(symbol)!;
+    //                 currentGroup.forEach(pos => symbolGroup.add(pos));
+    //             }
+
+    //             // Check horizontally and vertically for Wild symbol extension
+    //             const horizontalLine = checkLineForWildSymbols(r, c, 1, 0, symbol); // Check horizontally (dx=1, dy=0)
+    //             const verticalLine = checkLineForWildSymbols(r, c, 0, 1, symbol);   // Check vertically (dx=0, dy=1)
+
+    //             // If we found a valid line with Wild symbol, add it to winningGroups
+    //             if (horizontalLine.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 const symbolGroup = winningGroups.get(symbol)!;
+    //                 horizontalLine.forEach(pos => symbolGroup.add(pos));
+    //             }
+    //             if (verticalLine.size >= 4) {
+    //                 if (!winningGroups.has(symbol)) {
+    //                     winningGroups.set(symbol, new Set());
+    //                 }
+    //                 const symbolGroup = winningGroups.get(symbol)!;
+    //                 verticalLine.forEach(pos => symbolGroup.add(pos));
+    //             }
+    //         }
+    //     }
+
+    //     return winningGroups;
+    // }
 
     public setView(value: number[][]): void {
         this.view = value
@@ -462,7 +579,7 @@ export class CommonConfig {
     //     const rows = view.length;
     //     const cols = view[0].length;
     //     const visited = new Set<string>();
-    
+
     //     // DFS to explore all connected cells with the same symbol or Wild symbol (0)
     //     function dfs(r: number, c: number, symbol: number, group: Set<string>, isWildUsed: boolean) {
     //         const posKey = `${r},${c}`;
@@ -470,9 +587,9 @@ export class CommonConfig {
     //             r < 0 || r >= rows || c < 0 || c >= cols || // Out of bounds
     //             visited.has(posKey)                          // Already visited
     //         ) return;
-    
+
     //         const currentSymbol = view[r][c];
-            
+
     //         // If it's the Wild symbol (0), mark it as used but allow it to replace other symbols
     //         if (currentSymbol === 0 && !isWildUsed) {
     //             group.add(posKey); // Add wild to the group
@@ -481,7 +598,7 @@ export class CommonConfig {
     //             // If the symbol matches or it's a Wild symbol (0), proceed
     //             visited.add(posKey);
     //             group.add(posKey);
-    
+
     //             // Explore neighbors in all 4 directions
     //             dfs(r + 1, c, symbol, group, isWildUsed);
     //             dfs(r - 1, c, symbol, group, isWildUsed);
@@ -489,19 +606,19 @@ export class CommonConfig {
     //             dfs(r, c - 1, symbol, group, isWildUsed);
     //         }
     //     }
-    
+
     //     // Traverse each cell to find connected groups of 4 or more
     //     for (let r = 0; r < rows; r++) {
     //         for (let c = 0; c < cols; c++) {
     //             const symbol = view[r][c];
     //             if (symbol === null || visited.has(`${r},${c}`)) continue;
-    
+
     //             // Initialize a new group to collect connected symbols
     //             const currentGroup: Set<string> = new Set();
     //             let isWildUsed = false;
-    
+
     //             dfs(r, c, symbol, currentGroup, isWildUsed);
-    
+
     //             // If group has 4 or more connected symbols, add to winningGroups map
     //             if (currentGroup.size >= 4) {
     //                 if (!winningGroups.has(symbol)) {
@@ -510,7 +627,7 @@ export class CommonConfig {
     //                 const symbolGroup = winningGroups.get(symbol)!;
     //                 currentGroup.forEach(pos => symbolGroup.add(pos));
     //             }
-    
+
     //             // Special logic for checking 3 identical symbols + 1 Wild symbol
     //             if (currentGroup.size === 3) {
     //                 // Check horizontally and vertically for wild symbol extension
@@ -518,16 +635,16 @@ export class CommonConfig {
     //                     { dx: 1, dy: 0 }, // Horizontal check
     //                     { dx: 0, dy: 1 }  // Vertical check
     //                 ];
-    
+
     //                 for (const { dx, dy } of potentialWins) {
     //                     const wildPositions: Set<string> = new Set();
-    
+
     //                     // Check in the forward direction (dx, dy)
     //                     let count = 0;
     //                     let wildFound = false;
     //                     let checkR = r;
     //                     let checkC = c;
-    
+
     //                     while (count < 3 && checkR >= 0 && checkR < rows && checkC >= 0 && checkC < cols) {
     //                         const currentPos = `${checkR},${checkC}`;
     //                         if (view[checkR][checkC] === 0) {
@@ -539,7 +656,7 @@ export class CommonConfig {
     //                         checkR += dx;
     //                         checkC += dy;
     //                     }
-    
+
     //                     // Check if the 3 symbols + 1 Wild (ID 0) form a valid group
     //                     if (count === 3 && wildFound) {
     //                         currentGroup.forEach(pos => wildPositions.add(pos)); // Add 3 symbols with the Wild
@@ -553,10 +670,10 @@ export class CommonConfig {
     //             }
     //         }
     //     }
-    
+
     //     return winningGroups;
     // }
-    
+
 
     public setWinGrid(value: Map<number, Set<string>>): void {
         this.winGrid = value

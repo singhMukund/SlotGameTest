@@ -28,6 +28,8 @@ export class SpinButton extends Container{
 
         Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
         Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
+        Game.the.app.stage.on(CommonConfig.FG_DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.FG_ENABLE_ALL_BUTTON, this.enable, this);
         document.body.onkeyup = (e)=> {
             if (e.key == " " ||
                 e.code == "Space" ||      
@@ -46,7 +48,11 @@ export class SpinButton extends Container{
 
     private onButtonUp() :void{
         this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
-        Game.the.app.stage.emit(CommonConfig.START_SPIN);
+        if(CommonConfig.the.getCurrentState() == CommonConfig.BASE_GAME){
+            Game.the.app.stage.emit(CommonConfig.START_SPIN);
+        }else{
+            Game.the.app.stage.emit(CommonConfig.FG_START_SPIN);
+        }
         this.disable();
     }
 

@@ -1,9 +1,8 @@
-import { Container } from "pixi.js";
+import { Assets, Container, Sprite, Spritesheet } from "pixi.js";
 import { CommonConfig } from "../../Common/CommonConfig";
-import { SymbolPool } from "./SymbolPool";
 import gsap from "gsap";
-import { StaticSymbol } from "./StaticSymbol";
 import { Game } from "../game";
+import { StaticSymbol } from "../Symbol/StaticSymbol";
 
 export class Reel extends Container {
     private pos_00 !: Container;
@@ -19,9 +18,10 @@ export class Reel extends Container {
     private minPosition = -CommonConfig.symbolHeight;
     private positions: number[] = [CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3, CommonConfig.symbolHeight * 4];
-    private delays: number[] = [0.05, 0.025, 0.015, 0.03,0.022,0.01];
+    private delays: number[] = [0.05, 0.025, 0.015, 0.03, 0.022, 0.01];
     private noOfTimeWinCount: number = 0;
     private notAffectedContainer: string[] = [];
+    
 
 
     constructor(reelId: number) {
@@ -32,6 +32,8 @@ export class Reel extends Container {
         Game.the.app.stage.on(CommonConfig.PLAY_STOP_SPIN, this.stopTheReel, this);
         Game.the.app.stage.on(CommonConfig.PLAY_SHUFFLE_REEL, this.playAfterHideCurrentSymbol, this);
     }
+
+    
 
     private init(): void {
         this.pos_00 = new Container();
@@ -162,7 +164,7 @@ export class Reel extends Container {
         });
     }
 
-    private killTweens() :void{
+    private killTweens(): void {
         gsap.killTweensOf(this);
         gsap.killTweensOf(this.pos_00);
         gsap.killTweensOf(this.pos_01);

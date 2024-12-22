@@ -14,6 +14,9 @@ export class LineMeter extends Container {
         this.addToStage();
         Game.the.app.stage.on(CommonConfig.UPDATE_LINE_WIN_METER, this.updateWinAmount, this);
         Game.the.app.stage.on(CommonConfig.RESET_WIN_METER, this.resetWinAmount, this);
+
+        Game.the.app.stage.on(CommonConfig.FG_UPDATE_LINE_WIN_METER, this.updateWinAmount, this);
+        Game.the.app.stage.on(CommonConfig.FG_RESET_WIN_METER, this.resetWinAmount, this);
     }
 
     private init(): void {

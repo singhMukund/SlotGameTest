@@ -10,6 +10,10 @@
             {
                "alias": "bottomPanelBg",
                "src": "./StaticImage/lower_ui.png"
+            },
+            {
+               "alias": "freegamebackground",
+               "src": "./StaticImage/bonus_background.png"
             }
          ]
       },
@@ -21,8 +25,16 @@
                "src": "./StaticImage/reel_regular_frame.png"
             },
             {
+               "alias": "freegamereelFrameImage",
+               "src": "./StaticImage/FreeGameReel.png"
+            },
+            {
                "alias": "characterImage",
                "src": "./StaticImage/character.png"
+            },
+            {
+               "alias": "borderStick",
+               "src": "./StaticImage/borderStick.json"
             }
          ]
       },

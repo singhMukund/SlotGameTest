@@ -28,6 +28,8 @@ export class SettingButton extends Container{
 
         Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
         Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
+        Game.the.app.stage.on(CommonConfig.FG_DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.FG_ENABLE_ALL_BUTTON, this.enable, this);
     }
 
     private onButtonDown() : void{

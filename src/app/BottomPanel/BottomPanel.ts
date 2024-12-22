@@ -14,6 +14,7 @@ import { AutoplayBtn } from "../Button/AutoplayBtn";
 import { AutoplayController } from "../Symbol/AutoplayController";
 import { AutoplayMeter } from "../Meter/AutoplayMeter";
 import { SoundButton } from "../Button/SoundButton";
+import { FreeGameLeftMeter } from "../Meter/FreeGameLeftMeter";
 
 
 export class BottomPanel extends Container {
