@@ -63,7 +63,7 @@ export class PentagonalUpdateFeature extends Container {
     private createMaskImages(currentPercent : number): void {
         const myObject = { percent: 1 };
         if(currentPercent <=0){
-            this.maskGraphics.clear();
+            this.maskGraphics.clear(); 
             return;
         }
         gsap.to(myObject, {
