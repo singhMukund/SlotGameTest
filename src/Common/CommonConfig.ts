@@ -77,7 +77,7 @@ export class CommonConfig {
     public static CHECK_AUTOPLAY_COUNT: number = 0;
     public static ANIMATE_WIN_SYMBOL: number = 1;
     public static RECHECK_CASCADE_WIN: number = 2;
-    public static CHECK_PLAY_RANDOM_FEATURE_ZWOOM: number = 3;
+    public static CHECK_PLAY_RANDOM_FEATURE: number = 3;
     public static RECHECK_WIN: number = 4;
     public static BIG_WIN: number = 5;
     public static CHECK_AUTOPLAY: number = 6;
@@ -86,12 +86,19 @@ export class CommonConfig {
     //-------------Win Animation Freegame----------------
     public static FG_ANIMATE_WIN_SYMBOL: number = 0;
     public static FG_RECHECK_CASCADE_WIN: number = 1;
-    public static FG_CHECK_PLAY_RANDOM_FEATURE_ZWOOM: number = 2;
+    public static FG_CHECK_PLAY_RANDOM_FEATURE: number = 2;
     public static FG_RECHECK_WIN: number = 3;
     public static FG_BIG_WIN: number = 4;
     public static FG_DO_NEXT_SPIN_IF_REQUIRED: number = 5;
     public static FG_HIDE_FREEGAME_VIEW_AND_SHOW_BASEGAME_VIEW: number = 6;
     //---------
+
+    //-----------------Random Feature----------------
+    public static RANDOM_FEATURE_ZWOOM: string = "RANDOM_FEATURE_ZWOOM";
+    public static RANDOM_FEATURE_CRIPAZIONE: string = "RANDOM_FEATURE_CRIPAZIONE";
+    public static RANDOM_FEATURE_PISTOLE: string = "RANDOM_FEATURE_PISTOLE";
+
+    public static RANDOM_FEATURES_LIST : string[] = [CommonConfig.RANDOM_FEATURE_ZWOOM,CommonConfig.RANDOM_FEATURE_CRIPAZIONE,CommonConfig.RANDOM_FEATURE_PISTOLE];
 
 
     public static TOTAL_ANIMATION_LENGTH: number = 5;
@@ -110,6 +117,7 @@ export class CommonConfig {
     private isAutoplay: boolean = false;
     private totalWinSymbolCount: number = 0;
     private currentState: string = "basegame";
+    private currentRadomFeatureList : string[] = [];
 
     private symbolWinData: SymbolWinData = {
         0: {
@@ -153,6 +161,14 @@ export class CommonConfig {
     private winGrid: Map<number, Set<string>> = new Map();
 
     private randomWildGridIds: number[] = [];
+
+    public setCurrentRadomFeatureList(value: string[]): void {
+        this.currentRadomFeatureList = value;
+    }
+
+    public getCurrentRadomFeatureList(): string[] {
+        return this.currentRadomFeatureList;
+    }
 
     public SetCurrentWinAnimationIndex(value: number): void {
         if(value === 0){

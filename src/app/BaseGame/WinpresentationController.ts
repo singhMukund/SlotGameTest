@@ -35,11 +35,13 @@ export class WinpresentationController {
         CommonConfig.the.setWinGrid(new Map());
         CommonConfig.the.setCurrentWinAmount(0);
         CommonConfig.the.setLineWinAmount(0);
+        CommonConfig.the.setCurrentRadomFeatureList([]);
         Game.the.app.stage.emit(CommonConfig.UPDATE_PENTAGONAL_METER);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
         Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
         Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, false);
         Game.the.app.stage.emit(CommonConfig.DISABLE_ALL_BUTTON);
+
         // console.clear();
     }
 
@@ -58,7 +60,7 @@ export class WinpresentationController {
             case CommonConfig.RECHECK_CASCADE_WIN:
                 this.recheckWin();
                 break;
-            case CommonConfig.CHECK_PLAY_RANDOM_FEATURE_ZWOOM:
+            case CommonConfig.CHECK_PLAY_RANDOM_FEATURE:
                 this.onStartPistole();
                 break;
             case CommonConfig.RECHECK_WIN:
