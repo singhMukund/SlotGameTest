@@ -45,6 +45,9 @@ export class WinpresentationController {
 
     private onShowNextWinPresentation(): void {
         // console.log("onShowNextWinPresentation--------------"+CommonConfig.the.getCurrentWinAnimationIndex());
+        if(CommonConfig.the.getCurrentWinAnimationIndex() > 7){
+            return;
+        }
         switch (CommonConfig.the.getCurrentWinAnimationIndex()) {
             case CommonConfig.CHECK_AUTOPLAY_COUNT:
                 this.onCheckAutoplayCount();
@@ -104,8 +107,8 @@ export class WinpresentationController {
     private enableButton(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (!CommonConfig.the.getIsAutoplay()) {
-            CommonConfig.the.setWinGrid(new Map());
-            CommonConfig.the.SetCurrentWinAnimationIndex(0);
+            // CommonConfig.the.setWinGrid(new Map());
+            // CommonConfig.the.SetCurrentWinAnimationIndex(0);
             Game.the.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN);
@@ -116,9 +119,9 @@ export class WinpresentationController {
     private onCheckAutoplay(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (CommonConfig.the.getIsAutoplay()) {
-            CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+            // CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             CommonConfig.the.setWinGrid(new Map());
-            CommonConfig.the.SetCurrentWinAnimationIndex(0);
+            // CommonConfig.the.SetCurrentWinAnimationIndex(0);
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
         } else {

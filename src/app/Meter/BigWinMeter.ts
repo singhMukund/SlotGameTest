@@ -31,7 +31,8 @@ export class BigWinMeter extends Container {
     private checkWinMultiplier: number = 20;
     private currentBet: number = 1;
     private currentTitle : string = "WIN";
-    private winString: string[] = ["WIN", "BIG WIN", "MEGA WIN", "TOP WIN", "OVER THE TOP WIN"]
+    private winString: string[] = ["WIN", "BIG WIN", "MEGA WIN", "TOP WIN", "OVER THE TOP WIN"];
+    private winMeterTextScale : number = 1;
     constructor() {
         super();
         this.init();
@@ -44,6 +45,7 @@ export class BigWinMeter extends Container {
         Game.the.app.stage.on("RESIZE_THE_APP", this.setToPosition, this);
         Game.the.app.stage.on(CommonConfig.PLAY_BIG_WIN, this.show, this);
         this.on('pointerup', this.stageClick, this);
+        Game.the.app.stage.on(CommonConfig.SET_RESIZE_WITH_REELS, this.resizeBigWinWithReels, this);
     }
 
     private init() {
@@ -85,10 +87,33 @@ export class BigWinMeter extends Container {
     }
 
     private setToPosition(): void {
+        let height : number = this.bigWinSpine.height;
+        let currentHeightPanel = height/999 * window.innerHeight ;
+        let scale : number = currentHeightPanel / height;
+        this.bigWinSpine.scale.set(scale);
+        let assumedWidthMobile: number = window.innerWidth * (this.bigWinSpine.width / 360);
         this.bigWinSpine.pivot.set(-this.bigWinSpine.width / 2, -this.bigWinSpine.height / 2);
         this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2, (window.innerHeight - this.bigWinSpine.height) / 2);
         this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
         this.winMeter.position.set((window.innerWidth - this.winMeter.width) / 1.55, (window.innerHeight - this.winMeter.height) / 1.8);
+        if(window.innerWidth < window.innerHeight){
+            this.bigWinSpine.scale.set(1.5);
+            let width = this.bigWinSpine.width;
+            scale = assumedWidthMobile / width;
+            this.bigWinSpine.scale.set(scale * 0.5);
+            this.titleText.scale.set(scale * 0.5);
+            this.winMeter.scale.set(scale * 0.5);
+            this.winMeterTextScale = scale * 0.5;
+            this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2, (window.innerHeight - this.bigWinSpine.height) / 2);
+            this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
+            this.winMeter.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.winMeter.width)/ 1.55 , this.bigWinSpine.y+ (this.bigWinSpine.height - this.winMeter.height) / 1.8);
+        }
+    }
+
+    private resizeBigWinWithReels(data: number[]): void {
+        this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2 + 10, data[3] + (data[1] - this.bigWinSpine.height) / 2);
+        this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width)/2, this.bigWinSpine.y - this.titleText.height);
+        this.winMeter.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.winMeter.width)/ 1.55 , this.bigWinSpine.y+ (this.bigWinSpine.height - this.winMeter.height) / 1.8);
     }
 
     playIncrementAnimation() {
@@ -96,6 +121,9 @@ export class BigWinMeter extends Container {
         this.speed = CommonConfig.the.getCurrentWinAmount() / 1200;
         this.currentBet = CommonConfig.the.getBet();
         this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
+        if(window.innerWidth < window.innerHeight){
+            this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width)/2, this.bigWinSpine.y - this.titleText.height);
+        }
         this.winMeterGsapTween = gsap.to(this.winMeter, {
             ease: 'power1.out',
             repeat: -1,
@@ -151,17 +179,23 @@ export class BigWinMeter extends Container {
     }
 
     private lastScaleTween(): void {
+        let finalScale : number = 2;
+        let currentScale : number = 1;
+        if(window.innerWidth < window.innerHeight){
+            finalScale = this.winMeterTextScale * 2;
+            currentScale = this.winMeterTextScale;
+        }
         this.winMeterScaleTween = gsap.to(this.winMeter.scale, {
             ease: 'power1.out',
             duration : 0.2,
-            x: 2,
-            y: 2,
+            x: finalScale,
+            y: finalScale,
             onComplete: () => {
                 this.winMeterScaleTween = gsap.to(this.winMeter.scale, {
                     ease: 'power1.out',
                     duration : 0.2,
-                    x: 1,
-                    y: 1
+                    x: currentScale,
+                    y: currentScale
                 });
             }
         });
@@ -169,12 +203,18 @@ export class BigWinMeter extends Container {
     }
 
     private scaleTween(): void {
+        let finalScale : number = 1.2;
+        let currentScale : number = 1;
+        if(window.innerWidth < window.innerHeight){
+            finalScale = this.winMeterTextScale * 1.2;
+            currentScale = this.winMeterTextScale;
+        }
         this.winMeterScaleTween = gsap.to(this.winMeter.scale, {
             ease: 'power1.out',
             repeat: -1,
             yoyo: true,
-            x: 1.2,
-            y: 1.2
+            x: finalScale,
+            y: finalScale
         });
         this.winMeterScaleTween.play()
     }
@@ -226,6 +266,9 @@ export class BigWinMeter extends Container {
             onComplete: () => {
                 this.titleText.text = this.winString[this.currentLargeWinSeq];
                 this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
+                if(window.innerWidth < window.innerHeight){
+                    this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width)/2, this.bigWinSpine.y - this.titleText.height);
+                }
                 gsap.to(this.titleText, {
                     duration: 0.45,
                     alpha: 1

@@ -23,9 +23,9 @@ export class PentagonalUpdateFeature extends Container {
         this.feature_Texture = Assets.get("pentagon_assets");
         this.init();
         this.addToStage();
-        this.resizeApp();
+        // this.resizeApp();
         this.subscribeEvent();
-        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+        // Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private subscribeEvent(): void {
@@ -63,7 +63,7 @@ export class PentagonalUpdateFeature extends Container {
     private createMaskImages(currentPercent : number): void {
         const myObject = { percent: 1 };
         if(currentPercent <=0){
-            this.maskGraphics.clear();
+            this.maskGraphics.clear(); 
             return;
         }
         gsap.to(myObject, {
@@ -97,13 +97,7 @@ export class PentagonalUpdateFeature extends Container {
         this.addChild(this.counterMeter);
     }
 
-    private resizeApp(): void {
-        let height: number = this.height;
-        let currentHeightPanel = height / 999 * window.innerHeight;
-        let scale: number = currentHeightPanel / height;
-        this.scale.set(scale * 0.9);
-        this.position.set(50, (window.innerHeight - this.height) / 2);
-    }
+    
 
     private updatePentagonalMeter(): void {
         let index: number = this.getFilledTextureIndex(CommonConfig.the.getTotalWinSymbolCount());

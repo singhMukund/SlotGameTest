@@ -69,6 +69,7 @@ export class CommonConfig {
     public static FG_UPDATE_PENTAGONAL_METER: string = "FG_UPDATE_PENTAGONAL_METER";
     public static START_ZWOOM_FEATURE: string = "START_ZWOOM_FEATURE";
     public static SHOW_HIDE_BASEGAME: string = "SHOW_HIDE_BASEGAME";
+    public static SET_RESIZE_WITH_REELS : string = "SET_RESIZE_WITH_REELS";
     public static BASE_GAME: string = "basegame";
     public static FREE_Game: string = "freegame";
 
@@ -154,6 +155,9 @@ export class CommonConfig {
     private randomWildGridIds: number[] = [];
 
     public SetCurrentWinAnimationIndex(value: number): void {
+        if(value === 0){
+            console.log("SetCurrentWinAnimationIndex",value);
+        }
         this.currentWinAnimationIndex = value;
     }
 
@@ -681,6 +685,65 @@ export class CommonConfig {
 
     public getWinGrid(): Map<number, Set<string>> {
         return this.winGrid;
+    }
+
+    replaceZerosWithPriority(response: number[][]): number[][] {
+        const rows = response.length;
+        const cols = response[0].length;
+    
+        // Helper function to get valid neighbors and prioritize their values
+        function getPrioritizedNeighborValues(row: number, col: number): number[] {
+            const neighbors: number[] = [];
+    
+            const directions = [
+                [-1, 0], // up
+                [1, 0],  // down
+                [0, -1], // left
+                [0, 1],  // right
+            ];
+    
+            for (const [dr, dc] of directions) {
+                const newRow = row + dr;
+                const newCol = col + dc;
+    
+                // Check if neighbor is within bounds and not a 0
+                if (
+                    newRow >= 0 && newRow < rows &&
+                    newCol >= 0 && newCol < cols &&
+                    response[newRow][newCol] !== 0
+                ) {
+                    neighbors.push(response[newRow][newCol]);
+                }
+            }
+    
+            // Sort neighbors to prioritize lower values
+            neighbors.sort((a, b) => a - b);
+            return neighbors;
+        }
+    
+        // Keep replacing zeros until no zeros are left
+        let hasZero = true;
+        while (hasZero) {
+            hasZero = false;
+            const result = response.map(row => [...row]);
+    
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    if (response[row][col] === 0) {
+                        const prioritizedNeighbors = getPrioritizedNeighborValues(row, col);
+                        if (prioritizedNeighbors.length > 0) {
+                            // Replace 0 with the smallest prioritized neighbor value
+                            result[row][col] = prioritizedNeighbors[0];
+                            hasZero = true;
+                        }
+                    }
+                }
+            }
+    
+            response = result;
+        }
+    
+        return response;
     }
 
     // findWinningGroups(view: number[][]): Map<number, Set<string>> {

@@ -6,8 +6,8 @@ export class Character extends Container{
     constructor(){
         super();
         this.init();
-        this.resizeApp();
-        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+        // this.resizeApp();
+        // Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private init() :void{
@@ -15,12 +15,5 @@ export class Character extends Container{
         this.addChild(this.image);
     }
 
-    private resizeApp():void{
-        let height : number = this.image.height;
-        let currentHeightPanel = height/999 * window.innerHeight ;
-        let scale : number = currentHeightPanel / height;
-        this.scale.set(scale);
-
-        this.position.set(window.innerWidth - (this.width * 1.4), (window.innerHeight - this.height)/2)
-    }
+    
 }
