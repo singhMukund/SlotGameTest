@@ -51,7 +51,7 @@ export class WinpresentationControllerFG {
             case CommonConfig.FG_RECHECK_CASCADE_WIN:
                 this.recheckWin();
                 break;
-            case CommonConfig.FG_CHECK_PLAY_RANDOM_FEATURE_ZWOOM:
+            case CommonConfig.FG_CHECK_PLAY_RANDOM_FEATURE:
                 this.onStartPistole();
                 break;
             case CommonConfig.FG_RECHECK_WIN:

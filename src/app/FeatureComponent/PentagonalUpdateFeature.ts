@@ -17,6 +17,7 @@ export class PentagonalUpdateFeature extends Container {
     private maskGraphics !: Graphics;
     private counterMeter !: PentagonalMeter;
     private pentagon_front_frame!: Sprite;
+    private currentpercemtage : number = 0;
 
     constructor() {
         super();
@@ -31,6 +32,11 @@ export class PentagonalUpdateFeature extends Container {
     private subscribeEvent(): void {
         Game.the.app.stage.on(CommonConfig.UPDATE_PENTAGONAL_METER, this.updatePentagonalMeter, this);
         Game.the.app.stage.on(CommonConfig.FG_UPDATE_PENTAGONAL_METER, this.updatePentagonalMeter, this);
+        Game.the.app.stage.on(CommonConfig.START_SPIN, this.resetsOnSpinClick, this);
+    }
+
+    private resetsOnSpinClick(): void {
+        this.currentpercemtage = 0;
     }
 
     private init(): void {
@@ -61,7 +67,7 @@ export class PentagonalUpdateFeature extends Container {
     }
 
     private createMaskImages(currentPercent : number): void {
-        const myObject = { percent: 1 };
+        const myObject = { percent: this.currentpercemtage };
         if(currentPercent <=0){
             this.maskGraphics.clear(); 
             return;
@@ -71,6 +77,9 @@ export class PentagonalUpdateFeature extends Container {
             duration: 0.5,
             onUpdate: () => {
                 this.updateMask(myObject.percent);
+            },
+            onComplete: () => {
+                this.currentpercemtage = currentPercent;
             },
             ease: "power1.inOut", // Smooth animation easing
         });
