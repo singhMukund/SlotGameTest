@@ -93,8 +93,6 @@ export class BottomPanel extends Container {
         this.plusButton.scale.set(scale);
         this.soundButton.scale.set(scale);
         this.autoplayBtn.scale.set(scale * 1.2);
-        if (window.innerWidth > window.innerHeight) {
-        }
         this.thunderButton.position.set(window.innerWidth - (this.thunderButton.width *  2), window.innerHeight - (this.thunderButton.height  *  1.2));
         this.settingButton.position.set(this.settingButton.width, window.innerHeight -  (this.settingButton.height * 1.2));
         this.soundButton.position.set(this.settingButton.x + this.settingButton.width + (this.soundButton.width/2), window.innerHeight -  (this.settingButton.height * 1.2));
@@ -105,5 +103,39 @@ export class BottomPanel extends Container {
         this.spinBtn.position.set(this.autoplayMeter.x - (this.spinBtn.width * 1.5), window.innerHeight - this.spinBtn.height);
         this.minusButton.position.set(this.spinBtn.x - this.minusButton.width, window.innerHeight - this.minusButton.height);
         this.plusButton.position.set(this.minusButton.x,this.minusButton.y - this.plusButton.height);
+
+        if(window.innerWidth < window.innerHeight){
+            this.resizeInMoble();
+        }
+    }
+
+    private resizeInMoble():void{
+        this.spinBtn.scale.set(1.5);
+        let height : number = this.spinBtn.height;
+        let currentHeightPanel = height/720 * window.innerHeight ;
+        let scale : number = currentHeightPanel / height;
+
+        this.bg.position.set(0,window.innerHeight - this.bg.height);
+        this.winMeter.scale.set(scale * 0.6);
+        this.balanceMeter.scale.set(scale * 0.6);
+        this.betMeter.scale.set(scale * 0.6);
+        this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
+        this.spinBtn.scale.set(scale * 0.6);
+        this.settingButton.scale.set(scale * 0.6);
+        this.thunderButton.scale.set(scale * 0.6);
+        this.minusButton.scale.set(scale * 0.6);
+        this.plusButton.scale.set(scale * 0.6);
+        this.soundButton.scale.set(scale * 0.6);
+        this.autoplayBtn.scale.set(scale * 0.8);
+        this.balanceMeter.position.set(window.innerWidth - (this.balanceMeter.width * 1.1), window.innerHeight - (this.balanceMeter.height));
+        this.betMeter.position.set(10,window.innerHeight - this.winMeter.height);
+        this.settingButton.position.set(0, this.betMeter.y -  this.settingButton.height);
+        this.soundButton.position.set(0 , this.settingButton.y -  this.settingButton.height);
+        this.spinBtn.position.set((window.innerWidth - this.spinBtn.width)/2, this.soundButton.y - this.spinBtn.height);
+        this.minusButton.position.set(this.spinBtn.x - this.minusButton.width, this.spinBtn.y + (this.spinBtn.height * 0.7));
+        this.plusButton.position.set(this.spinBtn.x + this.spinBtn.width, this.minusButton.y);
+        this.thunderButton.position.set(0, this.soundButton.y - this.thunderButton.height);
+        this.autoplayBtn.position.set(window.innerWidth - (this.autoplayBtn.width * 1.5), this.soundButton.y);
+        this.autoplayMeter.position.set(this.autoplayBtn.x + (this.autoplayBtn.width - this.autoplayMeter.width)/2, this.autoplayBtn.y - this.autoplayMeter.height);
     }
 }

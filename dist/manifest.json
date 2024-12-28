@@ -78,6 +78,14 @@
             {
                "alias": "Bigwin_atlas",
                "src": "./Spine/BigWin/Bigwin.atlas"
+            },
+            {
+               "alias": "LineAnimation_data",
+               "src": "./Spine/Line/Line.json"
+            },
+            {
+               "alias": "LineAnimation_atlas",
+               "src": "./Spine/Line/Line.atlas"
             }
          ]
       },
