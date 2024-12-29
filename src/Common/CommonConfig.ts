@@ -37,6 +37,9 @@ export class CommonConfig {
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
     public static FG_ON_SHOW_NEXT_WIN_PRESENTAION: string = "FG_ON_SHOW_NEXT_WIN_PRESENTAION";
 
+    public static SHOW_NEXT_RANDOM_WIN_PRESENTAION: string = "SHOW_NEXT_RANDOM_WIN_PRESENTAION";
+    public static FG_SHOW_NEXT_RANDOM_WIN_PRESENTAION: string = "FG_SHOW_NEXT_RANDOM_WIN_PRESENTAION";
+
     public static PLAY_STOP_SPIN: string = "PLAY_STOP_SPIN";
     public static FG_PLAY_STOP_SPIN: string = "FG_PLAY_STOP_SPIN";
     public static PLAY_SHUFFLE_REEL: string = "PLAY_SHUFFLE_REEL";
@@ -79,9 +82,10 @@ export class CommonConfig {
     public static RECHECK_CASCADE_WIN: number = 2;
     public static CHECK_PLAY_RANDOM_FEATURE: number = 3;
     public static RECHECK_WIN: number = 4;
-    public static BIG_WIN: number = 5;
-    public static CHECK_AUTOPLAY: number = 6;
-    public static ENABLE_BUTTON_PLAY: number = 7;
+    public static RECHECK_RANDOM_FEATURE: number = 5;
+    public static BIG_WIN: number = 6;
+    public static CHECK_AUTOPLAY: number = 7;
+    public static ENABLE_BUTTON_PLAY: number = 8;
 
     //-------------Win Animation Freegame----------------
     public static FG_ANIMATE_WIN_SYMBOL: number = 0;
@@ -104,6 +108,7 @@ export class CommonConfig {
     public static TOTAL_ANIMATION_LENGTH: number = 5;
 
     private currentWinAnimationIndex: number = 0;
+    private currentRandomWinAnimationIndex: number = 0;
     private currentFGWinAnimationIndex: number = 0;
     private incrementForLargeWin: number = 0;
 
@@ -118,6 +123,7 @@ export class CommonConfig {
     private totalWinSymbolCount: number = 0;
     private currentState: string = "basegame";
     private currentRadomFeatureList : string[] = [];
+    private isRandomFeatureState : boolean = false;
 
     private symbolWinData: SymbolWinData = {
         0: {
@@ -181,6 +187,14 @@ export class CommonConfig {
         return this.currentWinAnimationIndex;
     }
 
+    public setCurrentRandomWinAnimationIndex(value: number): void {
+        this.currentRandomWinAnimationIndex = value;
+    }
+
+    public getCurrentRandomWinAnimationIndex(): number {
+        return this.currentRandomWinAnimationIndex;
+    }
+
     public setCurrentFGWinAnimationIndex(value: number): void {
         this.currentFGWinAnimationIndex = value;
     }
@@ -229,6 +243,14 @@ export class CommonConfig {
 
     public getRandomWildGridIds(): number[] {
         return this.randomWildGridIds;
+    }
+
+    public setIsRandomFeatureState(value : boolean) : void{
+        this.isRandomFeatureState = value;
+    }
+
+    public getIsRandomFeatureState() : boolean{
+        return this.isRandomFeatureState;
     }
     public static NormalWinResponse: number[][] = [
         [4, 5, 4, 6, 3],

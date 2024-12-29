@@ -16,7 +16,7 @@ export class PentagonalMeter extends Container {
             fontWeight: "bold"
         });
         this.pentagonalCountText = new Text({
-            text: `0/42`,
+            text: `0/50`,
             style: buttonStyle2
         });
     }
@@ -26,11 +26,11 @@ export class PentagonalMeter extends Container {
     }
 
     updatePentagonalCount(value : number): void {
-        this.pentagonalCountText.text = `${value}/42`;
+        this.pentagonalCountText.text = `${value}/50`;
     }
 
     resetWinAmount(): void {
-        this.pentagonalCountText.text = `${0}/42`;
+        this.pentagonalCountText.text = `${0}/50`;
     }
 
 }

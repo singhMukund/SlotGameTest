@@ -1,4 +1,4 @@
-import { Assets, Container, Graphics,Sprite, Spritesheet, } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Spritesheet, } from "pixi.js";
 import { Game } from "../game";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { PentagonalMeter } from "../Meter/PentagonalMeter";
@@ -17,7 +17,8 @@ export class PentagonalUpdateFeature extends Container {
     private maskGraphics !: Graphics;
     private counterMeter !: PentagonalMeter;
     private pentagon_front_frame!: Sprite;
-    private currentpercemtage : number = 0;
+    private currentpercemtage: number = 0;
+    private randomFeatureIndicatorContainer !: Container;
 
     constructor() {
         super();
@@ -26,6 +27,8 @@ export class PentagonalUpdateFeature extends Container {
         this.addToStage();
         // this.resizeApp();
         this.subscribeEvent();
+        this.initRandomFeatureContainer();
+        this.resetsOnSpinClick();
         // Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
@@ -37,6 +40,9 @@ export class PentagonalUpdateFeature extends Container {
 
     private resetsOnSpinClick(): void {
         this.currentpercemtage = 0;
+        for (let i: number = 0; i < 5; i++) {
+            this.randomFeatureIndicatorContainer.children[i].alpha = 0;
+        }
     }
 
     private init(): void {
@@ -66,10 +72,48 @@ export class PentagonalUpdateFeature extends Container {
         this.filledPentagonalContainer.mask = this.maskGraphics;
     }
 
-    private createMaskImages(currentPercent : number): void {
+    private initRandomFeatureContainer(): void {
+        this.randomFeatureIndicatorContainer = new Container();
+        let indicator_Texture: Spritesheet = Assets.get("feature_popup");
+
+        let randomFeatureIndiator5: Sprite = new Sprite(indicator_Texture.textures['pentagone_partialglow.png']);
+        this.randomFeatureIndicatorContainer.addChild(randomFeatureIndiator5);
+        randomFeatureIndiator5.anchor.set(0.5, 0.5);
+        randomFeatureIndiator5.angle = 0;
+        randomFeatureIndiator5.position.set(168, 42);
+        this.addChild(this.randomFeatureIndicatorContainer);
+        
+        let randomFeatureIndiator1: Sprite = new Sprite(indicator_Texture.textures['pentagone_partialglow.png']);
+        this.randomFeatureIndicatorContainer.addChild(randomFeatureIndiator1);
+        randomFeatureIndiator1.anchor.set(0.5, 0.5);
+        randomFeatureIndiator1.angle = 70.5;
+        randomFeatureIndiator1.position.set(285, 119.5);
+
+        let randomFeatureIndiator2: Sprite = new Sprite(indicator_Texture.textures['pentagone_partialglow.png']);
+        this.randomFeatureIndicatorContainer.addChild(randomFeatureIndiator2);
+        randomFeatureIndiator2.anchor.set(0.5, 0.5);
+        randomFeatureIndiator2.angle = 152.5;
+        randomFeatureIndiator2.position.set(240.5, 259);
+
+
+        let randomFeatureIndiator3: Sprite = new Sprite(indicator_Texture.textures['pentagone_partialglow.png']);
+        this.randomFeatureIndicatorContainer.addChild(randomFeatureIndiator3);
+        randomFeatureIndiator3.anchor.set(0.5, 0.5);
+        randomFeatureIndiator3.angle = 206.5;
+        randomFeatureIndiator3.position.set(100, 260);
+
+
+        let randomFeatureIndiator4: Sprite = new Sprite(indicator_Texture.textures['pentagone_partialglow.png']);
+        this.randomFeatureIndicatorContainer.addChild(randomFeatureIndiator4);
+        randomFeatureIndiator4.anchor.set(0.5, 0.5);
+        randomFeatureIndiator4.angle = 286;
+        randomFeatureIndiator4.position.set(51, 127);
+    }
+
+    private createMaskImages(currentPercent: number): void {
         const myObject = { percent: this.currentpercemtage };
-        if(currentPercent <=0){
-            this.maskGraphics.clear(); 
+        if (currentPercent <= 0) {
+            this.maskGraphics.clear();
             return;
         }
         gsap.to(myObject, {
@@ -85,16 +129,30 @@ export class PentagonalUpdateFeature extends Container {
         });
     }
 
+    private showRandomFeatureIndicator(newIndicator: Sprite, isShow: boolean): void {
+        const finalAlpha = isShow ? 1 : 0
+        gsap.to(newIndicator, {
+            ease: 'power1.out',
+            duration: 0.5,
+            alpha: finalAlpha
+        }
+        )
+    }
+
     updateMask(percentage: number) {
         const radius = this.pentagon_center_frame.width; // Adjust radius based on pentagon size
         const angle = (percentage / 100) * Math.PI * 2; // Convert percentage to radians
-    
+
         this.maskGraphics.clear();
         this.maskGraphics.beginFill(0xffffff);
         this.maskGraphics.moveTo(0, 0);
-        this.maskGraphics.arc(0 ,0, radius, -Math.PI / 2, angle - Math.PI / 2); // Arc grows based on percentage
+        this.maskGraphics.arc(0, 0, radius, -Math.PI / 2, angle - Math.PI / 2); // Arc grows based on percentage
         this.maskGraphics.lineTo(0, 0); // Close the shape
         this.maskGraphics.endFill();
+    }
+
+    private returnRandomFeature(): string {
+        return CommonConfig.RANDOM_FEATURES_LIST[Math.floor(Math.random() * 3)]
     }
 
 
@@ -106,13 +164,28 @@ export class PentagonalUpdateFeature extends Container {
         this.addChild(this.counterMeter);
     }
 
-    
+
 
     private updatePentagonalMeter(): void {
-        let index: number = this.getFilledTextureIndex(CommonConfig.the.getTotalWinSymbolCount());
+        if (CommonConfig.the.getIsRandomFeatureState()) {
+            return;
+        }
+        this.pushRandomFeature();
         this.createMaskImages(this.calculateCurrentFilledPercentage());
         this.counterMeter.updatePentagonalCount(CommonConfig.the.getTotalWinSymbolCount());
         this.counterMeter.position.set(this.pentagon_center_frame.x + (this.pentagon_center_frame.width - this.counterMeter.width) / 2, this.pentagon_center_frame.y + (this.pentagon_center_frame.height - this.counterMeter.height) / 2);
+    }
+
+    private pushRandomFeature(): void {
+        let currentTotalRandomFeature: number = Math.floor(CommonConfig.the.getTotalWinSymbolCount() / 10);
+        const newTotaleRandomFeature: number = currentTotalRandomFeature - CommonConfig.the.getCurrentRadomFeatureList().length;
+        for (let i: number = 0; i < newTotaleRandomFeature; i++) {
+            CommonConfig.the.getCurrentRadomFeatureList().push(this.returnRandomFeature());
+        }
+
+        for (let i: number = 0; i < CommonConfig.the.getCurrentRadomFeatureList().length; i++) {
+            i < 5 && this.showRandomFeatureIndicator(this.randomFeatureIndicatorContainer.children[i] as Sprite,true);
+        }
     }
 
     private calculateCurrentFilledPercentage(): number {

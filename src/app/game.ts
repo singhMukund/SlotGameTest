@@ -25,6 +25,7 @@ export class Game {
     if (Game._the == null) Game._the = this;
 
     this.app = new Application();
+    (globalThis as any).__PIXI_APP__ = this.app;
     this.init();
   }
 
