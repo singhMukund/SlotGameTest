@@ -95,6 +95,10 @@
             {
                "alias": "pentagon_assets",
                "src": "./StaticImage/pentagon_assets.json"
+            },
+            {
+               "alias": "feature_popup",
+               "src": "./StaticImage/randomFeaturePopup.json"
             }
          ]
       }

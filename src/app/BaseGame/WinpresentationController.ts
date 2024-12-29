@@ -35,7 +35,9 @@ export class WinpresentationController {
         CommonConfig.the.setWinGrid(new Map());
         CommonConfig.the.setCurrentWinAmount(0);
         CommonConfig.the.setLineWinAmount(0);
+        CommonConfig.the.setCurrentRandomWinAnimationIndex(0);
         CommonConfig.the.setCurrentRadomFeatureList([]);
+        CommonConfig.the.setIsRandomFeatureState(false);
         Game.the.app.stage.emit(CommonConfig.UPDATE_PENTAGONAL_METER);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
         Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
@@ -47,7 +49,7 @@ export class WinpresentationController {
 
     private onShowNextWinPresentation(): void {
         // console.log("onShowNextWinPresentation--------------"+CommonConfig.the.getCurrentWinAnimationIndex());
-        if(CommonConfig.the.getCurrentWinAnimationIndex() > 7){
+        if (CommonConfig.the.getCurrentWinAnimationIndex() > 8) {
             return;
         }
         switch (CommonConfig.the.getCurrentWinAnimationIndex()) {
@@ -61,10 +63,13 @@ export class WinpresentationController {
                 this.recheckWin();
                 break;
             case CommonConfig.CHECK_PLAY_RANDOM_FEATURE:
-                this.onStartPistole();
+                this.onStartRandomFeature();
                 break;
             case CommonConfig.RECHECK_WIN:
                 this.recheckAnimateWinSymbol();
+                break;
+            case CommonConfig.RECHECK_RANDOM_FEATURE:
+                this.onRecheckRandomFeaturePresentation();
                 break;
             case CommonConfig.BIG_WIN:
                 this.playBigWin();
@@ -76,6 +81,34 @@ export class WinpresentationController {
                 this.enableButton();
                 break;
         }
+    }
+
+    private onStartRandomFeature(): void {
+        CommonConfig.the.setIsRandomFeatureState(true);
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_ZWOOM) {
+            this.onStartZwoomFeature();
+        } else if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_PISTOLE) {
+            this.onStartPistole();
+        } else {
+            this.onStartCrepazione();
+        }
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
+    }
+
+    private onRecheckRandomFeaturePresentation(): void {
+        CommonConfig.the.setCurrentRandomWinAnimationIndex(CommonConfig.the.getCurrentRandomWinAnimationIndex() + 1);
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        if (CommonConfig.the.getCurrentRandomWinAnimationIndex() >= CommonConfig.the.getCurrentRadomFeatureList().length) {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+            return;
+        }else{
+            CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.CHECK_PLAY_RANDOM_FEATURE);
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        }
+
     }
 
     private onCheckAutoplayCount(): void {
@@ -194,8 +227,6 @@ export class WinpresentationController {
     // }
 
     private onStartZwoomFeature(): void {
-        console.log("onShowNextWinPresentation--------------");
-        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         let randomWild: number[][] = [
             [4, 4, 5, 6, 3],
             [1, 6, 1, 1, 4],
@@ -207,14 +238,9 @@ export class WinpresentationController {
 
         CommonConfig.the.setView(randomWild);
         Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
-        gsap.delayedCall(0.25, () => {
-            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-        })
     }
 
     private onStartCrepazione(): void {
-        console.log("onShowNextWinPresentation--------------");
-        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         let view: number[][] = CommonConfig.the.getView();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
@@ -226,26 +252,19 @@ export class WinpresentationController {
         }
         CommonConfig.the.setView(view);
         Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
-        gsap.delayedCall(0.25, () => {
-            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-        })
     }
 
     private onStartPistole(): void {
-        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         let view: number[][] = CommonConfig.the.getView();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
-                for (let col = 0; col < view[row].length; col++) {
-                    if (col === 2) {
-                        view[row][col] = replacedSymbol;
-                    }
+            for (let col = 0; col < view[row].length; col++) {
+                if (col === 2) {
+                    view[row][col] = replacedSymbol;
                 }
+            }
         }
         CommonConfig.the.setView(view);
         Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
-        gsap.delayedCall(0.25, () => {
-            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-        })
     }
 }

@@ -1,0 +1,44 @@
+{"frames": {
+	"characterPlatform.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":434,"y":488,"w":381,"h":150},
+		"spriteSourceSize": {"x":0,"y":0,"w":381,"h":150},
+		"sourceSize": {"w":381,"h":150}
+	},
+	"pentagonalCircle.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":434,"y":640,"w":108,"h":110},
+		"spriteSourceSize": {"x":2,"y":1,"w":112,"h":112},
+		"sourceSize": {"w":112,"h":112}
+	},
+	"pentagone_partialglow.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":434,"y":752,"w":90,"h":87},
+		"spriteSourceSize": {"x":1,"y":0,"w":92,"h":88},
+		"sourceSize": {"w":92,"h":88}
+	},
+	"randowFeaturePopup_creazione.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":432,"h":483},
+		"spriteSourceSize": {"x":0,"y":0,"w":432,"h":483},
+		"sourceSize": {"w":432,"h":483}
+	},
+	"randowFeaturePopup_pistole.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":434,"y":0,"w":430,"h":486},
+		"spriteSourceSize": {"x":0,"y":0,"w":430,"h":486},
+		"sourceSize": {"w":430,"h":486}
+	},
+	"randowFeaturePopup_zwoom.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":485,"w":432,"h":489},
+		"spriteSourceSize": {"x":0,"y":0,"w":432,"h":489},
+		"sourceSize": {"w":432,"h":489}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"image":"randomFeaturePopup.png",
+	"size": {"w":1024,"h":1024}
+}
+}
