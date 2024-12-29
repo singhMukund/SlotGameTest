@@ -86,16 +86,17 @@ export class WinpresentationController {
     private onStartRandomFeature(): void {
         CommonConfig.the.setIsRandomFeatureState(true);
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_ZWOOM) {
-            this.onStartZwoomFeature();
-        } else if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_PISTOLE) {
-            this.onStartPistole();
-        } else {
-            this.onStartCrepazione();
-        }
-        gsap.delayedCall(0.25, () => {
+        if(CommonConfig.the.getCurrentRadomFeatureList().length){
+            if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_ZWOOM) {
+                this.onStartZwoomFeature();
+            } else if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_PISTOLE) {
+                this.onStartPistole();
+            } else if(CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_CRIPAZIONE) {
+                this.onStartCrepazione();
+            }
+        }else{
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
-        })
+        }
     }
 
     private onRecheckRandomFeaturePresentation(): void {
@@ -231,6 +232,10 @@ export class WinpresentationController {
     // }
 
     private onStartZwoomFeature(): void {
+        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_ZWOOM,this.updateViewForZoomFeature);
+    }
+
+    private updateViewForZoomFeature() :void{
         let randomWild: number[][] = [
             [4, 4, 5, 6, 3],
             [1, 6, 1, 1, 4],
@@ -242,9 +247,17 @@ export class WinpresentationController {
 
         CommonConfig.the.setView(randomWild);
         Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
+
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 
     private onStartCrepazione(): void {
+        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_CRIPAZIONE,this.updateViewForCrepazione);
+    }
+
+    private updateViewForCrepazione() :void{
         let view: number[][] = CommonConfig.the.getView();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
@@ -256,9 +269,17 @@ export class WinpresentationController {
         }
         CommonConfig.the.setView(view);
         Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
+
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 
     private onStartPistole(): void {
+        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_PISTOLE,this.updateViewForPistole);
+    }
+
+    private updateViewForPistole() :void{
         let view: number[][] = CommonConfig.the.getView();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
@@ -270,5 +291,9 @@ export class WinpresentationController {
         }
         CommonConfig.the.setView(view);
         Game.the.app.stage.emit(CommonConfig.UPDATE_VIEW_ON_REEL, CommonConfig.the.getView());
+
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 }

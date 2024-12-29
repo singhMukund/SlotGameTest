@@ -76,6 +76,8 @@ export class CommonConfig {
     public static UPDATE_PENTAGONAL_METER: string = "UPDATE_PENTAGONAL_METER";
     public static FG_UPDATE_PENTAGONAL_METER: string = "FG_UPDATE_PENTAGONAL_METER";
     public static START_ZWOOM_FEATURE: string = "START_ZWOOM_FEATURE";
+    public static SHOW_RANDOM_FEATURE_POPUP: string = "SHOW_RANDOM_FEATURE_POPUP";
+    public static FG_SHOW_RANDOM_FEATURE_POPUP: string = "FG_SHOW_RANDOM_FEATURE_POPUP";
     public static SHOW_HIDE_BASEGAME: string = "SHOW_HIDE_BASEGAME";
     public static SET_RESIZE_WITH_REELS: string = "SET_RESIZE_WITH_REELS";
     public static FG_SET_RESIZE_WITH_REELS: string = "FG_SET_RESIZE_WITH_REELS";

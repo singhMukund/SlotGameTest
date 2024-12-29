@@ -181,7 +181,7 @@ export class PentagonalUpdateFeature extends Container {
         if(this.state !== CommonConfig.the.getCurrentState()){
             return;
         }
-        if (CommonConfig.the.getIsRandomFeatureState() || CommonConfig.the.getIsFGRandomFeatureState()) {
+        if (CommonConfig.the.getIsRandomFeatureState() ||  CommonConfig.the.getIsFGRandomFeatureState()) {
             return;
         }
         this.pushRandomFeature();
@@ -202,6 +202,9 @@ export class PentagonalUpdateFeature extends Container {
     private pushRandomFeatureFreeGame(): void {
         let currentTotalRandomFeature: number = Math.floor(CommonConfig.the.getTotalWinSymbolCount() / 10);
         const newTotaleRandomFeature: number = currentTotalRandomFeature - CommonConfig.the.getCurrentFGRadomFeatureList().length;
+        if(newTotaleRandomFeature <= 0){
+            return;
+        }
         for (let i: number = 0; i < newTotaleRandomFeature; i++) {
             CommonConfig.the.getCurrentFGRadomFeatureList().push(this.returnRandomFeature());
         }
@@ -214,6 +217,9 @@ export class PentagonalUpdateFeature extends Container {
     private pushRandomFeatureBaseGame(): void {
         let currentTotalRandomFeature: number = Math.floor(CommonConfig.the.getTotalWinSymbolCount() / 10);
         const newTotaleRandomFeature: number = currentTotalRandomFeature - CommonConfig.the.getCurrentRadomFeatureList().length;
+        if(newTotaleRandomFeature <= 0){
+            return;
+        }
         for (let i: number = 0; i < newTotaleRandomFeature; i++) {
             CommonConfig.the.getCurrentRadomFeatureList().push(this.returnRandomFeature());
         }
