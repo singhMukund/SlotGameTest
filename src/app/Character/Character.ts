@@ -3,8 +3,10 @@ import { Game } from "../game";
 
 export class Character extends Container{
     private image !: Sprite;
-    constructor(){
+    private state : string
+    constructor(state : string){
         super();
+        this.state = state;
         this.init();
         // this.resizeApp();
         // Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);

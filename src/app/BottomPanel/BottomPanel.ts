@@ -32,9 +32,11 @@ export class BottomPanel extends Container {
     private autoplayBtn !: AutoplayBtn;
     private autoplayMeter !: AutoplayMeter;
     private gap : number = 30;
+    private state : string;
 
-    constructor() {
+    constructor(state : string) {
         super();
+        this.state = state;
         this.init();
         this.initButton();
         this.addContainerToStage();
@@ -45,17 +47,17 @@ export class BottomPanel extends Container {
     }
 
     private initButton(): void {
-        this.spinBtn = new SpinButton();
-        this.settingButton = new SettingButton();
-        this.thunderButton = new ThunderButton();
-        this.winMeter = new WinMeter();
-        this.betMeter = new BetMeter();
-        this.minusButton = new MinusButton();
-        this.plusButton = new PlusButton();
-        this.balanceMeter = new BalanceMeter();
-        this.autoplayBtn = new AutoplayBtn();
+        this.spinBtn = new SpinButton(this.state);
+        this.settingButton = new SettingButton(this.state);
+        this.thunderButton = new ThunderButton(this.state);
+        this.winMeter = new WinMeter(this.state);
+        this.betMeter = new BetMeter(this.state);
+        this.minusButton = new MinusButton(this.state);
+        this.plusButton = new PlusButton(this.state);
+        this.balanceMeter = new BalanceMeter(this.state);
+        this.autoplayBtn = new AutoplayBtn(this.state);
         this.autoplayMeter = new AutoplayMeter();
-        this.soundButton = new SoundButton();
+        this.soundButton = new SoundButton(this.state);
         new AutoplayController();
     }
 

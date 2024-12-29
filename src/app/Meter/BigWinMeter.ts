@@ -30,22 +30,45 @@ export class BigWinMeter extends Container {
     private currentLargeWinSeq: number = 0;
     private checkWinMultiplier: number = 20;
     private currentBet: number = 1;
-    private currentTitle : string = "WIN";
+    private currentTitle: string = "WIN";
     private winString: string[] = ["WIN", "BIG WIN", "MEGA WIN", "TOP WIN", "OVER THE TOP WIN"];
-    private winMeterTextScale : number = 1;
-    constructor() {
+    private winMeterTextScale: number = 1;
+    private state : string;
+    private isHidden : boolean = false;
+    constructor(state:string) {
         super();
+        this.state = state;
         this.init();
         this.addToStage();
         this.setToPosition();
-        this.subscribeEvent();
+        if(this.state === CommonConfig.BASE_GAME){
+            this.subscribeEvent();
+        }else{
+            this.subscribeEventFreeGame();
+        }
     }
 
-    private subscribeEvent() :void{
+    private subscribeEvent(): void {
         Game.the.app.stage.on("RESIZE_THE_APP", this.setToPosition, this);
         Game.the.app.stage.on(CommonConfig.PLAY_BIG_WIN, this.show, this);
         this.on('pointerup', this.stageClick, this);
         Game.the.app.stage.on(CommonConfig.SET_RESIZE_WITH_REELS, this.resizeBigWinWithReels, this);
+    }
+
+    private subscribeEventFreeGame(): void {
+        Game.the.app.stage.on(CommonConfig.PLAY_FG_BIG_WIN, this.show, this);
+        Game.the.app.stage.on("RESIZE_THE_APP", this.setToPosition, this);
+        this.on('pointerup', this.stageClick, this);
+        Game.the.app.stage.on(CommonConfig.FG_SET_RESIZE_WITH_REELS, this.resizeBigWinWithReels, this);
+    }
+
+    private unsubscrbeEvents(): void {
+        Game.the.app.stage.off(CommonConfig.PLAY_FG_BIG_WIN, this.show, this);
+        Game.the.app.stage.off("RESIZE_THE_APP", this.setToPosition, this);
+        Game.the.app.stage.off(CommonConfig.PLAY_BIG_WIN, this.show, this);
+        this.off('pointerup', this.stageClick, this);
+        Game.the.app.stage.off(CommonConfig.SET_RESIZE_WITH_REELS, this.resizeBigWinWithReels, this);
+        Game.the.app.stage.off(CommonConfig.FG_SET_RESIZE_WITH_REELS, this.resizeBigWinWithReels, this);
     }
 
     private init() {
@@ -72,7 +95,7 @@ export class BigWinMeter extends Container {
         });
         this.winMeter.pivot.set(0.5, 0.5);
         this.alpha = 0;
-        this.winMeter.anchor.set(0.5,0.5);
+        this.winMeter.anchor.set(0.5, 0.5);
     }
 
     private addToStage(): void {
@@ -87,16 +110,16 @@ export class BigWinMeter extends Container {
     }
 
     private setToPosition(): void {
-        let height : number = this.bigWinSpine.height;
-        let currentHeightPanel = height/999 * window.innerHeight ;
-        let scale : number = currentHeightPanel / height;
+        let height: number = this.bigWinSpine.height;
+        let currentHeightPanel = height / 999 * window.innerHeight;
+        let scale: number = currentHeightPanel / height;
         this.bigWinSpine.scale.set(scale);
         let assumedWidthMobile: number = window.innerWidth * (this.bigWinSpine.width / 360);
         this.bigWinSpine.pivot.set(-this.bigWinSpine.width / 2, -this.bigWinSpine.height / 2);
         this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2, (window.innerHeight - this.bigWinSpine.height) / 2);
         this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
         this.winMeter.position.set((window.innerWidth - this.winMeter.width) / 1.55, (window.innerHeight - this.winMeter.height) / 1.8);
-        if(window.innerWidth < window.innerHeight){
+        if (window.innerWidth < window.innerHeight) {
             this.bigWinSpine.scale.set(1.5);
             let width = this.bigWinSpine.width;
             scale = assumedWidthMobile / width;
@@ -106,23 +129,23 @@ export class BigWinMeter extends Container {
             this.winMeterTextScale = scale * 0.5;
             this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2, (window.innerHeight - this.bigWinSpine.height) / 2);
             this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
-            this.winMeter.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.winMeter.width)/ 1.55 , this.bigWinSpine.y+ (this.bigWinSpine.height - this.winMeter.height) / 1.8);
+            this.winMeter.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.winMeter.width) / 1.55, this.bigWinSpine.y + (this.bigWinSpine.height - this.winMeter.height) / 1.8);
         }
     }
 
     private resizeBigWinWithReels(data: number[]): void {
         this.bigWinSpine.position.set((window.innerWidth - this.bigWinSpine.width) / 2 + 10, data[3] + (data[1] - this.bigWinSpine.height) / 2);
-        this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width)/2, this.bigWinSpine.y - this.titleText.height);
-        this.winMeter.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.winMeter.width)/ 1.55 , this.bigWinSpine.y+ (this.bigWinSpine.height - this.winMeter.height) / 1.8);
+        this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width) / 2, this.bigWinSpine.y - this.titleText.height);
+        this.winMeter.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.winMeter.width) / 1.55, this.bigWinSpine.y + (this.bigWinSpine.height - this.winMeter.height) / 1.8);
     }
 
     playIncrementAnimation() {
-        const duration = 0.4; 
+        const duration = 0.4;
         this.speed = CommonConfig.the.getCurrentWinAmount() / 1200;
         this.currentBet = CommonConfig.the.getBet();
         this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
-        if(window.innerWidth < window.innerHeight){
-            this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width)/2, this.bigWinSpine.y - this.titleText.height);
+        if (window.innerWidth < window.innerHeight) {
+            this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width) / 2, this.bigWinSpine.y - this.titleText.height);
         }
         this.winMeterGsapTween = gsap.to(this.winMeter, {
             ease: 'power1.out',
@@ -133,13 +156,13 @@ export class BigWinMeter extends Container {
                 this.winMeter.text = `$ ${this.currentvalue.toFixed(3)}`;
                 this.checkStopTween();
                 this.currentLargeWinSeq = Math.round(this.currentvalue / (this.checkWinMultiplier * this.currentBet));
-                if(this.currentLargeWinSeq > this.winString.length - 1){
-                    this.currentLargeWinSeq = this.winString.length -1;
+                if (this.currentLargeWinSeq > this.winString.length - 1) {
+                    this.currentLargeWinSeq = this.winString.length - 1;
                 }
-                if(this.currentTitle !== this.winString[this.currentLargeWinSeq] && (this.currentvalue >= (this.checkWinMultiplier * this.currentBet * this.currentLargeWinSeq)) 
-                    && ((this.currentvalue < (this.checkWinMultiplier * this.currentBet * this.currentLargeWinSeq + 1))) && (this.currentLargeWinSeq > 0 && this.currentLargeWinSeq < this.winString.length)){
-                        this.updateWinSequence();
-                        // this.currentLargeWinSeq++;
+                if (this.currentTitle !== this.winString[this.currentLargeWinSeq] && (this.currentvalue >= (this.checkWinMultiplier * this.currentBet * this.currentLargeWinSeq))
+                    && ((this.currentvalue < (this.checkWinMultiplier * this.currentBet * this.currentLargeWinSeq + 1))) && (this.currentLargeWinSeq > 0 && this.currentLargeWinSeq < this.winString.length)) {
+                    this.updateWinSequence();
+                    // this.currentLargeWinSeq++;
                 }
             },
         });
@@ -151,27 +174,30 @@ export class BigWinMeter extends Container {
             this.winMeter.text = `$ ${CommonConfig.the.getCurrentWinAmount().toFixed(2)}`;
             this.winMeterGsapTween.kill();
             this.lastScaleTween();
-            gsap.delayedCall(0.75,()=>this.hide());
+            gsap.delayedCall(0.75, () => this.hide());
         }
     }
 
-    private stageClick() :void{
+    private stageClick(): void {
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.winMeterGsapTween.kill();
-        this.currentLargeWinSeq ++;
+        this.currentLargeWinSeq++;
         // if(this.currentLargeWinSeq > this.winString.length - 1){
         //     this.currentLargeWinSeq = this.winString.length -1;
         // }
-        if(this.currentLargeWinSeq === this.winString.length){
+        if (this.currentLargeWinSeq === this.winString.length) {
             this.winMeter.text = `$ ${CommonConfig.the.getCurrentWinAmount().toFixed(2)}`;
             this.winMeterGsapTween.kill();
             this.lastScaleTween();
-            gsap.delayedCall(0.75,()=>this.hide());
-        }else{
+            gsap.delayedCall(0.75, () => this.hide());
+        } else {
             this.updateWinSequence();
             this.currentvalue = this.checkWinMultiplier * this.currentBet * this.currentLargeWinSeq;
             this.winMeter.text = `$ ${this.currentvalue.toFixed(2)}`;
             this.lastScaleTween();
-            gsap.delayedCall(0.75,()=>{
+            gsap.delayedCall(0.75, () => {
                 this.playIncrementAnimation();
                 this.scaleTween()
             });
@@ -179,21 +205,21 @@ export class BigWinMeter extends Container {
     }
 
     private lastScaleTween(): void {
-        let finalScale : number = 2;
-        let currentScale : number = 1;
-        if(window.innerWidth < window.innerHeight){
+        let finalScale: number = 2;
+        let currentScale: number = 1;
+        if (window.innerWidth < window.innerHeight) {
             finalScale = this.winMeterTextScale * 2;
             currentScale = this.winMeterTextScale;
         }
         this.winMeterScaleTween = gsap.to(this.winMeter.scale, {
             ease: 'power1.out',
-            duration : 0.2,
+            duration: 0.2,
             x: finalScale,
             y: finalScale,
             onComplete: () => {
                 this.winMeterScaleTween = gsap.to(this.winMeter.scale, {
                     ease: 'power1.out',
-                    duration : 0.2,
+                    duration: 0.2,
                     x: currentScale,
                     y: currentScale
                 });
@@ -203,9 +229,9 @@ export class BigWinMeter extends Container {
     }
 
     private scaleTween(): void {
-        let finalScale : number = 1.2;
-        let currentScale : number = 1;
-        if(window.innerWidth < window.innerHeight){
+        let finalScale: number = 1.2;
+        let currentScale: number = 1;
+        if (window.innerWidth < window.innerHeight) {
             finalScale = this.winMeterTextScale * 1.2;
             currentScale = this.winMeterTextScale;
         }
@@ -220,6 +246,7 @@ export class BigWinMeter extends Container {
     }
 
     private show(): void {
+        this.isHidden = false;
         this.titleText.text = this.winString[0];
         this.currentTitle = this.winString[0];
         this.winMeter.text = `$ ${0}`;
@@ -237,6 +264,8 @@ export class BigWinMeter extends Container {
     }
 
     private hide(): void {
+        if(this.isHidden) return;
+        this.isHidden = true;
         this.winMeterScaleTween!.kill()
         gsap.to(this, {
             duration: 0.45,
@@ -245,14 +274,18 @@ export class BigWinMeter extends Container {
                 this.titleText.text = this.winString[0];
                 this.winMeter.text = `$ ${0}`;
                 this.currentLargeWinSeq = 1;
-                Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+                if (CommonConfig.the.getCurrentState() == CommonConfig.BASE_GAME) {
+                    Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+                } else {
+                    Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
+                }
                 this.interactive = false;
                 this.killTweens();
             }
         })
     }
 
-    private killTweens() :void{
+    private killTweens(): void {
         gsap.killTweensOf(this);
         gsap.killTweensOf(this.titleText);
         gsap.killTweensOf(this.winMeter);
@@ -266,8 +299,8 @@ export class BigWinMeter extends Container {
             onComplete: () => {
                 this.titleText.text = this.winString[this.currentLargeWinSeq];
                 this.titleText.position.set((window.innerWidth - this.titleText.width) / 2, (window.innerHeight - this.titleText.height) / 3);
-                if(window.innerWidth < window.innerHeight){
-                    this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width)/2, this.bigWinSpine.y - this.titleText.height);
+                if (window.innerWidth < window.innerHeight) {
+                    this.titleText.position.set(this.bigWinSpine.x + (this.bigWinSpine.width - this.titleText.width) / 2, this.bigWinSpine.y - this.titleText.height);
                 }
                 gsap.to(this.titleText, {
                     duration: 0.45,

@@ -9,13 +9,26 @@ export class BalanceMeter extends Container {
     private betValue: number = 0;
     private winCurrency: string = '$';
     private gap: number = 5;
-
-    constructor() {
+    private state : string;
+    constructor(state : string) {
         super();
+        this.state = state;
         this.init();
         this.updateBalance();
         this.addToStage();
+        if(this.state === CommonConfig.BASE_GAME){
+            this.subscribeEvent();
+        }else{
+            this.subscribeEventFreeGame();
+        }
+    }
+
+    private subscribeEvent(): void {
         Game.the.app.stage.on(CommonConfig.UPDATE_BALANCE_TEXT, this.updateBalance, this);
+    }
+
+    private subscribeEventFreeGame(): void {
+        Game.the.app.stage.on(CommonConfig.FG_UPDATE_BALANCE_TEXT, this.updateBalance, this);
     }
 
     private init(): void {
@@ -45,6 +58,9 @@ export class BalanceMeter extends Container {
     }
 
     private updateBalance(): void {
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         let balance : number = CommonConfig.the.getBalance();
         this.winMeterText.text = `${this.winCurrency} ${balance}`;
         this.winMeterText.x = this.winMeterLabelText.x + this.winMeterLabelText.width + this.gap;

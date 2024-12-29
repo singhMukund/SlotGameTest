@@ -19,26 +19,37 @@ export class PentagonalUpdateFeature extends Container {
     private pentagon_front_frame!: Sprite;
     private currentpercemtage: number = 0;
     private randomFeatureIndicatorContainer !: Container;
+    private state : string;
 
-    constructor() {
+    constructor(state:string) {
         super();
+        this.state = state;
         this.feature_Texture = Assets.get("pentagon_assets");
         this.init();
         this.addToStage();
-        // this.resizeApp();
-        this.subscribeEvent();
         this.initRandomFeatureContainer();
+        if(this.state === CommonConfig.BASE_GAME){
+            this.subscribeEvent();
+        }else{
+            this.subscribeFGEvent();
+        }
         this.resetsOnSpinClick();
-        // Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private subscribeEvent(): void {
         Game.the.app.stage.on(CommonConfig.UPDATE_PENTAGONAL_METER, this.updatePentagonalMeter, this);
-        Game.the.app.stage.on(CommonConfig.FG_UPDATE_PENTAGONAL_METER, this.updatePentagonalMeter, this);
         Game.the.app.stage.on(CommonConfig.START_SPIN, this.resetsOnSpinClick, this);
     }
 
+    private subscribeFGEvent(): void {
+        Game.the.app.stage.on(CommonConfig.FG_UPDATE_PENTAGONAL_METER, this.updatePentagonalMeter, this);
+        Game.the.app.stage.on(CommonConfig.FG_START_SPIN, this.resetsOnSpinClick, this);
+    }
+
     private resetsOnSpinClick(): void {
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }     
         this.currentpercemtage = 0;
         for (let i: number = 0; i < 5; i++) {
             this.randomFeatureIndicatorContainer.children[i].alpha = 0;
@@ -167,7 +178,10 @@ export class PentagonalUpdateFeature extends Container {
 
 
     private updatePentagonalMeter(): void {
-        if (CommonConfig.the.getIsRandomFeatureState()) {
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
+        if (CommonConfig.the.getIsRandomFeatureState() || CommonConfig.the.getIsFGRandomFeatureState()) {
             return;
         }
         this.pushRandomFeature();
@@ -177,6 +191,27 @@ export class PentagonalUpdateFeature extends Container {
     }
 
     private pushRandomFeature(): void {
+        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+            this.pushRandomFeatureBaseGame();
+        }else{
+            this.pushRandomFeatureFreeGame();
+        }
+        
+    }
+
+    private pushRandomFeatureFreeGame(): void {
+        let currentTotalRandomFeature: number = Math.floor(CommonConfig.the.getTotalWinSymbolCount() / 10);
+        const newTotaleRandomFeature: number = currentTotalRandomFeature - CommonConfig.the.getCurrentFGRadomFeatureList().length;
+        for (let i: number = 0; i < newTotaleRandomFeature; i++) {
+            CommonConfig.the.getCurrentFGRadomFeatureList().push(this.returnRandomFeature());
+        }
+
+        for (let i: number = 0; i < CommonConfig.the.getCurrentFGRadomFeatureList().length; i++) {
+            i < 5 && this.showRandomFeatureIndicator(this.randomFeatureIndicatorContainer.children[i] as Sprite,true);
+        }
+    }
+
+    private pushRandomFeatureBaseGame(): void {
         let currentTotalRandomFeature: number = Math.floor(CommonConfig.the.getTotalWinSymbolCount() / 10);
         const newTotaleRandomFeature: number = currentTotalRandomFeature - CommonConfig.the.getCurrentRadomFeatureList().length;
         for (let i: number = 0; i < newTotaleRandomFeature; i++) {

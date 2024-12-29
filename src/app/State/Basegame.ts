@@ -64,7 +64,7 @@ export class BaseGame extends Container {
     }
 
     private initCharacter(): void {
-        this.character = new Character();
+        this.character = new Character(CommonConfig.BASE_GAME);
     }
 
     private parentContainer(): void {
@@ -89,11 +89,11 @@ export class BaseGame extends Container {
     }
 
     private initBigWinMeter(): void {
-        this.bgWinMeter = new BigWinMeter();
+        this.bgWinMeter = new BigWinMeter(CommonConfig.BASE_GAME);
     }
 
     private initLineMeter(): void {
-        this.lineMeter = new LineMeter();
+        this.lineMeter = new LineMeter(CommonConfig.BASE_GAME);
     }
 
     private initializeCheatPanel(): void {
@@ -102,11 +102,11 @@ export class BaseGame extends Container {
     }
 
     private initBottomPanel(): void {
-        this.bottomPanel = new BottomPanel();
+        this.bottomPanel = new BottomPanel(CommonConfig.BASE_GAME);
     }
 
     private initpentagonalUpdateFeature(): void {
-        this.pentagonalUpdateFeature = new PentagonalUpdateFeature();
+        this.pentagonalUpdateFeature = new PentagonalUpdateFeature(CommonConfig.BASE_GAME);
     }
 
     private addContainerToStage() {

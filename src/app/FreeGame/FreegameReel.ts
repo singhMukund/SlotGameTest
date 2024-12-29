@@ -3,13 +3,14 @@ import { CommonConfig } from "../../Common/CommonConfig";
 import gsap from "gsap";
 import { Game } from "../game";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
+import { FreeGamePos } from "./FreeGamePos";
 
 export class FreegameReel extends Container {
-    private pos_00 !: Container;
-    private pos_01 !: Container;
-    private pos_02 !: Container;
-    private pos_03 !: Container;
-    private pos_04 !: Container;
+    private pos_00 !: FreeGamePos;
+    private pos_01 !: FreeGamePos;
+    private pos_02 !: FreeGamePos;
+    private pos_03 !: FreeGamePos;
+    private pos_04 !: FreeGamePos;
     private reelId: number = 0;
     private delayStart: number = 0.05;
     private spinClicked: boolean = false;
@@ -18,7 +19,7 @@ export class FreegameReel extends Container {
     private minPosition = -CommonConfig.symbolHeight;
     private positions: number[] = [CommonConfig.symbolHeight * 0, CommonConfig.symbolHeight * 1,
     CommonConfig.symbolHeight * 2, CommonConfig.symbolHeight * 3, CommonConfig.symbolHeight * 4];
-    private delays: number[] = [0.05, 0.025, 0.015, 0.03,0.022,0.01];
+    private delays: number[] = [0.05, 0.025, 0.015, 0.03, 0.022, 0.01];
     private noOfTimeWinCount: number = 0;
     private notAffectedContainer: string[] = [];
 
@@ -33,27 +34,27 @@ export class FreegameReel extends Container {
     }
 
     private init(): void {
-        this.pos_00 = new Container();
+        this.pos_00 = new FreeGamePos();
         this.pos_00.position.set(0, CommonConfig.symbolHeight * 0);
         this.pos_00.name = 'pos_00';
         this.addChild(this.pos_00);
 
-        this.pos_01 = new Container();
+        this.pos_01 = new FreeGamePos();
         this.pos_01.position.set(0, CommonConfig.symbolHeight * 1);
         this.pos_01.name = 'pos_01';
         this.addChild(this.pos_01);
 
-        this.pos_02 = new Container();
+        this.pos_02 = new FreeGamePos();
         this.pos_02.position.set(0, CommonConfig.symbolHeight * 2);
         this.pos_02.name = 'pos_02';
         this.addChild(this.pos_02);
 
-        this.pos_03 = new Container();
+        this.pos_03 = new FreeGamePos();
         this.pos_03.position.set(0, CommonConfig.symbolHeight * 3);
         this.pos_03.name = 'pos_03';
         this.addChild(this.pos_03);
 
-        this.pos_04 = new Container();
+        this.pos_04 = new FreeGamePos();
         this.pos_04.position.set(0, CommonConfig.symbolHeight * 4);
         this.pos_04.name = 'pos_04';
         this.addChild(this.pos_04);
@@ -71,8 +72,6 @@ export class FreegameReel extends Container {
         });
     }
 
-
-
     private resetPositions(pos: Container, i: number): void {
         let y_pos: number = this.minPosition - ((CommonConfig.symbolsPerReel - i) * CommonConfig.symbolHeight);
         pos.position.set(pos.x, y_pos);
@@ -81,51 +80,6 @@ export class FreegameReel extends Container {
                 Game.the.app.stage.emit(CommonConfig.FG_SET_RESPONSE_AT_REEL);
                 Game.the.app.stage.emit(CommonConfig.FG_PLAY_STOP_SPIN);
             })
-        }
-    }
-
-    updatePos_00WithSym(sym: StaticSymbol): void {
-        if (this.pos_00.children.length) {
-            this.pos_00.removeChildren();
-            this.pos_00.addChild(sym);
-        } else {
-            this.pos_00.addChild(sym);
-        }
-    }
-
-    updatePos_01WithSym(sym: StaticSymbol): void {
-        if (this.pos_01.children.length) {
-            this.pos_01.removeChildren();
-            this.pos_01.addChild(sym);
-        } else {
-            this.pos_01.addChild(sym);
-        }
-    }
-
-    updatePos_02WithSym(sym: StaticSymbol): void {
-        if (this.pos_02.children.length) {
-            this.pos_02.removeChildren();
-            this.pos_02.addChild(sym);
-        } else {
-            this.pos_02.addChild(sym);
-        }
-    }
-
-    updatePos_03WithSym(sym: StaticSymbol): void {
-        if (this.pos_03.children.length) {
-            this.pos_03.removeChildren();
-            this.pos_03.addChild(sym);
-        } else {
-            this.pos_03.addChild(sym);
-        }
-    }
-
-    updatePos_04WithSym(sym: StaticSymbol): void {
-        if (this.pos_04.children.length) {
-            this.pos_04.removeChildren();
-            this.pos_04.addChild(sym);
-        } else {
-            this.pos_04.addChild(sym);
         }
     }
 
@@ -153,15 +107,17 @@ export class FreegameReel extends Container {
                     y: this.positions[i],
                     ease: "power1.out"
                 });
-                if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
-                    this.killTweens();
-                    Game.the.app.stage.emit(CommonConfig.FG_SPIN_STOPPED);
-                }
+                gsap.delayedCall(0.05, () => {
+                    if (this.reelId === CommonConfig.totalReel - 1 && i === 0) {
+                        this.killTweens();
+                        Game.the.app.stage.emit(CommonConfig.FG_SPIN_STOPPED);
+                    }
+                });
             }
         });
     }
 
-    private killTweens() :void{
+    private killTweens(): void {
         gsap.killTweensOf(this);
         gsap.killTweensOf(this.pos_00);
         gsap.killTweensOf(this.pos_01);
@@ -256,7 +212,7 @@ export class FreegameReel extends Container {
 
     private dropWinReel(): void {
         this.resetSymbolAlpha();
-        if (CommonConfig.the.getWinReelIds().includes(this.reelId)) {
+        if (CommonConfig.the.getWinReelIdsFreeGame().includes(this.reelId)) {
             let delay = this.delays[Math.floor(Math.random() * this.delays.length)];
             gsap.delayedCall(delay, () => {
                 this.children.forEach((value, index) => {

@@ -220,7 +220,11 @@ export class WinpresentationController {
         let balance: number = CommonConfig.the.getBalance() + value;
         balance = Number(balance.toFixed(2));
         CommonConfig.the.setBalance(balance);
-        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
+        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
+        }else{
+            Game.the.app.stage.emit(CommonConfig.FG_UPDATE_BALANCE_TEXT);
+        }
     }
 
     // subscribeEvent() :void{

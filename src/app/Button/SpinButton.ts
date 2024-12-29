@@ -5,12 +5,28 @@ import { CommonConfig } from "../../Common/CommonConfig";
 export class SpinButton extends Container{
     private buttton !: Sprite;
     private buttonTexture !: Spritesheet;
-
-    constructor(){
+    private state : string;
+    constructor(state : string){
         super();
-        this.buttonTexture = Assets.get("ui_button")
+        this.state = state;
+        this.buttonTexture = Assets.get("ui_button");
         this.initializeButton();
         this.addEvent();
+        if (this.state === CommonConfig.BASE_GAME) {
+            this.subscribeEvent();
+        } else {
+            this.subscibeFGEvent();
+        }
+    }
+
+    private subscribeEvent(): void {
+        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
+    }
+
+    private subscibeFGEvent(): void {
+        Game.the.app.stage.on(CommonConfig.FG_DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.FG_ENABLE_ALL_BUTTON, this.enable, this);
     }
 
     private initializeButton() :void{
@@ -25,11 +41,6 @@ export class SpinButton extends Container{
               .on('pointerup', this.onButtonUp, this)
               .on('pointerover', this.onButtonOver, this)
               .on('pointerout', this.onButtonOut , this);
-
-        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
-        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
-        Game.the.app.stage.on(CommonConfig.FG_DISABLE_ALL_BUTTON, this.disable, this);
-        Game.the.app.stage.on(CommonConfig.FG_ENABLE_ALL_BUTTON, this.enable, this);
         document.body.onkeyup = (e)=> {
             if (e.key == " " ||
                 e.code == "Space" ||      
@@ -43,10 +54,16 @@ export class SpinButton extends Container{
     }
 
     private onButtonDown() : void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
     }
 
     private onButtonUp() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
         if(CommonConfig.the.getCurrentState() == CommonConfig.BASE_GAME){
             Game.the.app.stage.emit(CommonConfig.START_SPIN);
@@ -57,19 +74,31 @@ export class SpinButton extends Container{
     }
 
     private onButtonOver() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
     }
 
     private onButtonOut() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
     }
 
     disable() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_spin.png'];
         this.interactive = false;
     }
 
     enable() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         if(CommonConfig.the.getIsAutoplay()){
             this.disable();
         }else{

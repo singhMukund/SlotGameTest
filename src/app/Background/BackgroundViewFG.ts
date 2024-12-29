@@ -37,27 +37,6 @@ export class BackgroundViewFG extends Container {
 
     private addContainerToStage() {
         this.addChild(this.bg);
-
-        // const line = new Graphics();
-        // line.rect(0,window.innerHeight/2,0,100);
-        // line.fillStyle = 0x000000;
-        const line = new Graphics();
-        line.beginFill(0x00FFFF);
-        line.drawRect(60, 800, 300, 10);
-        line.endFill();
-        this.addChild(line);
-
-        // Create and configure the GlowFilter
-        const glowFilter = new GlowFilter({
-            color: 0x00FFFF,      // Green glow color
-            distance: 10,         // Spread of the glow
-            outerStrength: 4,     // Glow outside the shape
-            innerStrength: 1,     // Glow inside the shape
-            quality: 0.3          // Quality of the glow (affects performance)
-        });
-
-        // Apply the GlowFilter to the line
-        line.filters = [glowFilter];
     }
 
 }
