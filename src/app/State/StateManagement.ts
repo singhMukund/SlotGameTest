@@ -11,7 +11,7 @@ export class StateManagement extends Container{
         super();
         this.init();
         this.addContainerToStage();
-        this.hideShowState(true);
+        this.hideShowState(false);
         Game.the.app.stage.on(CommonConfig.SHOW_HIDE_BASEGAME, this.hideShowState, this);
     }
 
@@ -33,12 +33,14 @@ export class StateManagement extends Container{
         this.baseGame.visible = true;
         this.freeGame.visible = false;
         CommonConfig.the.setCurrentState(CommonConfig.BASE_GAME);
+        Game.the.app.stage.emit(CommonConfig.INIT_BASEGAME);
     }
 
     private showFreeGame() :void{
         this.baseGame.visible = false;
         this.freeGame.visible = true;
         CommonConfig.the.setCurrentState(CommonConfig.FREE_Game);
+        Game.the.app.stage.emit(CommonConfig.INIT_FREEGAME);
     }
 
 

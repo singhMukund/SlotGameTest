@@ -8,9 +8,9 @@ interface SymbolWinData {
 
 export class CommonConfig {
     protected static _the: CommonConfig;
-    public static highValueSymbolIds : number[] = [2,3,4,5];
-    public static lowValueSymbolIds : number[] = [6,7,8,9];
-    public static symbolIds: string[] = ['sym_musicalnotes1', 'sym_wild','sym_basculohead','sym_slotmachine','sym_plane','sym_bike','sym_gate','sym_monitor','sym_dirtypan','sym_mop'];
+    public static highValueSymbolIds: number[] = [2, 3, 4, 5];
+    public static lowValueSymbolIds: number[] = [6, 7, 8, 9];
+    public static symbolIds: string[] = ['sym_musicalnotes1', 'sym_wild', 'sym_basculohead', 'sym_slotmachine', 'sym_plane', 'sym_bike', 'sym_gate', 'sym_monitor', 'sym_dirtypan', 'sym_mop'];
 
     public static symbolsPerReel: number = 5;
     public static totalReel: number = 5;
@@ -34,6 +34,7 @@ export class CommonConfig {
     public static UPDATE_VIEW_ON_REEL: string = "UPDATE_VIEW_ON_REEL";
     public static FG_UPDATE_VIEW_ON_REEL: string = "FG_UPDATE_VIEW_ON_REEL";
     public static PLAY_BIG_WIN: string = "PLAY_BIG_WIN";
+    public static PLAY_FG_BIG_WIN: string = "PLAY_FG_BIG_WIN";
     public static ON_SHOW_NEXT_WIN_PRESENTAION: string = "ON_SHOW_NEXT_WIN_PRESENTAION";
     public static FG_ON_SHOW_NEXT_WIN_PRESENTAION: string = "FG_ON_SHOW_NEXT_WIN_PRESENTAION";
 
@@ -59,6 +60,10 @@ export class CommonConfig {
     public static FG_RESET_WIN_METER: string = "FG_RESET_WIN_METER";
     public static UPDATE_BALANCE: string = "UPDATE_BALANCE";
     public static UPDATE_BALANCE_TEXT: string = "UPDATE_BALANCE_TEXT";
+
+    public static FG_UPDATE_BALANCE: string = "FG_UPDATE_BALANCE";
+    public static FG_UPDATE_BALANCE_TEXT: string = "FG_UPDATE_BALANCE_TEXT";
+
     public static ENABLE_DISABLE_CHEAT_PANEL: string = "ENABLE_DISABLE_CHEAT_PANEL";
     public static START_AUTOPLAY: string = "START_AUTOPLAY";
     public static DISABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
@@ -72,7 +77,10 @@ export class CommonConfig {
     public static FG_UPDATE_PENTAGONAL_METER: string = "FG_UPDATE_PENTAGONAL_METER";
     public static START_ZWOOM_FEATURE: string = "START_ZWOOM_FEATURE";
     public static SHOW_HIDE_BASEGAME: string = "SHOW_HIDE_BASEGAME";
-    public static SET_RESIZE_WITH_REELS : string = "SET_RESIZE_WITH_REELS";
+    public static SET_RESIZE_WITH_REELS: string = "SET_RESIZE_WITH_REELS";
+    public static FG_SET_RESIZE_WITH_REELS: string = "FG_SET_RESIZE_WITH_REELS";
+    public static INIT_BASEGAME: string = "INIT_BASEGAME";
+    public static INIT_FREEGAME: string = "INIT_FREEGAME";
     public static BASE_GAME: string = "basegame";
     public static FREE_Game: string = "freegame";
 
@@ -92,9 +100,10 @@ export class CommonConfig {
     public static FG_RECHECK_CASCADE_WIN: number = 1;
     public static FG_CHECK_PLAY_RANDOM_FEATURE: number = 2;
     public static FG_RECHECK_WIN: number = 3;
-    public static FG_BIG_WIN: number = 4;
-    public static FG_DO_NEXT_SPIN_IF_REQUIRED: number = 5;
-    public static FG_HIDE_FREEGAME_VIEW_AND_SHOW_BASEGAME_VIEW: number = 6;
+    public static FG_RECHECK_RANDOM_FEATURE: number = 4;
+    public static FG_BIG_WIN: number = 5;
+    public static FG_DO_NEXT_SPIN_IF_REQUIRED: number = 6;
+    public static FG_HIDE_FREEGAME_VIEW_AND_SHOW_BASEGAME_VIEW: number = 7;
     //---------
 
     //-----------------Random Feature----------------
@@ -102,7 +111,7 @@ export class CommonConfig {
     public static RANDOM_FEATURE_CRIPAZIONE: string = "RANDOM_FEATURE_CRIPAZIONE";
     public static RANDOM_FEATURE_PISTOLE: string = "RANDOM_FEATURE_PISTOLE";
 
-    public static RANDOM_FEATURES_LIST : string[] = [CommonConfig.RANDOM_FEATURE_ZWOOM,CommonConfig.RANDOM_FEATURE_CRIPAZIONE,CommonConfig.RANDOM_FEATURE_PISTOLE];
+    public static RANDOM_FEATURES_LIST: string[] = [CommonConfig.RANDOM_FEATURE_ZWOOM, CommonConfig.RANDOM_FEATURE_CRIPAZIONE, CommonConfig.RANDOM_FEATURE_PISTOLE];
 
 
     public static TOTAL_ANIMATION_LENGTH: number = 5;
@@ -122,8 +131,10 @@ export class CommonConfig {
     private isAutoplay: boolean = false;
     private totalWinSymbolCount: number = 0;
     private currentState: string = "basegame";
-    private currentRadomFeatureList : string[] = [];
-    private isRandomFeatureState : boolean = false;
+    private currentRadomFeatureList: string[] = [];
+    private isRandomFeatureState: boolean = false;
+    private currentFGRadomFeatureList: string[] = [];
+    private isFGRandomFeatureState: boolean = false;
 
     private symbolWinData: SymbolWinData = {
         0: {
@@ -166,6 +177,9 @@ export class CommonConfig {
 
     private winGrid: Map<number, Set<string>> = new Map();
 
+    private winGridFreeGame: Map<number, Set<string>> = new Map();
+    private currentFGRandomWinAnimationIndex: number = 0;
+
     private randomWildGridIds: number[] = [];
 
     public setCurrentRadomFeatureList(value: string[]): void {
@@ -176,9 +190,18 @@ export class CommonConfig {
         return this.currentRadomFeatureList;
     }
 
+    public setCurrentFGRadomFeatureList(value: string[]): void {
+        this.currentFGRadomFeatureList = value;
+    }
+
+    public getCurrentFGRadomFeatureList(): string[] {
+        return this.currentFGRadomFeatureList;
+    }
+
+
     public SetCurrentWinAnimationIndex(value: number): void {
-        if(value === 0){
-            console.log("SetCurrentWinAnimationIndex",value);
+        if (value === 0) {
+            console.log("SetCurrentWinAnimationIndex", value);
         }
         this.currentWinAnimationIndex = value;
     }
@@ -193,6 +216,14 @@ export class CommonConfig {
 
     public getCurrentRandomWinAnimationIndex(): number {
         return this.currentRandomWinAnimationIndex;
+    }
+
+    public setCurrentFGRandomWinAnimationIndex(value: number): void {
+        this.currentFGRandomWinAnimationIndex = value;
+    }
+
+    public getCurrentFGRandomWinAnimationIndex(): number {
+        return this.currentFGRandomWinAnimationIndex;
     }
 
     public setCurrentFGWinAnimationIndex(value: number): void {
@@ -215,8 +246,10 @@ export class CommonConfig {
     private winningSymbolIdFromUser: number = 12;
     private winningSymbolIds: string[][] = [['12'], ['12'], ['12']];
     private view: number[][] = [];
+    private viewFreeGame: number[][] = [];
     private oldView: number[][] = [];
     private winReelIds: number[] = [];
+    private winReelIdsFreeGame: number[] = [];
     private cheatType: string = "";
 
 
@@ -245,13 +278,22 @@ export class CommonConfig {
         return this.randomWildGridIds;
     }
 
-    public setIsRandomFeatureState(value : boolean) : void{
+    public setIsRandomFeatureState(value: boolean): void {
         this.isRandomFeatureState = value;
     }
 
-    public getIsRandomFeatureState() : boolean{
+    public getIsRandomFeatureState(): boolean {
         return this.isRandomFeatureState;
     }
+
+    public setIsFGRandomFeatureState(value: boolean): void {
+        this.isFGRandomFeatureState = value;
+    }
+
+    public getIsFGRandomFeatureState(): boolean {
+        return this.isFGRandomFeatureState;
+    }
+
     public static NormalWinResponse: number[][] = [
         [4, 5, 4, 6, 3],
         [2, 6, 4, 5, 4],
@@ -415,6 +457,9 @@ export class CommonConfig {
     }
 
     public setFreeSpinsLeftValue(value: number): void {
+        if (value === 0) {
+            console.log("G");
+        }
         this.freeSpinsLeftValue = value;
     }
 
@@ -448,6 +493,14 @@ export class CommonConfig {
         return this.winReelIds;
     }
 
+    public setWinReelIdsFreeGame(value: number[]): void {
+        this.winReelIdsFreeGame = value
+    }
+
+    public getWinReelIdsFreeGame(): number[] {
+        return this.winReelIdsFreeGame;
+    }
+
     public setOldView(value: number[][]): void {
         this.oldView = value
     }
@@ -465,27 +518,27 @@ export class CommonConfig {
             [0, -1], // Left
             [-1, 0], // Up
         ];
-    
+
         const result: Map<number, Set<string>> = new Map();
-    
+
         function dfs(x: number, y: number, target: number, group: Set<string>) {
             if (x < 0 || y < 0 || x >= rows || y >= cols || visited[x][y]) return;
             if (reel[x][y] !== target && reel[x][y] !== 0) return;
-    
+
             visited[x][y] = true;
             group.add(`${x},${y}`);
-    
+
             for (const [dx, dy] of directions) {
                 dfs(x + dx, y + dy, target, group);
             }
         }
-    
+
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
                 if (!visited[i][j] && reel[i][j] !== 1) {
                     const group: Set<string> = new Set();
                     dfs(i, j, reel[i][j], group);
-    
+
                     if (group.size >= 4) {
                         if (!result.has(reel[i][j])) {
                             result.set(reel[i][j], new Set());
@@ -497,7 +550,7 @@ export class CommonConfig {
                 }
             }
         }
-    
+
         return result;
     }
 
@@ -616,6 +669,14 @@ export class CommonConfig {
         return this.view;
     }
 
+    public setViewFreeGame(value: number[][]): void {
+        this.viewFreeGame = value
+    }
+
+    public getViewFreeGame(): number[][] {
+        return this.viewFreeGame;
+    }
+
     // findWinningGroups(view: number[][]): Map<number, Set<string>> {
     //     const winningGroups: Map<number, Set<string>> = new Map();
     //     const rows = view.length;
@@ -725,25 +786,33 @@ export class CommonConfig {
         return this.winGrid;
     }
 
+    public setWinGridFreeGame(value: Map<number, Set<string>>): void {
+        this.winGridFreeGame = value
+    }
+
+    public getWinGridFreeGame(): Map<number, Set<string>> {
+        return this.winGridFreeGame;
+    }
+
     replaceZerosWithPriority(response: number[][]): number[][] {
         const rows = response.length;
         const cols = response[0].length;
-    
+
         // Helper function to get valid neighbors and prioritize their values
         function getPrioritizedNeighborValues(row: number, col: number): number[] {
             const neighbors: number[] = [];
-    
+
             const directions = [
                 [-1, 0], // up
                 [1, 0],  // down
                 [0, -1], // left
                 [0, 1],  // right
             ];
-    
+
             for (const [dr, dc] of directions) {
                 const newRow = row + dr;
                 const newCol = col + dc;
-    
+
                 // Check if neighbor is within bounds and not a 0
                 if (
                     newRow >= 0 && newRow < rows &&
@@ -753,18 +822,18 @@ export class CommonConfig {
                     neighbors.push(response[newRow][newCol]);
                 }
             }
-    
+
             // Sort neighbors to prioritize lower values
             neighbors.sort((a, b) => a - b);
             return neighbors;
         }
-    
+
         // Keep replacing zeros until no zeros are left
         let hasZero = true;
         while (hasZero) {
             hasZero = false;
             const result = response.map(row => [...row]);
-    
+
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     if (response[row][col] === 0) {
@@ -777,10 +846,10 @@ export class CommonConfig {
                     }
                 }
             }
-    
+
             response = result;
         }
-    
+
         return response;
     }
 

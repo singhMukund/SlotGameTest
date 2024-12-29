@@ -5,12 +5,28 @@ import { CommonConfig } from "../../Common/CommonConfig";
 export class SettingButton extends Container{
     private buttton !: Sprite;
     private buttonTexture !: Spritesheet;
-
-    constructor(){
+    private state : string;
+    constructor(state : string){
         super();
+        this.state = state;
         this.buttonTexture = Assets.get("ui_button")
         this.initializeButton();
         this.addEvent();
+        if (this.state === CommonConfig.BASE_GAME) {
+            this.subscribeEvent();
+        } else {
+            this.subscibeFGEvent();
+        }
+    }
+
+    private subscribeEvent(): void {
+        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
+    }
+
+    private subscibeFGEvent(): void {
+        Game.the.app.stage.on(CommonConfig.FG_DISABLE_ALL_BUTTON, this.disable, this);
+        Game.the.app.stage.on(CommonConfig.FG_ENABLE_ALL_BUTTON, this.enable, this);
     }
 
     private initializeButton() :void{
@@ -25,37 +41,50 @@ export class SettingButton extends Container{
               .on('pointerup', this.onButtonUp, this)
               .on('pointerover', this.onButtonOver, this)
               .on('pointerout', this.onButtonOut , this);
-
-        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
-        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
-        Game.the.app.stage.on(CommonConfig.FG_DISABLE_ALL_BUTTON, this.disable, this);
-        Game.the.app.stage.on(CommonConfig.FG_ENABLE_ALL_BUTTON, this.enable, this);
     }
 
     private onButtonDown() : void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
     }
 
     private onButtonUp() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
         // Game.the.app.stage.emit(CommonConfig.START_SPIN);
         // this.disable();
     }
 
     private onButtonOver() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
     }
 
     private onButtonOut() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
     }
 
     disable() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
         this.interactive = false;
     }
 
     enable() :void{
+        if(this.state !== CommonConfig.the.getCurrentState()){
+            return;
+        }
         this.buttton.texture = this.buttonTexture.textures['button_menu.png'];
         this.interactive = true;
     }

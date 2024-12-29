@@ -9,18 +9,29 @@ export class BetMeter extends Container {
     private betValue: number = 0;
     private winCurrency: string = '$';
     private gap: number = 5;
-
-    constructor() {
+    private state : string;
+    constructor(state : string) {
         super();
+        this.state =state;
         this.init();
         this.updateBetAmount(0);
         this.addToStage();
         Game.the.app.stage.on(CommonConfig.UPDATE_BET_METER, this.updateBetAmount, this);
         Game.the.app.stage.on(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN, this.checkEnableDisableBtn, this);
         Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.checkEnableDisableBtn, this);
+        if(this.state === CommonConfig.BASE_GAME){
+            this.subscribeEvent();
+        }else{
+            this.subscribeEventFreeGame();
+        }
+    }
 
-        // this.winMeterText.x = this.winMeterLabelText.x + this.winMeterLabelText.width + this.gap;
-        // Game.the.app.stage.on(CommonConfig.RESET_WIN_METER, this.resetWinAmount, this);
+    private subscribeEvent(): void {
+        
+    }
+
+    private subscribeEventFreeGame(): void {
+      
     }
 
     private init(): void {
