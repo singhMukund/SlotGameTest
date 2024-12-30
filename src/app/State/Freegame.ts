@@ -5,7 +5,6 @@ import { ReelManager } from "../BaseGame/ReelManager";
 import { SpinButton } from "../Button/SpinButton";
 import { Game } from "../game";
 import { WinpresentationController } from "../BaseGame/WinpresentationController";
-import { CheatPanel } from "../CheatPanel/CheatPanel";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
 import { BigWinMeter } from "../Meter/BigWinMeter";
 import { LineMeter } from "../Meter/LineMeter";
@@ -28,7 +27,6 @@ export class FreeGame extends Container {
     private reelContainer !: Container;
     private bottomPanelButton !: Container;
     private winpresentationController !: WinpresentationControllerFG;
-    private cheatPanel !: CheatPanel;
     private normalRation: number = 1920 / 919;
     private bottomPanel !: BottomPanel;
     private bgWinMeter !: BigWinMeter;
@@ -114,8 +112,7 @@ export class FreeGame extends Container {
     }
 
     private initializeCheatPanel(): void {
-        this.cheatPanel = new CheatPanel();
-        this.cheatPanel.position.set(50, 50); // Position the panel in the top-left corner
+       
     }
 
     private initRandomFeaturePopup() {
@@ -140,7 +137,6 @@ export class FreeGame extends Container {
         this.addChild(this.character);
         this.addChild(this.freeGameLeftMeter);
         this.addChild(this.bottomPanelButton);
-        this.addChild(this.cheatPanel);
         this.addChild(this.bottomPanel);
         this.addChild(this.bgWinMeter);
         this.addChild(this.pentagonalUpdateFeature);
@@ -165,7 +161,6 @@ export class FreeGame extends Container {
         let height = this.reelContainer.height;
         currentScale = assumedHeight / height;
         this.reelContainer.scale.set(currentScale);
-        let currentPanelHeight = this.cheatPanel.height;
         this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) / 2 - 30);
         if (window.innerWidth < window.innerHeight) {
             this.reelContainer.scale.set(1.45);

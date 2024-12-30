@@ -187,6 +187,9 @@ export class PentagonalUpdateFeature extends Container {
         this.pushRandomFeature();
         this.createMaskImages(this.calculateCurrentFilledPercentage());
         this.counterMeter.updatePentagonalCount(CommonConfig.the.getTotalWinSymbolCount());
+        if(CommonConfig.the.getTotalWinSymbolCount() >= 50 && !CommonConfig.the.getIsRandomFeatureState()){
+           CommonConfig.the.setIsBonusRewarded(true);
+        }
         this.counterMeter.position.set(this.pentagon_center_frame.x + (this.pentagon_center_frame.width - this.counterMeter.width) / 2, this.pentagon_center_frame.y + (this.pentagon_center_frame.height - this.counterMeter.height) / 2);
     }
 

@@ -142,7 +142,7 @@ export class WinpresentationControllerFG {
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
             CommonConfig.the.setFreeSpinsLeftValue(10);
-            Game.the.app.stage.emit(CommonConfig.SHOW_HIDE_BASEGAME, true);
+            Game.the.app.stage.emit(CommonConfig.HIDE_BONUS);
             Game.the.app.stage.emit(CommonConfig.UPDATE_FREEGAME_LEFT_METER);
 
             CommonConfig.the.setTotalWinSymbolCount(0);

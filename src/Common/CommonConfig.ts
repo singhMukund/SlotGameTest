@@ -65,6 +65,7 @@ export class CommonConfig {
     public static FG_UPDATE_BALANCE_TEXT: string = "FG_UPDATE_BALANCE_TEXT";
 
     public static ENABLE_DISABLE_CHEAT_PANEL: string = "ENABLE_DISABLE_CHEAT_PANEL";
+    public static RESET_CHEAT_PANEL: string = "RESET_CHEAT_PANEL";
     public static START_AUTOPLAY: string = "START_AUTOPLAY";
     public static DISABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
     public static FG_DISABLE_ALL_BUTTON: string = "FG_DISABLE_ALL_BUTTON";
@@ -81,6 +82,8 @@ export class CommonConfig {
     public static SHOW_HIDE_BASEGAME: string = "SHOW_HIDE_BASEGAME";
     public static SET_RESIZE_WITH_REELS: string = "SET_RESIZE_WITH_REELS";
     public static FG_SET_RESIZE_WITH_REELS: string = "FG_SET_RESIZE_WITH_REELS";
+    public static START_BONUS: string = "START_BONUS";
+    public static HIDE_BONUS: string = "HIDE_BONUS";
     public static INIT_BASEGAME: string = "INIT_BASEGAME";
     public static INIT_FREEGAME: string = "INIT_FREEGAME";
     public static BASE_GAME: string = "basegame";
@@ -100,8 +103,9 @@ export class CommonConfig {
     public static RECHECK_WIN: number = 4;
     public static RECHECK_RANDOM_FEATURE: number = 5;
     public static BIG_WIN: number = 6;
-    public static CHECK_AUTOPLAY: number = 7;
-    public static ENABLE_BUTTON_PLAY: number = 8;
+    public static CHECK_AND_START_BONUS : number = 7;
+    public static CHECK_AUTOPLAY: number = 8;
+    public static ENABLE_BUTTON_PLAY: number = 9;
 
     //-------------Win Animation Freegame----------------
     public static FG_ANIMATE_WIN_SYMBOL: number = 0;
@@ -143,6 +147,7 @@ export class CommonConfig {
     private isRandomFeatureState: boolean = false;
     private currentFGRadomFeatureList: string[] = [];
     private isFGRandomFeatureState: boolean = false;
+    private isBonusRewarded : boolean = false;
 
     private symbolWinData: SymbolWinData = {
         0: {
@@ -240,6 +245,14 @@ export class CommonConfig {
 
     public getCurrentFGWinAnimationIndex(): number {
         return this.currentFGWinAnimationIndex;
+    }
+
+    public setIsBonusRewarded(value : boolean) :void{
+        this.isBonusRewarded = value;
+    }
+
+    public getIsBonusRewarded() : boolean{
+        return this.isBonusRewarded;
     }
 
     public setCurrentState(value: string): void {
@@ -371,13 +384,18 @@ export class CommonConfig {
     public generateRandomView(): number[][] {
         this.incrementForLargeWin = 0;
         const view: number[][] = [];
-        if (this.getCheatType().length && this.getCheatType() === "normal") {
-            let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
-            // winresponse = CommonConfig.NormalWinResponse4;
-            return this.returnCloneArray(winresponse);
-        } else if (this.getCheatType().length && this.getCheatType() === "large") {
-            let winresponse = CommonConfig.NormalWinResponse3;
-            return this.returnCloneArray(winresponse);
+        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+            if (this.getCheatType().length && this.getCheatType() === "normal") {
+                let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
+                // winresponse = CommonConfig.NormalWinResponse4;
+                return this.returnCloneArray(winresponse);
+            } else if (this.getCheatType().length && this.getCheatType() === "large") {
+                let winresponse = CommonConfig.NormalWinResponse3;
+                return this.returnCloneArray(winresponse);
+            }else if(this.getCheatType().length && this.getCheatType() === "bonus"){
+                let winresponse = CommonConfig.NormalWinResponse3;
+                return this.returnCloneArray(winresponse);
+            }
         }
         this.setCheatType("");
         // Loop through each reel to pick random positions
@@ -1102,8 +1120,12 @@ export class CommonConfig {
     }
 
     getRandomSymbol(reelIndex: number): number {
-        if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1) {
-            return 3;
+        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+            if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1) {
+                return 3;
+            }else if(this.getCheatType().length && this.getCheatType() === "bonus" && this.incrementForLargeWin < 4){
+                return 3;
+            }
         }
         const reel = CommonConfig.reels[reelIndex];
         return reel[Math.floor(Math.random() * reel.length)];

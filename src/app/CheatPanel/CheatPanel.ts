@@ -11,8 +11,13 @@ export class CheatPanel extends Container {
     private largeWinToggle!: Text;
     private normalWinActive: boolean = false;
     private largeWinActive: boolean = false;
+    private bonusActive : boolean = false;
+    private bonusButton!: Text;
+    private bonusToggle!: Text;
     private normalWinCheatContainer !: Container;
     private largeWinCheatContainer !: Container;
+    private bonusWinCheatContainer !: Container;
+
 
 
     constructor() {
@@ -24,7 +29,7 @@ export class CheatPanel extends Container {
         Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
 
         Game.the.app.stage.on(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, this.enablePanel, this);
-
+        Game.the.app.stage.on(CommonConfig.RESET_CHEAT_PANEL, this.resetCheats, this);
     }
 
     private init(): void {
@@ -35,8 +40,10 @@ export class CheatPanel extends Container {
         this.addChild(this.background);
         this.normalWinCheatContainer = new Container();
         this.largeWinCheatContainer = new Container();
-        this.addChild(this.normalWinCheatContainer)
-        this.addChild(this.largeWinCheatContainer)
+        this.bonusWinCheatContainer = new Container();
+        this.addChild(this.normalWinCheatContainer);
+        this.addChild(this.bonusWinCheatContainer);
+        this.addChild(this.largeWinCheatContainer);
 
 
         // Panel background
@@ -90,8 +97,6 @@ export class CheatPanel extends Container {
 
         this.largeWinCheatContainer.addChild(this.largeWinToggle);
 
-        this.visible = this.isVisible;
-
         this.normalWinCheatContainer.interactive = true;
         // this.normalWinToggle.buttonMode = true;
         this.normalWinCheatContainer.on("pointerdown", () => this.toggleCheat("normal"));
@@ -99,6 +104,31 @@ export class CheatPanel extends Container {
         this.largeWinCheatContainer.interactive = true;
         // this.largeWinToggle.buttonMode = true;
         this.largeWinCheatContainer.on("pointerdown", () => this.toggleCheat("large"));
+
+        //Bonus
+
+        const roundedRectangle3 = new Graphics();
+        roundedRectangle3.beginFill(0x3498db); // Fill color, you can change this
+        roundedRectangle3.drawRoundedRect(180, 140, 150, 28, 5); // x, y, width, height, corner radius
+        roundedRectangle3.endFill();
+        this.bonusWinCheatContainer.addChild(roundedRectangle3);
+
+        this.bonusButton = new Text("Bonus", buttonStyle2);
+        this.bonusButton.position.set(20, 140);
+        this.bonusWinCheatContainer.addChild(this.bonusButton);
+
+        // Large Win Toggle Button
+        this.bonusToggle = new Text("Set", buttonStyle2);
+        this.bonusToggle.position.set(200, 140);
+
+        this.bonusWinCheatContainer.addChild(this.bonusToggle);
+
+        this.visible = this.isVisible;
+
+        this.bonusWinCheatContainer.interactive = true;
+        // this.largeWinToggle.buttonMode = true;
+        this.bonusWinCheatContainer.on("pointerdown", () => this.toggleCheat("Bonus"));
+
     }
 
     private setPosition(): void {
@@ -118,7 +148,10 @@ export class CheatPanel extends Container {
         }
     }
 
-    private toggleCheat(type: "normal" | "large"): void {
+    private toggleCheat(type: "normal" | "large" |"Bonus"): void {
+        if(CommonConfig.the.getCurrentState() !== CommonConfig.BASE_GAME){
+            return
+        }
         if (type === "normal") {
             this.normalWinActive = !this.normalWinActive;
             this.updateToggleState(this.normalWinToggle, this.normalWinActive);
@@ -133,7 +166,21 @@ export class CheatPanel extends Container {
             // Set or reset the cheat based on toggle state
             CommonConfig.the.setCheatType(this.largeWinActive ? "large" : "");
             // console.log(`Large Win cheat is now ${this.largeWinActive ? "active" : "inactive"}`);
+        }else if(type === "Bonus"){
+            this.bonusActive = !this.bonusActive;
+            this.updateToggleState(this.bonusToggle, this.bonusActive);
+            this.bonusToggle.position.x = this.bonusActive ? 240 : 200
+            // Set or reset the cheat based on toggle state
+            CommonConfig.the.setCheatType(this.bonusActive ? "bonus" : "");
         }
+    }
+
+    private resetCheats() :void{
+        this.bonusActive = false;
+        this.largeWinActive = false;
+        this.normalWinActive = false;
+        this.updateToggleState(this.bonusToggle, this.bonusActive);
+        CommonConfig.the.setCheatType("");
     }
 
     private updateToggleState(toggleButton: Text, isActive: boolean): void {

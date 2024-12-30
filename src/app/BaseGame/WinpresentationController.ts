@@ -38,6 +38,7 @@ export class WinpresentationController {
         CommonConfig.the.setCurrentRandomWinAnimationIndex(0);
         CommonConfig.the.setCurrentRadomFeatureList([]);
         CommonConfig.the.setIsRandomFeatureState(false);
+        CommonConfig.the.setIsBonusRewarded(false);
         Game.the.app.stage.emit(CommonConfig.UPDATE_PENTAGONAL_METER);
         Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
         Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
@@ -49,7 +50,7 @@ export class WinpresentationController {
 
     private onShowNextWinPresentation(): void {
         // console.log("onShowNextWinPresentation--------------"+CommonConfig.the.getCurrentWinAnimationIndex());
-        if (CommonConfig.the.getCurrentWinAnimationIndex() > 8) {
+        if (CommonConfig.the.getCurrentWinAnimationIndex() > 9) {
             return;
         }
         switch (CommonConfig.the.getCurrentWinAnimationIndex()) {
@@ -74,6 +75,9 @@ export class WinpresentationController {
             case CommonConfig.BIG_WIN:
                 this.playBigWin();
                 break;
+            case CommonConfig.CHECK_AND_START_BONUS:
+                this.onStartBonusIfRewarded();
+                break;
             case CommonConfig.CHECK_AUTOPLAY:
                 this.onCheckAutoplay();
                 break;
@@ -83,18 +87,27 @@ export class WinpresentationController {
         }
     }
 
+    private onStartBonusIfRewarded() :void{
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        if(CommonConfig.the.getIsBonusRewarded() && CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+            Game.the.app.stage.emit(CommonConfig.START_BONUS);
+        }else{
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        }
+    }
+
     private onStartRandomFeature(): void {
         CommonConfig.the.setIsRandomFeatureState(true);
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        if(CommonConfig.the.getCurrentRadomFeatureList().length){
+        if (CommonConfig.the.getCurrentRadomFeatureList().length) {
             if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_ZWOOM) {
                 this.onStartZwoomFeature();
             } else if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_PISTOLE) {
                 this.onStartPistole();
-            } else if(CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_CRIPAZIONE) {
+            } else if (CommonConfig.the.getCurrentRadomFeatureList()[CommonConfig.the.getCurrentRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_CRIPAZIONE) {
                 this.onStartCrepazione();
             }
-        }else{
+        } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
@@ -105,7 +118,7 @@ export class WinpresentationController {
         if (CommonConfig.the.getCurrentRandomWinAnimationIndex() >= CommonConfig.the.getCurrentRadomFeatureList().length) {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
             return;
-        }else{
+        } else {
             CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.CHECK_PLAY_RANDOM_FEATURE);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
@@ -221,9 +234,9 @@ export class WinpresentationController {
         let balance: number = CommonConfig.the.getBalance() + value;
         balance = Number(balance.toFixed(2));
         CommonConfig.the.setBalance(balance);
-        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+        if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
-        }else{
+        } else {
             Game.the.app.stage.emit(CommonConfig.FG_UPDATE_BALANCE_TEXT);
         }
     }
@@ -232,10 +245,10 @@ export class WinpresentationController {
     // }
 
     private onStartZwoomFeature(): void {
-        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_ZWOOM,this.updateViewForZoomFeature);
+        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP, CommonConfig.RANDOM_FEATURE_ZWOOM, this.updateViewForZoomFeature);
     }
 
-    private updateViewForZoomFeature() :void{
+    private updateViewForZoomFeature(): void {
         let randomWild: number[][] = [
             [4, 4, 5, 6, 3],
             [1, 6, 1, 1, 4],
@@ -254,10 +267,10 @@ export class WinpresentationController {
     }
 
     private onStartCrepazione(): void {
-        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_CRIPAZIONE,this.updateViewForCrepazione);
+        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP, CommonConfig.RANDOM_FEATURE_CRIPAZIONE, this.updateViewForCrepazione);
     }
 
-    private updateViewForCrepazione() :void{
+    private updateViewForCrepazione(): void {
         let view: number[][] = CommonConfig.the.getView();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
@@ -276,10 +289,10 @@ export class WinpresentationController {
     }
 
     private onStartPistole(): void {
-        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_PISTOLE,this.updateViewForPistole);
+        Game.the.app.stage.emit(CommonConfig.SHOW_RANDOM_FEATURE_POPUP, CommonConfig.RANDOM_FEATURE_PISTOLE, this.updateViewForPistole);
     }
 
-    private updateViewForPistole() :void{
+    private updateViewForPistole(): void {
         let view: number[][] = CommonConfig.the.getView();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
