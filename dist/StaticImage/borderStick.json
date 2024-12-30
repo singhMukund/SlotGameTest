@@ -1,0 +1,20 @@
+{"frames": {
+	"Border_glow_v1.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":170,"h":24},
+		"spriteSourceSize": {"x":0,"y":0,"w":170,"h":24},
+		"sourceSize": {"w":170,"h":24}
+	},
+	"Border_normal_v1.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":26,"w":170,"h":14},
+		"spriteSourceSize": {"x":0,"y":3,"w":170,"h":20},
+		"sourceSize": {"w":170,"h":20}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"image":"borderStick.png",
+	"size": {"w":256,"h":256}
+}
+}

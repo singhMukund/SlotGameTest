@@ -1,0 +1,80 @@
+{"frames": {
+	"sym_basculohead.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":375,"h":360},
+		"spriteSourceSize": {"x":0,"y":0,"w":375,"h":360},
+		"sourceSize": {"w":375,"h":360}
+	},
+	"sym_bike.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":354,"y":362,"w":352,"h":352},
+		"spriteSourceSize": {"x":0,"y":4,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_dirtypan.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":1356,"w":352,"h":316},
+		"spriteSourceSize": {"x":0,"y":22,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_gate.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":1003,"w":352,"h":351},
+		"spriteSourceSize": {"x":0,"y":5,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_monitor.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":718,"w":352,"h":283},
+		"spriteSourceSize": {"x":0,"y":39,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_mop.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":354,"y":1324,"w":346,"h":360},
+		"spriteSourceSize": {"x":3,"y":0,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_musicalnotes1.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":362,"w":352,"h":354},
+		"spriteSourceSize": {"x":0,"y":3,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_musicalnotes2.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":1674,"w":352,"h":354},
+		"spriteSourceSize": {"x":0,"y":3,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_musicalnotes3.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":354,"y":968,"w":352,"h":354},
+		"spriteSourceSize": {"x":0,"y":3,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_plane.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":354,"y":716,"w":352,"h":250},
+		"spriteSourceSize": {"x":0,"y":55,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_slotmachine.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":354,"y":1686,"w":324,"h":360},
+		"spriteSourceSize": {"x":14,"y":0,"w":352,"h":360},
+		"sourceSize": {"w":352,"h":360}
+	},
+	"sym_wild.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":377,"y":0,"w":163,"h":164},
+		"spriteSourceSize": {"x":0,"y":0,"w":163,"h":164},
+		"sourceSize": {"w":163,"h":164}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"image" :"static_symbols.png",
+	"size": {"w":2048,"h":2048}
+}
+}

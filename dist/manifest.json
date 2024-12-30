@@ -1,0 +1,114 @@
+{
+   "bundles": [
+      {
+         "name": "background-image",
+         "assets": [
+            {
+               "alias": "background",
+               "src": "./StaticImage/gameplay_backgrounds.png"
+            },
+            {
+               "alias": "bottomPanelBg",
+               "src": "./StaticImage/lower_ui.png"
+            },
+            {
+               "alias": "freegamebackground",
+               "src": "./StaticImage/bonus_background.png"
+            }
+         ]
+      },
+      {
+         "name": "ReelFrame-Component",
+         "assets": [
+            {
+               "alias": "reelBgImage",
+               "src": "./StaticImage/Reel/regular_reel_bg.png"
+            },
+            {
+               "alias": "reelFrameImage",
+               "src": "./StaticImage/Reel/reel_regular_frame.png"
+            },
+            {
+               "alias": "freegamereelBgImage",
+               "src": "./StaticImage/Reel/bonusReelBg.png"
+            },
+            {
+               "alias": "freegamereelFrameImage",
+               "src": "./StaticImage/Reel/Reel_bonus_frame.png"
+            },
+            {
+               "alias": "characterImage",
+               "src": "./StaticImage/character.png"
+            },
+            {
+               "alias": "borderStick",
+               "src": "./StaticImage/borderStick.json"
+            }
+         ]
+      },
+      {
+         "name": "static-symbol",
+         "assets": [
+            {
+               "alias": "symbols_atlas",
+               "src": "./StaticImage/static_symbols.json"
+            }
+         ]
+      },
+      {
+         "name": "static-button",
+         "assets": [
+            {
+               "alias": "spin_button",
+               "src": "./StaticImage/spin_button.json"
+            },
+            {
+               "alias": "ui_button",
+               "src": "./StaticImage/ui_button.json"
+            }
+         ]
+      },
+      {
+         "name": "win_animation",
+         "assets": [
+            {
+               "alias": "5ofkind_spine_data",
+               "src": "./Spine/5ofkind_spine/5ofkind_spine.json"
+            },
+            {
+               "alias": "5ofkind_spine_atlas",
+               "src": "./Spine/5ofkind_spine/5ofkind_spine.atlas"
+            },
+            {
+               "alias": "Bigwin_data",
+               "src": "./Spine/BigWin/Bigwin.json"
+            },
+            {
+               "alias": "Bigwin_atlas",
+               "src": "./Spine/BigWin/Bigwin.atlas"
+            },
+            {
+               "alias": "LineAnimation_data",
+               "src": "./Spine/Line/Line.json"
+            },
+            {
+               "alias": "LineAnimation_atlas",
+               "src": "./Spine/Line/Line.atlas"
+            }
+         ]
+      },
+      {
+         "name": "Feature-Assets",
+         "assets": [
+            {
+               "alias": "pentagon_assets",
+               "src": "./StaticImage/pentagon_assets.json"
+            },
+            {
+               "alias": "feature_popup",
+               "src": "./StaticImage/randomFeaturePopup.json"
+            }
+         ]
+      }
+   ]
+}
