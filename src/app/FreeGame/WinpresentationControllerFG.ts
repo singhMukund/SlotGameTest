@@ -80,16 +80,21 @@ export class WinpresentationControllerFG {
     private onStartRandomFeature(): void {
         CommonConfig.the.setIsFGRandomFeatureState(true);
         CommonConfig.the.setCurrentFGWinAnimationIndex(CommonConfig.the.getCurrentFGWinAnimationIndex() + 1);
-        if (CommonConfig.the.getCurrentFGRadomFeatureList()[CommonConfig.the.getCurrentFGRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_ZWOOM) {
-            this.onStartZwoomFeature();
-        } else if (CommonConfig.the.getCurrentFGRadomFeatureList()[CommonConfig.the.getCurrentFGRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_PISTOLE) {
-            this.onStartPistole();
-        } else {
-            this.onStartCrepazione();
-        }
-        gsap.delayedCall(0.25, () => {
+        if(CommonConfig.the.getCurrentFGRadomFeatureList().length){
+            if (CommonConfig.the.getCurrentFGRadomFeatureList()[CommonConfig.the.getCurrentFGRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_ZWOOM) {
+                this.onStartZwoomFeature();
+            } else if (CommonConfig.the.getCurrentFGRadomFeatureList()[CommonConfig.the.getCurrentFGRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_PISTOLE) {
+                this.onStartPistole();
+            } else if(CommonConfig.the.getCurrentFGRadomFeatureList()[CommonConfig.the.getCurrentFGRandomWinAnimationIndex()] === CommonConfig.RANDOM_FEATURE_CRIPAZIONE){
+                this.onStartCrepazione();
+            }
+        }else{
             Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
-        })
+        }
+        
+        // gsap.delayedCall(0.25, () => {
+        //     Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
+        // })
     }
 
     private onRecheckRandomFeaturePresentation(): void {
@@ -137,7 +142,7 @@ export class WinpresentationControllerFG {
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
             CommonConfig.the.setFreeSpinsLeftValue(10);
-            Game.the.app.stage.emit(CommonConfig.SHOW_HIDE_BASEGAME, true);
+            Game.the.app.stage.emit(CommonConfig.HIDE_BONUS);
             Game.the.app.stage.emit(CommonConfig.UPDATE_FREEGAME_LEFT_METER);
 
             CommonConfig.the.setTotalWinSymbolCount(0);
@@ -228,10 +233,11 @@ export class WinpresentationControllerFG {
         }
     }
 
-    // subscribeEvent() :void{
-    // }
-
     private onStartZwoomFeature(): void {
+        Game.the.app.stage.emit(CommonConfig.FG_SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_ZWOOM,this.updateViewForZoomFeature);
+    }
+
+    private updateViewForZoomFeature() :void{
         let randomWild: number[][] = [
             [4, 4, 5, 6, 3],
             [1, 6, 1, 1, 4],
@@ -243,9 +249,17 @@ export class WinpresentationControllerFG {
 
         CommonConfig.the.setViewFreeGame(randomWild);
         Game.the.app.stage.emit(CommonConfig.FG_UPDATE_VIEW_ON_REEL, CommonConfig.the.getViewFreeGame());
+
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 
     private onStartCrepazione(): void {
+        Game.the.app.stage.emit(CommonConfig.FG_SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_CRIPAZIONE,this.updateViewForCrepazione);
+    }
+
+    private updateViewForCrepazione() :void{
         let view: number[][] = CommonConfig.the.getViewFreeGame();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
@@ -257,9 +271,17 @@ export class WinpresentationControllerFG {
         }
         CommonConfig.the.setViewFreeGame(view);
         Game.the.app.stage.emit(CommonConfig.FG_UPDATE_VIEW_ON_REEL, CommonConfig.the.getViewFreeGame());
+
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 
     private onStartPistole(): void {
+        Game.the.app.stage.emit(CommonConfig.FG_SHOW_RANDOM_FEATURE_POPUP,CommonConfig.RANDOM_FEATURE_PISTOLE,this.updateViewForPistole);
+    }
+
+    private updateViewForPistole() :void{
         let view: number[][] = CommonConfig.the.getViewFreeGame();
         const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
         for (let row = 0; row < view.length; row++) {
@@ -271,5 +293,54 @@ export class WinpresentationControllerFG {
         }
         CommonConfig.the.setViewFreeGame(view);
         Game.the.app.stage.emit(CommonConfig.FG_UPDATE_VIEW_ON_REEL, CommonConfig.the.getViewFreeGame());
+
+        gsap.delayedCall(0.25, () => {
+            Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
+
+    // subscribeEvent() :void{
+    // }
+
+    // private onStartZwoomFeature(): void {
+    //     let randomWild: number[][] = [
+    //         [4, 4, 5, 6, 3],
+    //         [1, 6, 1, 1, 4],
+    //         [4, 1, 3, 3, 1],
+    //         [1, 3, 3, 4, 1],
+    //         [1, 1, 1, 3, 4]
+    //     ];
+    //     //outpout 
+
+    //     CommonConfig.the.setViewFreeGame(randomWild);
+    //     Game.the.app.stage.emit(CommonConfig.FG_UPDATE_VIEW_ON_REEL, CommonConfig.the.getViewFreeGame());
+    // }
+
+    // private onStartCrepazione(): void {
+    //     let view: number[][] = CommonConfig.the.getViewFreeGame();
+    //     const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
+    //     for (let row = 0; row < view.length; row++) {
+    //         for (let col = 0; col < view[row].length; col++) {
+    //             if (CommonConfig.lowValueSymbolIds.includes(view[row][col])) {
+    //                 view[row][col] = replacedSymbol;
+    //             }
+    //         }
+    //     }
+    //     CommonConfig.the.setViewFreeGame(view);
+    //     Game.the.app.stage.emit(CommonConfig.FG_UPDATE_VIEW_ON_REEL, CommonConfig.the.getViewFreeGame());
+    // }
+
+    // private onStartPistole(): void {
+    //     let view: number[][] = CommonConfig.the.getViewFreeGame();
+    //     const replacedSymbol = CommonConfig.highValueSymbolIds[Math.floor(Math.random() * CommonConfig.highValueSymbolIds.length)];
+    //     for (let row = 0; row < view.length; row++) {
+    //         for (let col = 0; col < view[row].length; col++) {
+    //             if (col === 2) {
+    //                 view[row][col] = replacedSymbol;
+    //             }
+    //         }
+    //     }
+    //     CommonConfig.the.setViewFreeGame(view);
+    //     Game.the.app.stage.emit(CommonConfig.FG_UPDATE_VIEW_ON_REEL, CommonConfig.the.getViewFreeGame());
+    // }
 }

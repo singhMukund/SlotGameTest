@@ -11,8 +11,24 @@ export class StateManagement extends Container{
         super();
         this.init();
         this.addContainerToStage();
-        this.hideShowState(false);
+        this.hideShowState(true);
         Game.the.app.stage.on(CommonConfig.SHOW_HIDE_BASEGAME, this.hideShowState, this);
+        Game.the.app.stage.on(CommonConfig.START_BONUS, this.startBonus, this);
+        Game.the.app.stage.on(CommonConfig.HIDE_BONUS, this.hideBonus, this);
+    }
+
+    private hideBonus() :void{
+        CommonConfig.the.setIsRandomFeatureState(false);
+        CommonConfig.the.setIsFGRandomFeatureState(false);
+        Game.the.app.stage.emit(CommonConfig.RESET_CHEAT_PANEL);
+        this.hideShowState(true);
+        Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+    }
+
+    private startBonus() :void{
+        CommonConfig.the.setIsRandomFeatureState(false);
+        Game.the.app.stage.emit(CommonConfig.RESET_CHEAT_PANEL);
+        this.hideShowState(false);
     }
 
     private init(){

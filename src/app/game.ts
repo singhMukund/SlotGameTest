@@ -1,11 +1,13 @@
 // Game.ts
 import { Application, Assets, Container, Loader, Sprite, Ticker } from 'pixi.js';
+import { Howl } from 'howler';
 import { CommonConfig } from '../Common/CommonConfig';
 import { CommonEvents } from '@/Common/CommonEvents';
 import { BaseGame } from './State/Basegame';
 import { GameConfig } from './GameConfiguration/GameConfig';
 import { FreeGame } from './State/Freegame';
 import { StateManagement } from './State/StateManagement';
+import SoundManager from './Sound/SoundManager';
 // import manifest from "../../public/manifest.json";
 export class Game {
   protected static _the: Game;
@@ -45,7 +47,27 @@ export class Game {
 
   private async loadImages() {
     await Assets.init({ manifest: "./manifest.json" });
-    await Assets.loadBundle(["background-image", "ReelFrame-Component","static-symbol","static-button","win_animation","Feature-Assets"]);
+    await Assets.loadBundle(["background-image", "ReelFrame-Component", "static-symbol", "static-button", "win_animation", "Feature-Assets"]);
+
+    // const sound = new Howl({
+    //   src: ['audio.wav', 'audio.m4a', 'audio.mp3'],
+    // });
+
+    // // Define your audio files
+    // const audioFiles = {
+    //   background: ['./audio/BG_Music.wav', './audio/BG_Music.m4a'],
+    // };
+
+    // const audioConfig = {
+    //   background: { src: ['./audio/BG_Music.wav', './audio/BG_Music.wav'], volume: 0.5, loop: true },
+    // };
+
+    // const sounds = Object.fromEntries(
+    //   Object.entries(audioConfig).map(([key, config]) => [
+    //     key,
+    //     new Howl(config),
+    //   ])
+    // );
 
     // Assets.events.on('progress', (progress: number) => {
     //   const percentage = Math.round(progress * 100);
@@ -73,6 +95,7 @@ export class Game {
 
   private onLoadComplete() {
     this.app.stage.addChild(new StateManagement());
+    // new SoundManager();
   }
 
 

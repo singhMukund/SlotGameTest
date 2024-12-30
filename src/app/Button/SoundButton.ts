@@ -1,14 +1,19 @@
 import { Assets, Container, Sprite, Spritesheet, Texture } from "pixi.js";
 import { Game } from "../game";
 import { CommonConfig } from "../../Common/CommonConfig";
+import SoundManager from "../Sound/SoundManager";
 
 export class SoundButton extends Container{
     private buttton !: Sprite;
     private buttonTexture !: Spritesheet;
     private state : string;
+    private soundManager !: SoundManager;
+    private isSoundOn : boolean = true;
+
     constructor(state : string){
         super();
         this.state = state;
+        this.soundManager = SoundManager.getInstance();
         this.buttonTexture = Assets.get("ui_button")
         this.initializeButton();
         this.addEvent();
@@ -54,9 +59,13 @@ export class SoundButton extends Container{
         if(this.state !== CommonConfig.the.getCurrentState()){
             return;
         }
-        this.buttton.texture = this.buttonTexture.textures['button_sound.png'];
-        // Game.the.app.stage.emit(CommonConfig.START_SPIN);
-        // this.disable();
+        this.soundManager.toggleMute();
+        this.isSoundOn = !this.isSoundOn;
+        if(this.isSoundOn){
+            this.buttton.texture = this.buttonTexture.textures['button_sound.png'];
+        }else{
+            this.buttton.texture = this.buttonTexture.textures['button_sound_off.png'];
+        }
     }
 
     private onButtonOver() :void{

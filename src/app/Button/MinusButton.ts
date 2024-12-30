@@ -49,7 +49,7 @@ export class MinusButton extends Container{
         if(this.state !== CommonConfig.the.getCurrentState()){
             return;
         }
-        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus_disabled.png'];
     }
 
     private onButtonUp() :void{
@@ -80,9 +80,9 @@ export class MinusButton extends Container{
         if(this.state !== CommonConfig.the.getCurrentState()){
             return;
         }
-        this.buttton.texture = this.buttonTexture.textures['button_minus.png'];
+        this.buttton.texture = this.buttonTexture.textures['button_minus_disabled.png'];
         this.interactive = false;
-        this.alpha = 0.65;
+        // this.alpha = 0.65;
     }
 
     private enable() :void{
