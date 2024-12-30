@@ -13,6 +13,7 @@ import { PentagonalUpdateFeature } from "../FeatureComponent/PentagonalUpdateFea
 import { Character } from "../Character/Character";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { RandomFeaturePopup } from "../FeatureComponent/RandomFeatureZwoom";
+import { ReelFrame } from "../Background/ReelFrame";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
@@ -31,6 +32,7 @@ export class BaseGame extends Container {
     private pentagonalUpdateFeature !: PentagonalUpdateFeature;
     private character !: Character;
     private randomFeaturePopup !: RandomFeaturePopup;
+    private reelFrame !: ReelFrame;
 
 
     constructor() {
@@ -85,6 +87,7 @@ export class BaseGame extends Container {
 
     private initReelView() {
         this.reelView = new ReelView();
+        this.reelFrame = new ReelFrame();
     }
 
     private initReelManager() {
@@ -121,6 +124,7 @@ export class BaseGame extends Container {
         this.addChild(this.reelContainer);
         this.reelContainer.addChild(this.reelView);
         this.reelContainer.addChild(this.reelManager);
+        this.reelContainer.addChild(this.reelFrame);
         this.reelContainer.addChild(this.lineMeter);
         this.addChild(this.character);
         this.addChild(this.bottomPanelButton);
@@ -189,7 +193,7 @@ export class BaseGame extends Container {
         let scale: number = currentHeightPanel / height;
         this.character.scale.set(scale);
         let assumedWidthMobile: number = window.innerWidth * (this.character.width / 360);
-        this.character.position.set(window.innerWidth - (this.character.width * 1.4), (window.innerHeight - this.character.height) / 2);
+        this.character.position.set(window.innerWidth - (this.character.width * 1), (window.innerHeight - this.character.height) / 2);
 
         if (window.innerWidth < window.innerHeight) {
             this.character.scale.set(1.8);

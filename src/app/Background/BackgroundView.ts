@@ -1,16 +1,23 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import { Game } from "../game";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
+import SoundManager from "../Sound/SoundManager";
+import { CommonConfig } from "@/Common/CommonConfig";
 
 export class BackgroundView extends Container {
     private bg !: Sprite;
     private bigWinSpine !: Spine;
+    private soundManager !: SoundManager;
 
     constructor() {
         super();
+        this.soundManager = SoundManager.getInstance();
         this.intializeBg();
         this.addContainerToStage();
         this.resizeApp();
+        this.playBgSound();
+        Game.the.app.stage.on(CommonConfig.PLAY_BG_SOUND, this.playBgSound, this);
+        Game.the.app.stage.on(CommonConfig.STOP_BG_SOUND, this.stopBgSound, this);
         Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
@@ -19,6 +26,14 @@ export class BackgroundView extends Container {
         this.bg.y = -60;
 
         this.bigWinSpine = Spine.from({ skeleton: "LineAnimation_data", atlas: "LineAnimation_atlas" });
+    }
+
+    private playBgSound() :void{
+        this.soundManager.play('background');
+    }
+
+    private stopBgSound() :void{
+        this.soundManager.stop('background');
     }
 
     private resizeApp(): void {
@@ -39,6 +54,7 @@ export class BackgroundView extends Container {
 
     private addContainerToStage() {
         this.addChild(this.bg);
+        
         // this.addChild(this.bigWinSpine);
 
         this.bigWinSpine.state.setAnimation(0, 'animation', true);

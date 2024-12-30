@@ -86,6 +86,12 @@ export class CommonConfig {
     public static BASE_GAME: string = "basegame";
     public static FREE_Game: string = "freegame";
 
+    //----------------Sound Event-----------------------------
+    public static PLAY_BG_SOUND:string = "PLAY_BG_SOUND";
+    public static STOP_BG_SOUND:string = "STOP_BG_SOUND";
+    public static MUTE_UNMUTE_ALL_SOUND:string ="MUTE_ALL_SOUND";
+
+
     //-----------------Win Animation BaseGame----------------
     public static CHECK_AUTOPLAY_COUNT: number = 0;
     public static ANIMATE_WIN_SYMBOL: number = 1;

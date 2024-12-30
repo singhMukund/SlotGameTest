@@ -19,6 +19,7 @@ import { FreeGameLeftMeter } from "../Meter/FreeGameLeftMeter";
 import { GlowFilter } from "pixi-filters";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { RandomFeaturePopup } from "../FeatureComponent/RandomFeatureZwoom";
+import { ReelFrameFG } from "../Background/ReelFrameFG";
 
 export class FreeGame extends Container {
     private backgroundView !: BackgroundViewFG;
@@ -38,6 +39,7 @@ export class FreeGame extends Container {
     private freeGameLeftMeter !: FreeGameLeftMeter;
     private aspectRatioMobile: number = 0;
     private randomFeaturePopup !: RandomFeaturePopup;
+    private reelFrame !: ReelFrameFG;
 
 
 
@@ -92,6 +94,7 @@ export class FreeGame extends Container {
 
     private initReelView() {
         this.reelView = new ReelViewFG();
+        this.reelFrame = new ReelFrameFG();
     }
 
     private initReelManager() {
@@ -132,6 +135,7 @@ export class FreeGame extends Container {
         this.addChild(this.reelContainer);
         this.reelContainer.addChild(this.reelView);
         this.reelContainer.addChild(this.reelManager);
+        this.reelContainer.addChild(this.reelFrame);
         this.reelContainer.addChild(this.lineMeter);
         this.addChild(this.character);
         this.addChild(this.freeGameLeftMeter);
@@ -203,7 +207,7 @@ export class FreeGame extends Container {
         let scale: number = currentHeightPanel / height;
         this.character.scale.set(scale);
         let assumedWidthMobile: number = window.innerWidth * (this.character.width / 360);
-        this.character.position.set(window.innerWidth - (this.character.width * 1.4), (window.innerHeight - this.character.height) / 2);
+        this.character.position.set(window.innerWidth - (this.character.width * 1), (window.innerHeight - this.character.height) / 2);
 
         if (window.innerWidth < window.innerHeight) {
             this.character.scale.set(1.8);

@@ -12,9 +12,9 @@ export class ReelViewFG extends Container{
     }
 
     private initialiZeReelView() : void{
-       this.reelBg = new Sprite(Assets.get("freegamereelFrameImage")); 
+        this.reelBg = new Sprite(Assets.get("freegamereelBgImage")); 
        this.reelBg.scale.set(0.98,0.98);
-       this.reelBg.position.set(-26,-16);
+       this.reelBg.position.set(41.5,36);
     }
 
     private setPosition() :void{

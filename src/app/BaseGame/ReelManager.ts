@@ -40,7 +40,7 @@ export class ReelManager extends Container {
         this.initGraphics();
         this.subscribeEvent();
         let randomWild: number[][] = [
-            [4, 4, 5, 6, 3],
+            [0, 4, 0, 6, 3],
             [0, 6, 0, 0, 3],
             [4, 0, 3, 3, 0],
             [0, 3, 3, 4, 0],

@@ -21,12 +21,20 @@
          "name": "ReelFrame-Component",
          "assets": [
             {
+               "alias": "reelBgImage",
+               "src": "./StaticImage/Reel/regular_reel_bg.png"
+            },
+            {
                "alias": "reelFrameImage",
-               "src": "./StaticImage/reel_regular_frame.png"
+               "src": "./StaticImage/Reel/reel_regular_frame.png"
+            },
+            {
+               "alias": "freegamereelBgImage",
+               "src": "./StaticImage/Reel/bonusReelBg.png"
             },
             {
                "alias": "freegamereelFrameImage",
-               "src": "./StaticImage/FreeGameReel.png"
+               "src": "./StaticImage/Reel/Reel_bonus_frame.png"
             },
             {
                "alias": "characterImage",
