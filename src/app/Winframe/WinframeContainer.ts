@@ -2,9 +2,10 @@ import { Container } from "pixi.js";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
 import { SingleWinLine } from "./SingleWinLine";
 import { CommonConfig } from "@/Common/CommonConfig";
+import { Game } from "../game";
 
 export class WinframeContainer extends Container {
-    private winLineContainer !: Container;
+    winLineContainer !: Container;
     private winlineAnimTop !: SingleWinLine;
     private winlineAnimBottom !: SingleWinLine;
     private winlineAnimLeft !: SingleWinLine;
@@ -16,23 +17,35 @@ export class WinframeContainer extends Container {
         this.playWinLineAnim();
         this.addChildren();
         this.setWinLinePosition();
+        Game.the.app.stage.on(CommonConfig.START_SPIN, this.hideWinlineAnimation,this);
+        Game.the.app.stage.on(CommonConfig.HIDE_WINFRAME_ANIMATION, this.hideWinlineAnimation,this);
+    }
+
+    private hideWinlineAnimation() :void{
+        for(let i : number = 0;i< this.winLineContainer.children.length;i++){
+            this.winLineContainer.children[i].visible = false;
+        }
     }
 
     private init(): void {
         this.winLineContainer = new Container();
         this.winlineAnimTop = new SingleWinLine();
+        this.winlineAnimTop.visible = false;
         this.winlineAnimBottom = new SingleWinLine();
+        this.winlineAnimBottom.visible = false;
         this.winlineAnimLeft = new SingleWinLine();
+        this.winlineAnimLeft.visible = false;
         this.winlineAnimRight = new SingleWinLine();
+        this.winlineAnimRight.visible = false;
     }
 
     private addChildren(): void {
         this.addChild(this.winLineContainer);
         this.winLineContainer.position.set(-2,-4);
-        this.winLineContainer.addChild(this.winlineAnimTop);
-        this.winLineContainer.addChild(this.winlineAnimBottom);
         this.winLineContainer.addChild(this.winlineAnimLeft);
         this.winLineContainer.addChild(this.winlineAnimRight);
+        this.winLineContainer.addChild(this.winlineAnimTop);
+        this.winLineContainer.addChild(this.winlineAnimBottom);
     }
 
     private playWinLineAnim(): void {

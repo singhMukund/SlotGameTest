@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { Reel } from "./Reel";
 import { Pos } from "./Pos";
 import { WinframeReelContainer } from "../Winframe/WinframeReelContainer";
+import { WinframeContainer } from "../Winframe/WinframeContainer";
 
 interface winframeData {
     reelId: number;
@@ -36,15 +37,15 @@ export class ReelManager extends Container {
     constructor() {
         super();
         this.initializeReelContainer();
-        // this.initializeWinframeContainer();
+        this.initializeWinframeContainer();
         this.initGraphics();
         this.subscribeEvent();
         let randomWild: number[][] = [
-            [0, 4, 0, 6, 3],
-            [0, 6, 0, 0, 3],
-            [4, 0, 3, 3, 0],
-            [0, 3, 3, 4, 0],
-            [0, 0, 0, 3, 4]
+            [1, 4, 8, 6, 3],
+            [1, 6, 7, 9, 3],
+            [4, 9, 3, 3, 6],
+            [1, 3, 3, 4, 8],
+            [7, 6, 5, 3, 4]
         ];
         this.updateView(randomWild);
     }
@@ -54,6 +55,7 @@ export class ReelManager extends Container {
         Game.the.app.stage.on(CommonConfig.START_SPIN, this.spinTheReels, this);
         Game.the.app.stage.on(CommonConfig.PLAY_ANIMATED_WIN_SYMBOL, this.onPlayWinSymbol, this);
         Game.the.app.stage.on(CommonConfig.UPDATE_VIEW_ON_REEL, this.updateView, this);
+        Game.the.app.stage.on(CommonConfig.PLAY_CASCADE_DROP_ANIMATION, this.shuffleAndCascadeReel, this);
     }
 
     private initGraphics(): void {
@@ -94,36 +96,42 @@ export class ReelManager extends Container {
         for (const symbol of winGrid.keys()) {
             this.symboldWinIds.push(symbol);
         }
-        this.playAnimatons()
+        this.playAnimatons();
     }
 
-    // private createWinFrame(): void {
-    //     let winGrid: Map<number, Set<string>> = CommonConfig.the.getWinGrid();
-    //     let winReelData: { [key: number]: number[] } = {};
-    //     let winData: Set<string> = winGrid.get(this.symboldWinIds[this.currentIndexSymbolWinIds])!;
-    //     for (let [key, value] of winGrid) {
-    //         value = this.sortArray(value);
-    //         value.forEach(position => {
-    //             let reelRow: string[] = position.split(",");
 
-    //             if (winReelData.hasOwnProperty(Number(reelRow[0]))) {
-    //                 winReelData[Number(reelRow[0])].push(Number(reelRow[1]));
-    //             } else {
-    //                 winReelData[Number(reelRow[0])] = [Number(reelRow[1])];
-    //             }
-    //         });
-    //     }
-    //     winData.forEach(position => {
-    //         position = this.sortArray(position)
-    //         let reelRow: string[] = position.split(",");
-    //         // console.log(reelRow);
-    //         if (winReelData.hasOwnProperty(Number(reelRow[0]))) {
-    //             winReelData[Number(reelRow[0])].push(Number(reelRow[1]));
-    //         } else {
-    //             winReelData[Number(reelRow[0])] = [Number(reelRow[1])];
-    //         }
-    //     });
-    // }
+    private playWinframeAnimation() :void{
+        for(let i : number = 0;i<this.winframeData.length;i++){
+            let singleWinframedata : winframeData = this.winframeData[i];
+            let direction : number[] = singleWinframedata.direction;
+            for(let i = 0; i< direction.length;i++){
+                let winlineContainer = ((this.winframeContainer.children[singleWinframedata.reelId] as WinframeReelContainer).children[singleWinframedata.rowId] as WinframeContainer).winLineContainer;
+                if(direction[i] > 0){
+                    winlineContainer.children[i].visible = true
+                }else{
+                    winlineContainer.children[i].visible = false
+                }
+            }         
+        }
+    }
+
+    private checkIfNumberIsLessthan(elm : number , arr: number[]) : boolean{
+        for(let i : number = 0; i< arr.length;i++){
+           if(arr[i] < elm ){
+              return true;
+           }
+        }
+        return false;
+    }
+
+    private checkIfNumberIsGreaterthan(elm : number , arr: number[]) : boolean{
+        for(let i : number = 0; i< arr.length;i++){
+           if(arr[i] > elm ){
+              return true;
+           }
+        }
+        return false;
+    }
 
     private sortArray(arr: Set<string>): Set<string> {
         const newArr =  Array.from(arr).sort((a, b) => {
@@ -144,6 +152,11 @@ export class ReelManager extends Container {
         let winGrid: Map<number, Set<string>> = CommonConfig.the.getWinGrid();
         let winReelData: { [key: number]: number[] } = {};
         let winData: Set<string> = winGrid.get(this.symboldWinIds[this.currentIndexSymbolWinIds])!;
+        this.createWinFrame(winData);
+        this.playWinframeAnimation();
+        gsap.delayedCall(0.5, () => {
+            Game.the.app.stage.emit(CommonConfig.HIDE_WINFRAME_ANIMATION);
+        })
         winData.forEach(position => {
             let reelRow: string[] = position.split(",");
             // console.log(reelRow);
@@ -174,15 +187,40 @@ export class ReelManager extends Container {
             this.currentIndexSymbolWinIds++;
             if (this.currentIndexSymbolWinIds >= this.symboldWinIds.length) {
                 this.shuffleAndCascadeReel();
+                // Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
             } else {
                 this.playAnimatons()
             }
         })
     }
 
+    private createWinFrame(winData: Set<string>): void {
+        this.winframeData = [];
+        winData = this.sortArray(winData);
+        winData.forEach(position => {
+            let reelRow: string[] = position.split(",");
+            let direction : number[] = [];
+            let leftN : string = [Number(reelRow[0]) - 1,Number(reelRow[1])].join(",");
+            winData.has(leftN) ? direction.push(-1) : direction.push(1);
+            let rightN : string = [Number(reelRow[0]) + 1,Number(reelRow[1])].join(",");
+            winData.has(rightN) ? direction.push(-1) : direction.push(1);
+            let topN : string = [Number(reelRow[0]),Number(reelRow[1]) - 1].join(",");
+            winData.has(topN) ? direction.push(-1) : direction.push(1);
+            let botttomN : string = [Number(reelRow[0]),Number(reelRow[1]) + 1].join(",");
+            winData.has(botttomN) ? direction.push(-1) : direction.push(1);
+            let winFrameData : winframeData = {
+                reelId : Number(reelRow[0]),
+                rowId : Number(reelRow[1]),
+                direction : direction
+            }
+            this.winframeData.push(winFrameData);
+        });
+    }
 
 
-    private shuffleAndCascadeReel(): void {
+
+
+    private  shuffleAndCascadeReel(): void {
         let winGrid: Map<number, Set<string>> = CommonConfig.the.getWinGrid();
         let winGridSet: Set<string> = new Set();
         let winReelData: { [key: number]: number[] } = {};

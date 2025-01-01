@@ -11,8 +11,6 @@ export class WinframeReelContainer extends Container {
     private winframePos_03 !: WinframeContainer;
     private winframePos_04 !: WinframeContainer;
     private reelId: number = 0;
-    
-
 
     constructor(reelId: number) {
         super();
