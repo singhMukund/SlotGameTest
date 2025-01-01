@@ -17,6 +17,7 @@ export class CommonConfig {
     public static reelWidth: number = 169;
     public static symbolHeight: number = 166.2;
 
+    // hh
     public static START_SPIN: string = "START_SPIN";
     public static FG_START_SPIN: string = "FG_START_SPIN";
     public static SET_RESPONSE_AT_REEL: string = "SET_RESPONSE_AT_REEL";
@@ -31,6 +32,7 @@ export class CommonConfig {
     public static FG_PLAY_DROP_REEL: string = "FG_PLAY_DROP_REEL";
     public static PLAY_ANIMATED_WIN_SYMBOL: string = "PLAY_ANIMATED_WIN_SYMBOL";
     public static FG_PLAY_ANIMATED_WIN_SYMBOL: string = "FG_PLAY_ANIMATED_WIN_SYMBOL";
+    public static PLAY_CASCADE_DROP_ANIMATION: string = "PLAY_CASCADE_DROP_ANIMATION";
     public static UPDATE_VIEW_ON_REEL: string = "UPDATE_VIEW_ON_REEL";
     public static FG_UPDATE_VIEW_ON_REEL: string = "FG_UPDATE_VIEW_ON_REEL";
     public static PLAY_BIG_WIN: string = "PLAY_BIG_WIN";
@@ -82,6 +84,7 @@ export class CommonConfig {
     public static SHOW_HIDE_BASEGAME: string = "SHOW_HIDE_BASEGAME";
     public static SET_RESIZE_WITH_REELS: string = "SET_RESIZE_WITH_REELS";
     public static FG_SET_RESIZE_WITH_REELS: string = "FG_SET_RESIZE_WITH_REELS";
+    public static HIDE_WINFRAME_ANIMATION: string = "HIDE_WINFRAME_ANIMATION";
     public static START_BONUS: string = "START_BONUS";
     public static HIDE_BONUS: string = "HIDE_BONUS";
     public static INIT_BASEGAME: string = "INIT_BASEGAME";
@@ -90,20 +93,21 @@ export class CommonConfig {
     public static FREE_Game: string = "freegame";
 
     //----------------Sound Event-----------------------------
-    public static PLAY_BG_SOUND:string = "PLAY_BG_SOUND";
-    public static STOP_BG_SOUND:string = "STOP_BG_SOUND";
-    public static MUTE_UNMUTE_ALL_SOUND:string ="MUTE_ALL_SOUND";
+    public static PLAY_BG_SOUND: string = "PLAY_BG_SOUND";
+    public static STOP_BG_SOUND: string = "STOP_BG_SOUND";
+    public static MUTE_UNMUTE_ALL_SOUND: string = "MUTE_ALL_SOUND";
 
 
     //-----------------Win Animation BaseGame----------------
     public static CHECK_AUTOPLAY_COUNT: number = 0;
     public static ANIMATE_WIN_SYMBOL: number = 1;
+    // public static CASCADE_DROP_ANIMATION: number = 2;
     public static RECHECK_CASCADE_WIN: number = 2;
     public static CHECK_PLAY_RANDOM_FEATURE: number = 3;
     public static RECHECK_WIN: number = 4;
     public static RECHECK_RANDOM_FEATURE: number = 5;
-    public static BIG_WIN: number = 6;
-    public static CHECK_AND_START_BONUS : number = 7;
+    public static CHECK_AND_START_BONUS: number = 6;
+    public static BIG_WIN: number = 7;
     public static CHECK_AUTOPLAY: number = 8;
     public static ENABLE_BUTTON_PLAY: number = 9;
 
@@ -147,7 +151,7 @@ export class CommonConfig {
     private isRandomFeatureState: boolean = false;
     private currentFGRadomFeatureList: string[] = [];
     private isFGRandomFeatureState: boolean = false;
-    private isBonusRewarded : boolean = false;
+    private isBonusRewarded: boolean = false;
 
     private symbolWinData: SymbolWinData = {
         0: {
@@ -247,11 +251,11 @@ export class CommonConfig {
         return this.currentFGWinAnimationIndex;
     }
 
-    public setIsBonusRewarded(value : boolean) :void{
+    public setIsBonusRewarded(value: boolean): void {
         this.isBonusRewarded = value;
     }
 
-    public getIsBonusRewarded() : boolean{
+    public getIsBonusRewarded(): boolean {
         return this.isBonusRewarded;
     }
 
@@ -319,40 +323,57 @@ export class CommonConfig {
         [4, 5, 4, 6, 3],
         [2, 6, 4, 5, 4],
         [4, 4, 3, 3, 4],
-        [6, 3, 3, 4, 0],
-        [3, 0, 4, 5, 4]];
+        [6, 3, 3, 4, 1],
+        [3, 1, 4, 5, 4]];
 
     public static NormalWinResponse2: number[][] = [
         [4, 5, 4, 6, 3],
         [2, 6, 4, 4, 4],
         [4, 4, 3, 3, 4],
-        [6, 3, 3, 4, 0],
-        [3, 0, 4, 3, 4]
+        [6, 3, 3, 4, 1],
+        [3, 1, 4, 3, 4]
     ];
 
     public static NormalWinResponse3: number[][] = [
         [4, 5, 4, 6, 3],
         [2, 6, 5, 5, 4],
         [4, 3, 3, 3, 4],
-        [6, 2, 3, 4, 0],
-        [3, 0, 3, 5, 4]
+        [6, 2, 3, 4, 1],
+        [3, 1, 3, 5, 4]
     ];
     public static NormalWinResponse4: number[][] =
         [[4, 5, 4, 6, 3],
         [2, 6, 5, 5, 4],
         [4, 3, 3, 3, 4],
-        [6, 2, 3, 4, 0],
-        [3, 0, 3, 5, 4]];
+        [6, 2, 3, 4, 1],
+        [3, 1, 3, 5, 4]];
     public static NormalWinResponse5: number[][] =
         [[4, 5, 4, 6, 3],
         [2, 6, 5, 5, 4],
         [4, 3, 3, 3, 4],
         [6, 2, 3, 4, 4],
-        [3, 0, 3, 4, 4]];
+        [3, 1, 3, 4, 4]];
 
     private winResponses: number[][][] = [CommonConfig.NormalWinResponse, CommonConfig.NormalWinResponse2, CommonConfig.NormalWinResponse3, CommonConfig.NormalWinResponse4, CommonConfig.NormalWinResponse5]
 
     public static reels: number[][] = [
+        [6, 7, 2, 3, 3, 8, 9, 4, 5, 1, 6, 3, 7, 2, 8, 5, 9, 4, 4, 7, 6, 3, 8, 4, 2, 9, 7, 5, 6, 5,
+            3, 9, 8, 1, 4, 2, 7, 7, 6, 5, 3, 4, 9, 2, 8, 5, 6, 1, 6, 7, 3, 8, 2, 9, 4, 8, 7, 6, 5, 1],
+
+        [3, 8, 9, 2, 2, 7, 6, 4, 1, 5, 2, 9, 1, 8, 3, 6, 7, 4, 5, 6, 3, 1, 9, 1, 7, 8, 5, 2, 4, 6,
+            9, 3, 7, 1, 4, 8, 1, 2, 5, 6, 3, 9, 8, 1, 4, 7, 1, 5, 2, 6, 3, 8, 4, 9, 5, 1, 7, 2, 6, 1],
+
+        [5, 6, 3, 2, 5, 8, 9, 1, 4, 7, 5, 2, 8, 3, 6, 9, 5, 7, 4, 6, 5, 3, 9, 1, 8, 4, 2, 7, 1, 5,
+            9, 3, 6, 5, 4, 8, 7, 2, 5, 6, 3, 1, 7, 9, 4, 2, 8, 6, 6, 5, 3, 4, 9, 8, 7, 7, 2, 6, 5, 1],
+
+        [7, 4, 6, 3, 5, 8, 3, 1, 2, 9, 6, 4, 7, 4, 8, 3, 9, 2, 5, 6, 7, 4, 1, 9, 3, 8, 6, 5, 2, 8,
+            4, 7, 1, 3, 9, 4, 6, 2, 8, 5, 4, 7, 9, 3, 6, 1, 6, 5, 2, 4, 8, 3, 7, 9, 9, 6, 2, 5, 4, 1],
+
+        [2, 5, 9, 3, 4, 7, 8, 3, 1, 6, 5, 3, 2, 8, 4, 7, 7, 9, 6, 5, 2, 3, 1, 8, 9, 4, 9, 7, 6, 5,
+            4, 9, 3, 4, 8, 6, 1, 7, 5, 2, 4, 8, 9, 3, 6, 1, 2, 7, 4, 5, 8, 2, 9, 6, 1, 3, 7, 1, 5, 4]
+    ];
+
+    public static reelsFreegame: number[][] = [
         [6, 7, 2, 3, 1, 8, 9, 4, 5, 0, 6, 3, 7, 2, 8, 5, 9, 1, 4, 7, 6, 3, 8, 4, 2, 9, 7, 1, 6, 5,
             3, 9, 8, 0, 4, 2, 1, 7, 6, 5, 3, 4, 9, 2, 8, 5, 1, 0, 6, 7, 3, 8, 2, 9, 4, 1, 7, 6, 5, 0],
 
@@ -368,6 +389,7 @@ export class CommonConfig {
         [2, 5, 9, 1, 4, 7, 8, 3, 0, 6, 5, 3, 2, 8, 4, 7, 1, 9, 6, 5, 2, 3, 0, 8, 9, 4, 1, 7, 6, 5,
             4, 9, 3, 1, 8, 6, 0, 7, 5, 2, 4, 8, 9, 3, 6, 0, 1, 7, 4, 5, 8, 2, 9, 6, 0, 3, 7, 1, 5, 4]
     ];
+
     static get the(): CommonConfig {
         if (!CommonConfig._the) {
             CommonConfig._the = new CommonConfig();
@@ -384,7 +406,7 @@ export class CommonConfig {
     public generateRandomView(): number[][] {
         this.incrementForLargeWin = 0;
         const view: number[][] = [];
-        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+        if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
             if (this.getCheatType().length && this.getCheatType() === "normal") {
                 let winresponse = this.winResponses[Math.floor(Math.random() * this.winResponses.length)];
                 // winresponse = CommonConfig.NormalWinResponse4;
@@ -392,7 +414,7 @@ export class CommonConfig {
             } else if (this.getCheatType().length && this.getCheatType() === "large") {
                 let winresponse = CommonConfig.NormalWinResponse3;
                 return this.returnCloneArray(winresponse);
-            }else if(this.getCheatType().length && this.getCheatType() === "bonus"){
+            } else if (this.getCheatType().length && this.getCheatType() === "bonus") {
                 let winresponse = CommonConfig.NormalWinResponse3;
                 return this.returnCloneArray(winresponse);
             }
@@ -534,51 +556,51 @@ export class CommonConfig {
     public getOldView(): number[][] {
         return this.oldView;
     }
-    findWinningGroups(reel: number[][]): Map<number, Set<string>> {
-        const rows = reel.length;
-        const cols = reel[0].length;
-        const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
-        const directions = [
-            [0, 1],  // Right
-            [1, 0],  // Down
-            [0, -1], // Left
-            [-1, 0], // Up
-        ];
+    // findWinningGroups(reel: number[][]): Map<number, Set<string>> {
+    //     const rows = reel.length;
+    //     const cols = reel[0].length;
+    //     const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+    //     const directions = [
+    //         [0, 1],  // Right
+    //         [1, 0],  // Down
+    //         [0, -1], // Left
+    //         [-1, 0], // Up
+    //     ];
 
-        const result: Map<number, Set<string>> = new Map();
+    //     const result: Map<number, Set<string>> = new Map();
 
-        function dfs(x: number, y: number, target: number, group: Set<string>) {
-            if (x < 0 || y < 0 || x >= rows || y >= cols || visited[x][y]) return;
-            if (reel[x][y] !== target && reel[x][y] !== 0) return;
+    //     function dfs(x: number, y: number, target: number, group: Set<string>) {
+    //         if (x < 0 || y < 0 || x >= rows || y >= cols || visited[x][y]) return;
+    //         if (reel[x][y] !== target && reel[x][y] !== 0) return;
 
-            visited[x][y] = true;
-            group.add(`${x},${y}`);
+    //         visited[x][y] = true;
+    //         group.add(`${x},${y}`);
 
-            for (const [dx, dy] of directions) {
-                dfs(x + dx, y + dy, target, group);
-            }
-        }
+    //         for (const [dx, dy] of directions) {
+    //             dfs(x + dx, y + dy, target, group);
+    //         }
+    //     }
 
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
-                if (!visited[i][j] && reel[i][j] !== 1) {
-                    const group: Set<string> = new Set();
-                    dfs(i, j, reel[i][j], group);
+    //     for (let i = 0; i < rows; i++) {
+    //         for (let j = 0; j < cols; j++) {
+    //             if (!visited[i][j] && reel[i][j] !== 1) {
+    //                 const group: Set<string> = new Set();
+    //                 dfs(i, j, reel[i][j], group);
 
-                    if (group.size >= 4) {
-                        if (!result.has(reel[i][j])) {
-                            result.set(reel[i][j], new Set());
-                        }
-                        for (const pos of group) {
-                            result.get(reel[i][j])?.add(pos);
-                        }
-                    }
-                }
-            }
-        }
+    //                 if (group.size >= 4) {
+    //                     if (!result.has(reel[i][j])) {
+    //                         result.set(reel[i][j], new Set());
+    //                     }
+    //                     for (const pos of group) {
+    //                         result.get(reel[i][j])?.add(pos);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        return result;
-    }
+    //     return result;
+    // }
 
     // findWinningGroups(view: number[][]): Map<number, Set<string>> {
     //     const winningGroups: Map<number, Set<string>> = new Map();
@@ -843,7 +865,7 @@ export class CommonConfig {
                 if (
                     newRow >= 0 && newRow < rows &&
                     newCol >= 0 && newCol < cols &&
-                    response[newRow][newCol] !== 0
+                    response[newRow][newCol] !== 1
                 ) {
                     neighbors.push(response[newRow][newCol]);
                 }
@@ -862,7 +884,7 @@ export class CommonConfig {
 
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
-                    if (response[row][col] === 0) {
+                    if (response[row][col] === 1) {
                         const prioritizedNeighbors = getPrioritizedNeighborValues(row, col);
                         if (prioritizedNeighbors.length > 0) {
                             // Replace 0 with the smallest prioritized neighbor value
@@ -1120,10 +1142,10 @@ export class CommonConfig {
     }
 
     getRandomSymbol(reelIndex: number): number {
-        if(CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+        if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
             if (this.getCheatType().length && this.getCheatType() === "large" && this.incrementForLargeWin < 1) {
                 return 3;
-            }else if(this.getCheatType().length && this.getCheatType() === "bonus" && this.incrementForLargeWin < 4){
+            } else if (this.getCheatType().length && this.getCheatType() === "bonus" && this.incrementForLargeWin < 4) {
                 return 3;
             }
         }
@@ -1149,6 +1171,58 @@ export class CommonConfig {
         }
 
         return totalWins;
+    }
+
+    clone2DArray(array: number[][]): number[][] {
+        return array.map(innerArray => [...innerArray]);
+    }
+
+    findWinningGroups(reel: number[][]): Map<number, Set<string>> {
+        let newReel: number[][] = this.clone2DArray(reel);
+        newReel = this.replaceZerosWithPriority(newReel);
+        const rows = newReel.length;
+        const cols = newReel[0].length;
+        const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+        const directions = [
+            [0, 1],  // Right
+            [1, 0],  // Down
+            [0, -1], // Left
+            [-1, 0], // Up
+        ];
+
+        const result: Map<number, Set<string>> = new Map();
+
+        function dfs(x: number, y: number, target: number, group: Set<string>) {
+            if (x < 0 || y < 0 || x >= rows || y >= cols || visited[x][y]) return;
+            if (newReel[x][y] !== target && newReel[x][y] !== 1) return;
+
+            visited[x][y] = true;
+            group.add(`${x},${y}`);
+
+            for (const [dx, dy] of directions) {
+                dfs(x + dx, y + dy, target, group);
+            }
+        }
+
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                if (!visited[i][j] && newReel[i][j] !== 1) {
+                    const group: Set<string> = new Set();
+                    dfs(i, j, newReel[i][j], group);
+
+                    if (group.size >= 4) {
+                        if (!result.has(newReel[i][j])) {
+                            result.set(newReel[i][j], new Set());
+                        }
+                        for (const pos of group) {
+                            result.get(newReel[i][j])?.add(pos);
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     setWinningAnimation(): void {

@@ -87,11 +87,11 @@ export class WinpresentationController {
         }
     }
 
-    private onStartBonusIfRewarded() :void{
+    private onStartBonusIfRewarded(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
-        if(CommonConfig.the.getIsBonusRewarded() && CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME){
+        if (CommonConfig.the.getIsBonusRewarded() && CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
             Game.the.app.stage.emit(CommonConfig.START_BONUS);
-        }else{
+        } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }
@@ -198,6 +198,14 @@ export class WinpresentationController {
         } else {
             CommonConfig.the.setWinGrid(new Map());
         }
+    }
+
+    private onPlayCascadeDropAnimation(): void {
+        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
+        Game.the.app.stage.emit(CommonConfig.PLAY_CASCADE_DROP_ANIMATION);
+        gsap.delayedCall(1, () => {
+            Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        })
     }
 
     private onAnimateWinSymbol(): void {
