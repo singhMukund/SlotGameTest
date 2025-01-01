@@ -17,6 +17,7 @@ export class CommonConfig {
     public static reelWidth: number = 169;
     public static symbolHeight: number = 166.2;
 
+    // hh
     public static START_SPIN: string = "START_SPIN";
     public static FG_START_SPIN: string = "FG_START_SPIN";
     public static SET_RESPONSE_AT_REEL: string = "SET_RESPONSE_AT_REEL";
