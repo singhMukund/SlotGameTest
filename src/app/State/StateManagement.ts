@@ -49,6 +49,7 @@ export class StateManagement extends Container{
         this.baseGame.visible = true;
         this.freeGame.visible = false;
         CommonConfig.the.setCurrentState(CommonConfig.BASE_GAME);
+        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
         Game.the.app.stage.emit(CommonConfig.INIT_BASEGAME);
     }
 
@@ -56,6 +57,7 @@ export class StateManagement extends Container{
         this.baseGame.visible = false;
         this.freeGame.visible = true;
         CommonConfig.the.setCurrentState(CommonConfig.FREE_Game);
+        Game.the.app.stage.emit(CommonConfig.FG_UPDATE_BALANCE_TEXT);
         Game.the.app.stage.emit(CommonConfig.INIT_FREEGAME);
     }
 

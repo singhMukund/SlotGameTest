@@ -1,6 +1,5 @@
 import { Assets, Container, Graphics, Sprite } from "pixi.js";
 import { Game } from "../game";
-import { GlowFilter } from "pixi-filters";
 
 export class BackgroundViewFG extends Container {
     private bg !: Sprite;
