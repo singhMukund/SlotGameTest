@@ -506,6 +506,14 @@ export class CommonConfig {
     [3, 1, 3, 4, 4],
   ];
 
+  public static noWinRespone: number[][] = [
+    [4, 5, 4, 6, 3],
+    [2, 6, 5, 5, 6],
+    [4, 3, 6, 3, 7],
+    [6, 2, 4, 4, 8],
+    [3, 1, 3, 2, 9],
+  ];
+
   private winResponses: number[][][] = [
     CommonConfig.NormalWinResponse,
     CommonConfig.NormalWinResponse2,
@@ -593,6 +601,7 @@ export class CommonConfig {
   public generateRandomView(): number[][] {
     this.incrementForLargeWin = 0;
     const view: number[][] = [];
+    // return CommonConfig.noWinRespone;
     if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
       if (this.getCheatType().length && this.getCheatType() === "normal") {
         let winresponse =

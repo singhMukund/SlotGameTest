@@ -82,7 +82,7 @@ export class AutoplayBtn extends Container {
     }
 
     private onButtonUp(): void {
-        if(this.state !== CommonConfig.the.getCurrentState()){
+        if(this.state !== CommonConfig.the.getCurrentState() || this.state === CommonConfig.FREE_Game){
             return;
         }
         this.buttton.texture = this.buttonTexture.textures['button_autoplay.png'];

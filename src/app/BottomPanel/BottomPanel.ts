@@ -58,7 +58,9 @@ export class BottomPanel extends Container {
         this.autoplayBtn = new AutoplayBtn(this.state);
         this.autoplayMeter = new AutoplayMeter();
         this.soundButton = new SoundButton(this.state);
-        new AutoplayController();
+        if(this.state === CommonConfig.BASE_GAME){
+            new AutoplayController();
+        }
     }
 
     private addContainerToStage() {
