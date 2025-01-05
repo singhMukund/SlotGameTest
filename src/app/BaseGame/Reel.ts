@@ -185,13 +185,26 @@ export class Reel extends Container {
 
     public playWinAnim(posId: number[]) {
         for (let i: number = 0; i < posId.length; i++) {
+            if(this.children[posId[i]].alpha === 0){
+                this.children[posId[i]].alpha = 1;
+            }
             gsap.to(this.children[posId[i]], {
                 duration: 1,
-                alpha: 0,
-                ease: "power1.inOut"
+                alpha: 1,
+                ease: "power1.inOut",
+                onComplete : ()=>{
+                   
+                }
             })
         }
+    }
 
+    public hideSymbolAnim(posId: number) {
+        gsap.to(this.children[posId], {
+            duration: 0.3,
+            alpha: 0,
+            ease: "power1.inOut"
+        })
     }
 
     playAfterHideCurrentSymbol(posId: number[]) {

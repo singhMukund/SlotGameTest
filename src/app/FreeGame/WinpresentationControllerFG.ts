@@ -1,6 +1,7 @@
 import { CommonConfig } from "@/Common/CommonConfig";
 import { Game } from "../game";
 import gsap from "gsap";
+import { ISingleWinDetails } from "../Interface/GameInterface";
 
 export class WinpresentationControllerFG {
     constructor() {
@@ -171,7 +172,7 @@ export class WinpresentationControllerFG {
     }
 
     private recheckWin(): void {
-        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getViewFreeGame());
+        let win: Map<number, ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getViewFreeGame());
         CommonConfig.the.setCurrentFGWinAnimationIndex(CommonConfig.the.getCurrentFGWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.setCurrentFGWinAnimationIndex(0);
@@ -183,7 +184,7 @@ export class WinpresentationControllerFG {
     }
 
     private onCheckWin(): void {
-        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getViewFreeGame());
+        let win: Map<number, ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getViewFreeGame());
         CommonConfig.the.setCurrentFGWinAnimationIndex(CommonConfig.the.getCurrentFGWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.setWinGridFreeGame(win);
@@ -202,7 +203,7 @@ export class WinpresentationControllerFG {
     }
 
     private recheckAnimateWinSymbol(): void {
-        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getViewFreeGame());
+        let win: Map<number, ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getViewFreeGame());
         CommonConfig.the.setCurrentFGWinAnimationIndex(CommonConfig.the.getCurrentFGWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.setWinGridFreeGame(win);
