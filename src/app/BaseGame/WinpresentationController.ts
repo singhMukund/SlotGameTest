@@ -171,7 +171,6 @@ export class WinpresentationController {
     private enableButtonInNoWin(): void {
         if (!CommonConfig.the.getIsAutoplay()) {
             Game.the.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
-            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN);
             Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
         }else{
@@ -194,7 +193,6 @@ export class WinpresentationController {
     private onCheckAutoplayInNoWIn(): void {
         this.onCheckAutoplayCountInNoWin();
         if (CommonConfig.the.getIsAutoplay()) {
-            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
         } 
     }
@@ -273,14 +271,13 @@ export class WinpresentationController {
     }
 
     private updateBalance(value: number): void {
+        if(CommonConfig.the.getCurrentState() !== CommonConfig.BASE_GAME){
+            return;
+        }
         let balance: number = CommonConfig.the.getBalance() + value;
         balance = Number(balance.toFixed(2));
         CommonConfig.the.setBalance(balance);
-        if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
-            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
-        } else {
-            Game.the.app.stage.emit(CommonConfig.FG_UPDATE_BALANCE_TEXT);
-        }
+        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
     }
 
     // subscribeEvent() :void{

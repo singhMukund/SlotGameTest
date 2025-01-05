@@ -39,7 +39,6 @@ export class WinpresentationControllerFG {
         CommonConfig.the.setIsFGRandomFeatureState(false);
         Game.the.app.stage.emit(CommonConfig.FG_UPDATE_PENTAGONAL_METER);
         Game.the.app.stage.emit(CommonConfig.FG_RESET_WIN_METER);
-        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
         Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, false);
         Game.the.app.stage.emit(CommonConfig.FG_DISABLE_ALL_BUTTON);
         // console.clear();
@@ -117,7 +116,6 @@ export class WinpresentationControllerFG {
             CommonConfig.the.setFreeSpinsLeftValue(0);
         }
         if (CommonConfig.the.getFreeSpinsLeftValue()) {
-            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.UPDATE_FREEGAME_LEFT_METER);
             Game.the.app.stage.emit(CommonConfig.FG_START_SPIN);
             Game.the.app.stage.emit(CommonConfig.FG_DISABLE_ALL_BUTTON);
@@ -224,14 +222,13 @@ export class WinpresentationControllerFG {
     }
 
     private updateBalance(value: number): void {
+        if(CommonConfig.the.getCurrentState() !== CommonConfig.FREE_Game){
+            return;
+        }
         let balance: number = CommonConfig.the.getBalance() + value;
         balance = Number(balance.toFixed(2));
         CommonConfig.the.setBalance(balance);
-        if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
-            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
-        } else {
-            Game.the.app.stage.emit(CommonConfig.FG_UPDATE_BALANCE_TEXT);
-        }
+        Game.the.app.stage.emit(CommonConfig.FG_UPDATE_BALANCE_TEXT);
     }
 
     private onStartZwoomFeature(): void {
