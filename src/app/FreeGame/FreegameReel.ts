@@ -182,11 +182,19 @@ export class FreegameReel extends Container {
         for (let i: number = 0; i < posId.length; i++) {
             gsap.to(this.children[posId[i]], {
                 duration: 1,
-                alpha: 0,
+                alpha: 1,
                 ease: "power1.inOut"
             })
         }
 
+    }
+
+    public hideSymbolAnim(posId: number) {
+        gsap.to(this.children[posId], {
+            duration: 0.3,
+            alpha: 0,
+            ease: "power1.inOut"
+        })
     }
 
     playAfterHideCurrentSymbol(posId: number[]) {

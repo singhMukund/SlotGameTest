@@ -17,7 +17,7 @@ import { ReelFrame } from "../Background/ReelFrame";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
-    private reelView !: ReelView;
+    private reelView !: ReelView; 
     private reelManager !: ReelManager;
     private reelContainer !: Container;
     private bottomPanelButton !: Container;

@@ -1,6 +1,7 @@
 import { CommonConfig } from "@/Common/CommonConfig";
 import { Game } from "../game";
 import gsap from "gsap";
+import { ISingleWinDetails } from "../Interface/GameInterface";
 
 export class WinpresentationController {
     constructor() {
@@ -20,7 +21,7 @@ export class WinpresentationController {
             console.log("Win Grid : " + CommonConfig.the.getWinGrid());
             this.onShowNextWinPresentation();
         } else {
-            this.enableButton();
+            this.enableButtonInNoWin();
         }
         Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_BUTTON);
     }
@@ -144,12 +145,37 @@ export class WinpresentationController {
         }
     }
 
+    private onCheckAutoplayCountInNoWin(): void {
+        if (CommonConfig.the.getIsAutoplay()) {
+            let autoplayCount = CommonConfig.the.getAutoplayCount() - 1;
+            if (autoplayCount === 0) {
+                CommonConfig.the.setIsAutoplay(false);
+                Game.the.app.stage.emit(CommonConfig.RESET_AUTOPLAY_METER);
+                Game.the.app.stage.emit(CommonConfig.ENABLE_AUTOPLAY_METER_VIEW, false);
+            } else {
+                Game.the.app.stage.emit(CommonConfig.UPDATE_AUTOPLAY_METER);
+                CommonConfig.the.setAutoplayCount(autoplayCount);
+            }
+        } 
+    }
+
     private playBigWin(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (CommonConfig.the.getCurrentWinAmount() >= 20 * CommonConfig.the.getBet()) {
             Game.the.app.stage.emit(CommonConfig.PLAY_BIG_WIN);
         } else {
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
+        }
+    }
+
+    private enableButtonInNoWin(): void {
+        if (!CommonConfig.the.getIsAutoplay()) {
+            Game.the.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
+            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
+            Game.the.app.stage.emit(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN);
+            Game.the.app.stage.emit(CommonConfig.ENABLE_DISABLE_CHEAT_PANEL, true);
+        }else{
+            this.onCheckAutoplayInNoWIn()
         }
     }
 
@@ -165,12 +191,20 @@ export class WinpresentationController {
         }
     }
 
+    private onCheckAutoplayInNoWIn(): void {
+        this.onCheckAutoplayCountInNoWin();
+        if (CommonConfig.the.getIsAutoplay()) {
+            Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
+            Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
+        } 
+    }
+
     private onCheckAutoplay(): void {
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (CommonConfig.the.getIsAutoplay()) {
             // CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             CommonConfig.the.setWinGrid(new Map());
-            // CommonConfig.the.SetCurrentWinAnimationIndex(0);
+            CommonConfig.the.SetCurrentWinAnimationIndex(0);
             Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, CommonConfig.the.getCurrentWinAmount());
             Game.the.app.stage.emit(CommonConfig.START_AUTOPLAY, true);
         } else {
@@ -179,7 +213,7 @@ export class WinpresentationController {
     }
 
     private recheckWin(): void {
-        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Map<number, ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.SetCurrentWinAnimationIndex(0);
@@ -191,7 +225,7 @@ export class WinpresentationController {
     }
 
     private onCheckWin(): void {
-        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Map<number, ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.setWinGrid(win);
@@ -218,7 +252,7 @@ export class WinpresentationController {
     }
 
     private recheckAnimateWinSymbol(): void {
-        let win: Map<number, Set<string>> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
+        let win: Map<number,ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
         CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.setWinGrid(win);
