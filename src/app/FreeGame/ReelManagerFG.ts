@@ -15,19 +15,6 @@ interface winframeData {
   direction: number[];
 }
 export class ReelManagerFG extends Container {
-  private static _the: ReelManagerFG;
-  // private reel1 !: FreegameReel;
-  // private reel2 !: FreegameReel;
-  // private reel3 !: FreegameReel;
-  // private reel4 !: FreegameReel;
-  // private reel5 !: FreegameReel;
-
-  // private winframeReel1 !: WinframeReelContainer;
-  // private winframeReel2 !: WinframeReelContainer;
-  // private winframeReel3 !: WinframeReelContainer;
-  // private winframeReel4 !: WinframeReelContainer;
-  // private winframeReel5 !: WinframeReelContainer;
-
   private maskContainer!: Graphics;
   private reelsContainer!: Container;
   private winframeContainer!: Container;
