@@ -113,6 +113,7 @@ export class CommonConfig {
   public static FG_SET_RESIZE_WITH_REELS: string = "FG_SET_RESIZE_WITH_REELS";
   public static HIDE_WINFRAME_ANIMATION: string = "HIDE_WINFRAME_ANIMATION";
   public static FG_HIDE_WINFRAME_ANIMATION: string = "FG_HIDE_WINFRAME_ANIMATION";
+  public static OPEN_CLOSE_SETTING_PAGE: string = "OPEN_CLOSE_SETTING_PAGE";
   public static START_BONUS: string = "START_BONUS";
   public static HIDE_BONUS: string = "HIDE_BONUS";
   public static INIT_BASEGAME: string = "INIT_BASEGAME";
