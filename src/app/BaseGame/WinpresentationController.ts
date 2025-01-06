@@ -253,11 +253,11 @@ export class WinpresentationController {
 
     private recheckAnimateWinSymbol(): void {
         let win: Map<number,ISingleWinDetails> = CommonConfig.the.findWinningGroups(CommonConfig.the.getView());
-        CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
         if (win.size) {
             CommonConfig.the.setWinGrid(win);
             Game.the.app.stage.emit(CommonConfig.PLAY_ANIMATED_WIN_SYMBOL);
         } else {
+            CommonConfig.the.SetCurrentWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             Game.the.app.stage.emit(CommonConfig.ON_SHOW_NEXT_WIN_PRESENTAION);
         }
     }

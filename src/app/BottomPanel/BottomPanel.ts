@@ -15,6 +15,7 @@ import { AutoplayController } from "../Symbol/AutoplayController";
 import { AutoplayMeter } from "../Meter/AutoplayMeter";
 import { SoundButton } from "../Button/SoundButton";
 import { FreeGameLeftMeter } from "../Meter/FreeGameLeftMeter";
+import { SettingPage } from "../Button/SettingPage";
 
 
 export class BottomPanel extends Container {
@@ -33,6 +34,8 @@ export class BottomPanel extends Container {
     private autoplayMeter !: AutoplayMeter;
     private gap : number = 30;
     private state : string;
+    private settingPage !: SettingPage;
+
 
     constructor(state : string) {
         super();
@@ -60,6 +63,7 @@ export class BottomPanel extends Container {
         this.soundButton = new SoundButton(this.state);
         if(this.state === CommonConfig.BASE_GAME){
             new AutoplayController();
+            this.initSettingPageObj();
         }
     }
 
@@ -75,6 +79,11 @@ export class BottomPanel extends Container {
         this.addChild(this.autoplayBtn);
         this.addChild(this.autoplayMeter);
         this.addChild(this.soundButton);
+    }
+
+    private initSettingPageObj() :void{
+        this.settingPage = new SettingPage();
+        this.addChild(this.settingPage);
     }
 
 
@@ -107,6 +116,8 @@ export class BottomPanel extends Container {
         this.spinBtn.position.set(this.autoplayMeter.x - (this.spinBtn.width * 1.5), window.innerHeight - this.spinBtn.height);
         this.minusButton.position.set(this.spinBtn.x - this.minusButton.width, window.innerHeight - this.minusButton.height);
         this.plusButton.position.set(this.minusButton.x,this.minusButton.y - this.plusButton.height);
+        this.settingPage && (this.settingPage.scale.set(scale));
+        this.settingPage && (this.settingPage.position.set(this.settingButton.x + (this.settingButton.width - this.settingPage.width)/2,  this.settingButton.y - this.settingPage.height))
 
         if(window.innerWidth < window.innerHeight){
             this.resizeInMoble();
