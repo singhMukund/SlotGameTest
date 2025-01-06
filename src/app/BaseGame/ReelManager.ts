@@ -8,6 +8,7 @@ import { Pos } from "./Pos";
 import { WinframeReelContainer } from "../Winframe/WinframeReelContainer";
 import { WinframeContainer } from "../Winframe/WinframeContainer";
 import { ISingleWinDetails } from "../Interface/GameInterface";
+import { StaticSymbol } from "../Symbol/StaticSymbol";
 
 interface winframeData {
   reelId: number;
@@ -323,7 +324,7 @@ export class ReelManager extends Container {
           CommonConfig.symbolIds[Number(response[index][posindex])]
         );
         (pos as Pos).getSymContainer().removeChildren();
-        (pos as Pos).updatePosWithSym(symbol);
+        (pos as Pos).updatePosWithSym(symbol as StaticSymbol);
       });
     });
   }
@@ -337,7 +338,7 @@ export class ReelManager extends Container {
           CommonConfig.symbolIds[Number(response[index][posindex])]
         );
         (pos as Pos).getSymContainer().removeChildren();
-        (pos as Pos).updatePosWithSym(symbol);
+        (pos as Pos).updatePosWithSym(symbol as StaticSymbol);
       });
     });
   }

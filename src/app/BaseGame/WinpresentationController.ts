@@ -31,6 +31,8 @@ export class WinpresentationController {
     }
 
     private resetsOnSpinClick(): void {
+        CommonConfig.the.set3x3WildGridIds([]);
+        CommonConfig.the.setInitial3x3WildGridId([]);
         CommonConfig.the.setTotalWinSymbolCount(0);
         CommonConfig.the.SetCurrentWinAnimationIndex(0);
         CommonConfig.the.setWinGrid(new Map());

@@ -8,6 +8,8 @@ import { FreeGamePos } from "./FreeGamePos";
 import { ISingleWinDetails } from "../Interface/GameInterface";
 import { WinframeReelContainerFG } from "../WinframeFreeGame/WinframeReelContainerFG";
 import { WinframeContainerFG } from "../WinframeFreeGame/WinframeContainerFG";
+import { StaticWild3x3 } from "../Symbol/StaticWild3x3";
+import { StaticSymbol } from "../Symbol/StaticSymbol";
 
 interface winframeData {
   reelId: number;
@@ -279,7 +281,7 @@ export class ReelManagerFG extends Container {
         let response: number[][] = CommonConfig.the.cascade(CommonConfig.the.getViewFreeGame(), winGridSet);
         this.updateView(response);
         Game.the.app.stage.emit(CommonConfig.FG_PLAY_DROP_REEL);
-        gsap.delayedCall(1, () => {
+        gsap.delayedCall(2, () => {
             // CommonConfig.the.setCurrentFGWinAnimationIndex(CommonConfig.the.getCurrentWinAnimationIndex() + 1);
             Game.the.app.stage.emit(CommonConfig.FG_ON_SHOW_NEXT_WIN_PRESENTAION);
         })
@@ -313,7 +315,7 @@ export class ReelManagerFG extends Container {
           CommonConfig.symbolIds[Number(response[index][posindex])]
         );
         (pos as FreeGamePos).getSymContainer().removeChildren();
-        (pos as FreeGamePos).updatePosWithSym(symbol);
+        (pos as FreeGamePos).updatePosWithSym(symbol as StaticSymbol);
       });
     });
   }
@@ -323,13 +325,33 @@ export class ReelManagerFG extends Container {
     CommonConfig.the.setViewFreeGame(response);
     this.reelsContainer.children.forEach((reel, index) => {
       (reel as FreegameReel).children.forEach((pos, posindex) => {
-        let symbol = SymbolPool.the.getSymbol(
-          CommonConfig.symbolIds[Number(response[index][posindex])]
-        );
         (pos as FreeGamePos).getSymContainer().removeChildren();
-        (pos as FreeGamePos).updatePosWithSym(symbol);
+        if(CommonConfig.the.getInitial3x3WildGridId()[0] === index && CommonConfig.the.getInitial3x3WildGridId()[1] === posindex){
+          let symbol : StaticWild3x3 = SymbolPool.the.getSymbol(
+            CommonConfig.symbolIds[10]
+          ) as StaticWild3x3;
+          (pos as FreeGamePos).updatePosWith3x3Wild(symbol);
+        }else{
+          if(!this.checkIsIndexInExpandingWild(index,posindex)){
+            let symbol = SymbolPool.the.getSymbol(
+              CommonConfig.symbolIds[Number(response[index][posindex])]
+            );
+            (pos as FreeGamePos).updatePosWithSym(symbol as StaticSymbol);
+          }
+        }
+       
       });
     });
+  }
+
+  private checkIsIndexInExpandingWild(reelId : number,posindex: number) :boolean{
+    let symbol3x3WildIds : number[][] = CommonConfig.the.get3x3WildGridIds()
+    for(let i : number= 0;i<symbol3x3WildIds.length;i++){
+      if(symbol3x3WildIds[i][0] === reelId && symbol3x3WildIds[i][1] === posindex){
+        return true
+      }
+    }
+    return false;
   }
 
   spinTheReels(): void {

@@ -29,6 +29,8 @@ export class WinpresentationControllerFG {
     }
 
     private resetsOnSpinClick(): void {
+        CommonConfig.the.setInitial3x3WildGridId([]);
+        CommonConfig.the.set3x3WildGridIds([]);
         CommonConfig.the.setTotalWinSymbolCount(0);
         CommonConfig.the.setCurrentFGWinAnimationIndex(0);
         CommonConfig.the.setWinGridFreeGame(new Map());

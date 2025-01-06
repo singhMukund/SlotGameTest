@@ -23,6 +23,7 @@ export class CommonConfig {
     "sym_monitor",
     "sym_dirtypan",
     "sym_mop",
+    "sym_3x3Wild"
   ];
 
   public static symbolsPerReel: number = 5;
@@ -181,6 +182,8 @@ export class CommonConfig {
   private currentFGRadomFeatureList: string[] = [];
   private isFGRandomFeatureState: boolean = false;
   private isBonusRewarded: boolean = false;
+  private _3x3WildGridIds : number[][] = [];
+  private _initial3x3WildGridId : number[] = [];
 
   private symbolWinData: SymbolWinData = {
     0: {
@@ -352,6 +355,14 @@ export class CommonConfig {
 
   private randomWildGridIds: number[] = [];
 
+  public set3x3WildGridIds(value : number[][]) :void{
+    this._3x3WildGridIds = value;
+  }
+
+  public get3x3WildGridIds() :number[][]{
+    return this._3x3WildGridIds;
+  }
+
   public setCurrentRadomFeatureList(value: string[]): void {
     this.currentRadomFeatureList = value;
   }
@@ -409,6 +420,14 @@ export class CommonConfig {
 
   public getIsBonusRewarded(): boolean {
     return this.isBonusRewarded;
+  }
+
+  public setInitial3x3WildGridId(value : number[]) :void{
+    this._initial3x3WildGridId = value;
+  }
+
+  public getInitial3x3WildGridId() : number[]{
+    return this._initial3x3WildGridId;
   }
 
   public setCurrentState(value: string): void {
@@ -510,6 +529,14 @@ export class CommonConfig {
     [4, 5, 4, 6, 3],
     [2, 6, 5, 5, 6],
     [4, 3, 6, 3, 7],
+    [6, 2, 4, 4, 8],
+    [3, 1, 3, 2, 9],
+  ];
+
+  public static expandingWildFeature: number[][] = [
+    [4, 5, 1, 1, 1],
+    [2, 6, 1, 1, 1],
+    [4, 3, 1, 1, 1],
     [6, 2, 4, 4, 8],
     [3, 1, 3, 2, 9],
   ];
@@ -646,6 +673,9 @@ export class CommonConfig {
       view.push(reelSymbols);
     }
     // console.log(view);
+    if(CommonConfig.the.getCurrentState() === CommonConfig.FREE_Game){
+      return this.createRandom3x3WildGridView(view);
+    }
     return view;
   }
 
@@ -948,5 +978,24 @@ export class CommonConfig {
     return winArrayMap;
   }
 
-  setWinningAnimation(): void {}
+  createRandom3x3WildGridView(view : number[][]) : number[][]{
+    const initialReelRowIds : number[] = [0,1,2];
+    const randomInitialReelId : number = initialReelRowIds[Math.floor(Math.random() * 3)];
+    const randomInitialRowId : number = initialReelRowIds[Math.floor(Math.random() * 3)];
+    const random3x3WildGridIds :number[][] = [];
+    for(let i : number = randomInitialReelId;i<randomInitialReelId+3;i++){
+      for(let j:number=randomInitialRowId;j<randomInitialRowId+3;j++){
+        random3x3WildGridIds.push([i,j]);
+      }
+    }
+
+    for(let i:number=0;i<random3x3WildGridIds.length;i++){
+      view[random3x3WildGridIds[i][0]][random3x3WildGridIds[i][1]] = 1;
+    }
+
+    this.set3x3WildGridIds(random3x3WildGridIds);
+    this.setInitial3x3WildGridId([randomInitialReelId,randomInitialRowId]);
+    return view;
+  }  
+
 }

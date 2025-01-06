@@ -181,7 +181,7 @@ export class PentagonalUpdateFeature extends Container {
         if(this.state !== CommonConfig.the.getCurrentState()){
             return;
         }
-        if (CommonConfig.the.getIsRandomFeatureState() ||  CommonConfig.the.getIsFGRandomFeatureState()) {
+        if (CommonConfig.the.getIsRandomFeatureState() ||  CommonConfig.the.getIsFGRandomFeatureState() || CommonConfig.the.get3x3WildGridIds().length) {
             return;
         }
         this.pushRandomFeature();
