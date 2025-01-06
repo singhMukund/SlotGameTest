@@ -325,10 +325,10 @@ export class ReelManagerFG extends Container {
     CommonConfig.the.setViewFreeGame(response);
     this.reelsContainer.children.forEach((reel, index) => {
       (reel as FreegameReel).children.forEach((pos, posindex) => {
-        if(CommonConfig.the.getInitial3x3WildGridId()[0] === index && CommonConfig.the.getInitial3x3WildGridId()[0] === posindex){
-          (pos as FreeGamePos).getSymContainer().removeChildren();
+        (pos as FreeGamePos).getSymContainer().removeChildren();
+        if(CommonConfig.the.getInitial3x3WildGridId()[0] === index && CommonConfig.the.getInitial3x3WildGridId()[1] === posindex){
           let symbol : StaticWild3x3 = SymbolPool.the.getSymbol(
-            CommonConfig.symbolIds[Number(response[index][posindex])]
+            CommonConfig.symbolIds[10]
           ) as StaticWild3x3;
           (pos as FreeGamePos).updatePosWith3x3Wild(symbol);
         }else{

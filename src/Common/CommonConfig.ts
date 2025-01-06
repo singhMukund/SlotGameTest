@@ -994,6 +994,7 @@ export class CommonConfig {
     }
 
     this.set3x3WildGridIds(random3x3WildGridIds);
+    this.setInitial3x3WildGridId([randomInitialReelId,randomInitialRowId]);
     return view;
   }  
 

@@ -1,5 +1,6 @@
 import { Assets, Container, Loader, Sprite, Spritesheet } from "pixi.js";
 import { Game } from "../game";
+import { CommonConfig } from "@/Common/CommonConfig";
 
 export class StaticWild3x3 extends Container{
     private symbol: Sprite;
@@ -7,14 +8,15 @@ export class StaticWild3x3 extends Container{
 
     constructor(texture: string) {
         super();
-        this.symbol = new Sprite(Assets.get("symbols_atlas"));
+        this.symbol = new Sprite(Assets.get("wild_3x3"));
         // @ts-ignore
         this.symbol.name = "Static_Symbol";
         this.addChild(this.symbol);
         this.symbolName = texture;
         this.symbol.anchor.set(0.5);  // Center the symbol
         this.name = 'SymbolContainer';
-        this.symbol.scale.set(0.4);
+        this.symbol.scale.set(0.45);
+        this.symbol.position.set(CommonConfig.reelWidth,CommonConfig.symbolHeight);
     }
 
     public setPosition(x: number, y: number): void {
