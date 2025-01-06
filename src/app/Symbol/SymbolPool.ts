@@ -1,9 +1,10 @@
 import { CommonConfig } from "../../Common/CommonConfig";
 import { StaticSymbol } from "./StaticSymbol";
+import { StaticWild3x3 } from "./StaticWild3x3";
 
 export class SymbolPool {
     private static _the: SymbolPool;
-    private symbolPool: Map<string, StaticSymbol> = new Map();
+    private symbolPool: Map<string, StaticSymbol|StaticWild3x3> = new Map();
     private symbolGrids: number[] = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9,
         10, 10, 10, 10, 10, 11, 11, 11, 11, 11]
 
@@ -23,19 +24,26 @@ export class SymbolPool {
 
     private initializeSymbols(): void {
         for (let i: number = 0; i < CommonConfig.symbolIds.length; i++) {
-            let symbol: StaticSymbol = new StaticSymbol(CommonConfig.symbolIds[i])
-            this.symbolPool.set(CommonConfig.symbolIds[i], symbol);
+            if(i === 10){
+                let symbol: StaticWild3x3 = new StaticWild3x3(CommonConfig.symbolIds[i])
+                this.symbolPool.set(CommonConfig.symbolIds[i], symbol);
+            }else{
+                let symbol: StaticSymbol = new StaticSymbol(CommonConfig.symbolIds[i])
+                this.symbolPool.set(CommonConfig.symbolIds[i], symbol);
+            }
+          
         }
     }
 
-    public getRandomSymbol(): StaticSymbol {
+    public getRandomSymbol(): StaticSymbol | StaticWild3x3{
         const randomIndex = Math.floor(Math.random() * CommonConfig.symbolIds.length);
         const sym = this.getSymbol(CommonConfig.symbolIds[randomIndex]);
         return sym;
     }
 
-    getSymbol(symbolName: string): StaticSymbol {
+    getSymbol(symbolName: string): StaticSymbol | StaticWild3x3 {
         const sym = this.symbolPool.get(symbolName)!.clone(); // Create one from the template.
         return sym;
     }
+
 }

@@ -1,5 +1,6 @@
 import { Container } from "pixi.js";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
+import { StaticWild3x3 } from "../Symbol/StaticWild3x3";
 
 export class FreeGamePos extends Container {
     private symContainer !: Container;
@@ -19,6 +20,16 @@ export class FreeGamePos extends Container {
     }
 
     updatePosWithSym(sym: StaticSymbol): void {
+        // this.addChildren();
+        if (this.symContainer.children.length) {
+            this.symContainer.removeChildren();
+            this.symContainer.addChild(sym);
+        } else {
+            this.symContainer.addChild(sym);
+        }
+    }
+
+    updatePosWith3x3Wild(sym: StaticWild3x3): void {
         // this.addChildren();
         if (this.symContainer.children.length) {
             this.symContainer.removeChildren();

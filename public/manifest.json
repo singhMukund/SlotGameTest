@@ -52,7 +52,11 @@
              {
                 "alias": "symbols_atlas",
                 "src": "./StaticImage/static_symbols.json"
-             }
+             },
+             {
+               "alias": "wild_3x3",
+               "src": "./StaticImage/wild_3x3.png"
+            }
           ]
        },
        {
