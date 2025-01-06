@@ -6,7 +6,6 @@ import { CommonConfig } from "@/Common/CommonConfig";
 
 export class BackgroundView extends Container {
     private bg !: Sprite;
-    private bigWinSpine !: Spine;
     private soundManager !: SoundManager;
 
     constructor() {
@@ -25,7 +24,6 @@ export class BackgroundView extends Container {
         this.bg = new Sprite(Assets.get("background"));
         this.bg.y = -60;
 
-        this.bigWinSpine = Spine.from({ skeleton: "LineAnimation_data", atlas: "LineAnimation_atlas" });
     }
 
     private playBgSound() :void{
@@ -55,11 +53,6 @@ export class BackgroundView extends Container {
     private addContainerToStage() {
         this.addChild(this.bg);
         
-        // this.addChild(this.bigWinSpine);
-
-        this.bigWinSpine.state.setAnimation(0, 'animation', true);
-        this.bigWinSpine.pivot.set(-this.bigWinSpine.width / 2, -this.bigWinSpine.height / 2);
-        this.bigWinSpine.position.set((this.bigWinSpine.width) / 2 + 50, (this.bigWinSpine.height) / 2 + window.innerHeight / 2);
     }
 
 }

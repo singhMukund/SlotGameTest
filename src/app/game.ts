@@ -47,9 +47,18 @@ export class Game {
     this.app.stage.addChild(this.loadingScreen);
   }
 
-  private async loadImages() {
+  private async loadLoadingSpine() {
     this.initLoadingObj();
     await Assets.init({ manifest: "./manifest.json" });
+    await Assets.loadBundle([
+      "Loading_logo"
+    ])
+    this.loadingScreen.playLogoSpine();
+    this.loadImages();
+  }
+
+  private async loadImages() {
+    // await Assets.init({ manifest: "./manifest.json" });
     await Assets.loadBundle([
       "background-image",
       "ReelFrame-Component",
@@ -72,7 +81,7 @@ export class Game {
   }
 
   private loadAssetsAndInitialize() {
-    this.loadImages();
+    this.loadLoadingSpine();
     new CommonEvents();
     new CommonConfig();
     new GameConfig();
