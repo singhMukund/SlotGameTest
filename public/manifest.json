@@ -1,6 +1,19 @@
 {
     "bundles": [
        {
+         "name": "Loading_logo",
+         "assets": [
+            {
+               "alias": "TopGamingLogo_spine_data",
+               "src": "./Spine/TOPGaming/TOP.json"
+            },
+            {
+               "alias": "TopGamingLogo_spine_atlas",
+               "src": "./Spine/TOPGaming/TOP.atlas"
+            }
+          ]
+       },
+       {
           "name": "background-image",
           "assets": [
              {

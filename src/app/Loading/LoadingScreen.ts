@@ -1,6 +1,7 @@
 import { Container, Graphics, Sprite } from "pixi.js";
 import { Game } from "../game";
 import gsap from "gsap";
+import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
 export class LoadingScreen extends Container {
     private bgGraphics !: Graphics;
@@ -8,6 +9,8 @@ export class LoadingScreen extends Container {
     private maskContainer !: Graphics;
     private loaderBg !: Graphics;
     private loaderfilled !: Graphics;
+    private logoSpine !: Spine;
+    
 
 
     constructor() {
@@ -45,9 +48,17 @@ export class LoadingScreen extends Container {
 
         this.loaderfilled.mask = this.maskContainer;
         this.maskContainer.x = -540;
-
         // this.loadingAnimation();
 
+    }
+
+    playLogoSpine() :void{
+        this.logoSpine = Spine.from({ skeleton: "TopGamingLogo_spine_data", atlas: "TopGamingLogo_spine_atlas" });
+        this.logoSpine.state.setAnimation(0, 'anim', true);
+        this.logoSpine.pivot.set(-this.logoSpine.width / 2, -this.logoSpine.height / 2);
+        this.logoSpine.scale.set(0.5);
+        this.logoSpine.position.set((window.innerWidth - this.logoSpine.width)/2, (window.innerHeight - this.logoSpine.height)/2);
+        this.addChild(this.logoSpine);
     }
 
     private resize() :void{
