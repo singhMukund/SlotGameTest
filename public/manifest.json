@@ -126,6 +126,19 @@
                 "src": "./StaticImage/randomFeaturePopup.json"
              }
           ]
-       }
+       },
+       {
+         "name": "randomfeature_animation",
+         "assets": [
+            {
+               "alias": "Crepazione_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Crepazione_Animation/Crepazione_Animation.json"
+            },
+            {
+               "alias": "Crepazione_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Crepazione_Animation/Crepazione_Animation.atlas"
+            }
+         ]
+      }
     ]
  }

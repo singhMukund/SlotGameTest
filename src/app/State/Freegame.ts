@@ -15,7 +15,6 @@ import { ReelManagerFG } from "../FreeGame/ReelManagerFG";
 import { BackgroundViewFG } from "../Background/BackgroundViewFG";
 import { ReelViewFG } from "../Background/ReelViewFG";
 import { FreeGameLeftMeter } from "../Meter/FreeGameLeftMeter";
-import { GlowFilter } from "pixi-filters";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { RandomFeaturePopup } from "../FeatureComponent/RandomFeatureZwoom";
 import { ReelFrameFG } from "../Background/ReelFrameFG";
