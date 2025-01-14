@@ -10,7 +10,8 @@ export class LoadingScreen extends Container {
     private loaderBg !: Graphics;
     private loaderfilled !: Graphics;
     private logoSpine !: Spine;
-    
+    private totalDistance : number = 540;   
+    private lastData : number = 0;
 
 
     constructor() {
@@ -66,7 +67,15 @@ export class LoadingScreen extends Container {
     }
 
     public loadingAnimation(data:number) :void{        
-        this.maskContainer.x += 50*data;
+        if(data === 1){
+            this.interactive = true;
+        }else{
+            data = Number((data).toFixed(1));
+        }
+        const difference = Number((data - this.lastData).toFixed(1));
+        this.lastData = data;
+        const factor : number = (difference/1) * this.totalDistance ;      
+        this.maskContainer.x += factor;
     }
 
     // public hideLoadingScreen() :void{

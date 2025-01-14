@@ -14,6 +14,27 @@
           ]
        },
        {
+         "name": "intro-assets",
+         "assets": [
+            {
+               "alias": "intro_background",
+               "src": "./StaticImage/Intro/intro_background.png"
+            },
+            {
+               "alias": "intro_frame_background",
+               "src": "./StaticImage/Intro/intro_frame_background.png"
+            },
+            {
+               "alias": "introContent",
+               "src": "./StaticImage/Intro/introContent.json"
+            },
+            {
+               "alias": "introTextBtn",
+               "src": "./StaticImage/Intro/introTextBtn.json"
+            }
+          ]
+       },
+       {
           "name": "background-image",
           "assets": [
              {
@@ -76,10 +97,6 @@
           "name": "static-button",
           "assets": [
              {
-                "alias": "spin_button",
-                "src": "./StaticImage/spin_button.json"
-             },
-             {
                 "alias": "ui_button",
                 "src": "./StaticImage/ui_button.json"
              }
@@ -137,6 +154,46 @@
             {
                "alias": "Crepazione_Animation_spine_atlas",
                "src": "./Spine/RandomAnimaton/Crepazione_Animation/Crepazione_Animation.atlas"
+            },
+            {
+               "alias": "Lock_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/lock/lock.json"
+            },
+            {
+               "alias": "Lock_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/lock/lock.atlas"
+            },
+            {
+               "alias": "music_notes_key_1_spine_data",
+               "src": "./Spine/RandomAnimaton/music_notes_key_1/music_notes_key_1.json"
+            },
+            {
+               "alias": "music_notes_key_1_spine_atlas",
+               "src": "./Spine/RandomAnimaton/music_notes_key_1/music_notes_key_1.atlas"
+            },
+            {
+               "alias": "Pistol_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Pistol_Animation/Pistol_Animation.json"
+            },
+            {
+               "alias": "Pistol_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Pistol_Animation/Pistol_Animation.atlas"
+            },
+            {
+               "alias": "Zwoom_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Zwoom_Animation/Zwoom_Animation.json"
+            },
+            {
+               "alias": "Zwoom_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Zwoom_Animation/Zwoom_Animation.atlas"
+            },
+            {
+               "alias": "Symbol_Replace_FX_spine_data",
+               "src": "./Spine/RandomAnimaton/Symbol_Replace_FX/Symbol_Replace_FX.json"
+            },
+            {
+               "alias": "Symbol_Replace_FX_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Symbol_Replace_FX/Symbol_Replace_FX.atlas"
             }
          ]
       }

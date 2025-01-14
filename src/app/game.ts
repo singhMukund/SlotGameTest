@@ -60,17 +60,23 @@ export class Game {
   private async loadImages() {
     // await Assets.init({ manifest: "./manifest.json" });
     await Assets.loadBundle([
+      "intro-assets",
       "background-image",
       "ReelFrame-Component",
       "static-symbol",
       "static-button",
       "win_animation",
       "Feature-Assets",
+      "randomfeature_animation"
     ],(data)=>{
       console.log(data);
       this.loadingScreen.loadingAnimation(data);
     });
+    
+    Game.the.app.stage.emit(CommonConfig.SHOW_INTRO_PAGE);
+  }
 
+  private intoBaseGame() :void{
     this.onLoadComplete();
   }
 

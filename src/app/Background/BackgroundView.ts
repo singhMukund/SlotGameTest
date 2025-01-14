@@ -7,7 +7,7 @@ import { CommonConfig } from "@/Common/CommonConfig";
 export class BackgroundView extends Container {
     private bg !: Sprite;
     private soundManager !: SoundManager;
-    private bigWinSpine !: Spine;
+    // private bigWinSpine !: Spine;
 
     constructor() {
         super();
@@ -24,7 +24,7 @@ export class BackgroundView extends Container {
     private intializeBg(): void {
         this.bg = new Sprite(Assets.get("background"));
         this.bg.y = -60;
-        this.bigWinSpine = Spine.from({ skeleton: "Crepazione_Animation_spine_data", atlas: "Crepazione_Animation_spine_atlas" });
+        // this.bigWinSpine = Spine.from({ skeleton: "music_notes_key_1_spine_data", atlas: "music_notes_key_1_spine_atlas" });
     }
 
     private playBgSound() :void{
@@ -53,8 +53,10 @@ export class BackgroundView extends Container {
 
     private addContainerToStage() {
         this.addChild(this.bg);
-        this.addChild(this.bigWinSpine);
-        this.bigWinSpine.state.setAnimation(0, 'animation', true);
+        // this.addChild(this.bigWinSpine);
+        // this.bigWinSpine.pivot.set(this.bigWinSpine.width/2,this.bigWinSpine.height/2);
+        // this.bigWinSpine.position.set(500,500);
+        // this.bigWinSpine.state.setAnimation(0, 'animation', true);
     }
 
 }
