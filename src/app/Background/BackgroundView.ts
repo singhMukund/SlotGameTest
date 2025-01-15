@@ -7,7 +7,8 @@ import { CommonConfig } from "@/Common/CommonConfig";
 export class BackgroundView extends Container {
     private bg !: Sprite;
     private soundManager !: SoundManager;
-    // private bigWinSpine !: Spine;
+    private bigWinSpine !: Spine;
+        private bigWinSpine2 !: Spine;
 
     constructor() {
         super();
@@ -24,7 +25,8 @@ export class BackgroundView extends Container {
     private intializeBg(): void {
         this.bg = new Sprite(Assets.get("background"));
         this.bg.y = -60;
-        // this.bigWinSpine = Spine.from({ skeleton: "music_notes_key_1_spine_data", atlas: "music_notes_key_1_spine_atlas" });
+        // this.bigWinSpine = Spine.from({ skeleton: "Basculo_chained_for_spine_data", atlas: "Basculo_chained_for_spine_atlas" });
+        //         this.bigWinSpine2 = Spine.from({ skeleton: "Basculo_chained_for_spine_data", atlas: "Basculo_chained_for_spine_atlas" });
     }
 
     private playBgSound() :void{
@@ -55,8 +57,15 @@ export class BackgroundView extends Container {
         this.addChild(this.bg);
         // this.addChild(this.bigWinSpine);
         // this.bigWinSpine.pivot.set(this.bigWinSpine.width/2,this.bigWinSpine.height/2);
-        // this.bigWinSpine.position.set(500,500);
-        // this.bigWinSpine.state.setAnimation(0, 'animation', true);
+        // this.bigWinSpine.scale.set(0.5);
+        // this.bigWinSpine.position.set(700,700);
+        // this.bigWinSpine.state.setAnimation(0, '1_idle', true);
+
+        //  this.addChild(this.bigWinSpine2);
+        // this.bigWinSpine2.pivot.set(this.bigWinSpine2.width/2,this.bigWinSpine2.height/2);
+        // this.bigWinSpine2.scale.set(0.5);
+        // this.bigWinSpine2.position.set(700,700);
+        // this.bigWinSpine2.state.setAnimation(0, '3_chain_break_and_roar_updated', true);
     }
 
 }

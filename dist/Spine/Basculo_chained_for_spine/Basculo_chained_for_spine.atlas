@@ -1,0 +1,190 @@
+Basculo_chained_for_spine.png
+size:1750,1641
+filter:Linear,Linear
+pma:true
+scale:0.6
+Chain in sied
+bounds:1430,237,145,74
+rotate:90
+Hair
+bounds:1665,1512,61,70
+rotate:90
+Jacket left
+bounds:1430,1150,94,248
+Jacket right
+bounds:1430,2,62,233
+Layer 40
+bounds:1662,1460,61,50
+Leg left
+bounds:1430,855,91,293
+Leg right
+bounds:1430,384,75,287
+Shoe left
+bounds:1574,1574,65,89
+rotate:90
+Shoe right
+bounds:1665,1575,83,64
+beard up
+bounds:1633,1456,53,23
+offsets:0,1,53,26
+rotate:90
+belt
+bounds:1523,1079,124,69
+body
+bounds:1430,1400,142,239
+chain 1
+bounds:1526,1366,188,32
+chain 2
+bounds:1506,335,179,47
+chain 3
+bounds:1430,673,180,79
+rotate:90
+chain 4
+bounds:1511,818,182,35
+chain 5
+bounds:1526,1337,177,27
+chain break
+bounds:1578,1267,17,15
+rotate:90
+ear left
+bounds:1630,1443,11,23
+rotate:90
+ear right
+bounds:1617,1432,11,24
+eye light
+bounds:1574,1406,73,41
+rotate:90
+eye off
+bounds:1655,1404,17,8
+eye shade black left
+bounds:1526,1273,25,25
+offsets:0,2,25,28
+eye shade black right
+bounds:1617,1404,26,27
+offsets:1,1,27,29
+rotate:90
+eye white left
+bounds:1674,1406,14,6
+eye white right
+bounds:1630,1434,14,7
+eyeball left
+bounds:1690,1406,6,6
+eyeball right
+bounds:1698,1406,6,6
+fx/frame_00_delay-0.08s
+bounds:2,930,715,709
+fx/frame_01_delay-0.08s
+bounds:719,924,715,709
+rotate:90
+fx/frame_02_delay-0.08s
+bounds:2,213,715,709
+rotate:90
+fx/frame_03_delay-0.08s
+bounds:713,213,715,709
+hand left
+bounds:1494,43,44,192
+hand left finger
+bounds:1649,1278,40,57
+hand right
+bounds:1507,628,43,190
+rotate:90
+hand right finger
+bounds:1633,1511,27,61
+head
+bounds:1574,1481,57,91
+highlight
+bounds:1658,1414,61,44
+left eye down
+bounds:1646,1422,19,10
+offsets:1,0,20,10
+rotate:90
+left eye up
+bounds:1617,1458,21,14
+offsets:0,1,21,15
+rotate:90
+lip down
+bounds:1578,1286,28,16
+offsets:0,0,28,25
+rotate:90
+lip up
+bounds:1559,1316,31,19
+r eye down
+bounds:1592,1319,20,16
+r eye up
+bounds:1553,1273,23,25
+right eye mark
+bounds:1526,1300,31,35
+offsets:0,0,31,37
+teeth
+bounds:1646,1401,19,7
+rotate:90
+
+Basculo_chained_for_spine_2.png
+size:1436,1424
+filter:Linear,Linear
+pma:true
+scale:0.6
+fx/frame_04_delay-0.08s
+bounds:2,713,715,709
+fx/frame_05_delay-0.08s
+bounds:2,2,715,709
+fx/frame_06_delay-0.08s
+bounds:719,713,715,709
+fx/frame_07_delay-0.08s
+bounds:719,2,715,709
+
+Basculo_chained_for_spine_3.png
+size:1436,1424
+filter:Linear,Linear
+pma:true
+scale:0.6
+fx/frame_08_delay-0.08s
+bounds:2,713,715,709
+fx/frame_09_delay-0.08s
+bounds:2,2,715,709
+fx/frame_10_delay-0.08s
+bounds:719,713,715,709
+fx/frame_11_delay-0.08s
+bounds:719,2,715,709
+
+Basculo_chained_for_spine_4.png
+size:1436,1424
+filter:Linear,Linear
+pma:true
+scale:0.6
+fx/frame_12_delay-0.08s
+bounds:2,713,715,709
+fx/frame_13_delay-0.08s
+bounds:2,2,715,709
+fx/frame_14_delay-0.08s
+bounds:719,713,715,709
+fx/frame_15_delay-0.08s
+bounds:719,2,715,709
+
+Basculo_chained_for_spine_5.png
+size:1436,1424
+filter:Linear,Linear
+pma:true
+scale:0.6
+fx/frame_16_delay-0.08s
+bounds:2,713,715,709
+fx/frame_17_delay-0.08s
+bounds:2,2,715,709
+fx/frame_18_delay-0.08s
+bounds:719,713,715,709
+fx/frame_19_delay-0.08s
+bounds:719,2,715,709
+
+Basculo_chained_for_spine_6.png
+size:1436,1424
+filter:Linear,Linear
+pma:true
+scale:0.6
+fx/frame_20_delay-0.08s
+bounds:2,713,715,709
+fx/frame_21_delay-0.08s
+bounds:2,2,715,709
+fx/frame_22_delay-0.08s
+bounds:719,713,715,709
+fx/frame_23_delay-0.08s
+bounds:719,2,715,709

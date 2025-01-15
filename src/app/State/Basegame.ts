@@ -193,7 +193,7 @@ export class BaseGame extends Container {
         let scale: number = currentHeightPanel / height;
         this.character.scale.set(scale);
         let assumedWidthMobile: number = window.innerWidth * (this.character.width / 360);
-        this.character.position.set(window.innerWidth - (this.character.width * 1), (window.innerHeight - this.character.height) / 2);
+        this.character.position.set(window.innerWidth - (this.character.width * 0.7), (window.innerHeight - this.character.height) / 2);
 
         if (window.innerWidth < window.innerHeight) {
             this.character.scale.set(1.8);

@@ -34,6 +34,7 @@ export class CommonConfig {
   // hh
   public static SHOW_INTRO_PAGE: string = "SHOW_INTRO_PAGE";
   public static HIDE_INTRO_PAGE_SHOW_BASEGAME: string = "HIDE_INTRO_PAGE_SHOW_BASEGAME";
+  public static HIDE_LOADING_SCREEN: string = "HIDE_LOADING_SCREEN";
   public static START_SPIN: string = "START_SPIN";
   public static FG_START_SPIN: string = "FG_START_SPIN";
   public static SET_RESPONSE_AT_REEL: string = "SET_RESPONSE_AT_REEL";

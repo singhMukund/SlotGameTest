@@ -1,0 +1,22 @@
+lock.png
+size:126,135
+filter:Linear,Linear
+pma:true
+scale:0.665
+images/lock
+bounds:2,2,54,66
+offsets:0,0,54,82
+rotate:90
+images/lock chain
+bounds:91,85,10,15
+rotate:90
+images/lock glow
+bounds:2,58,75,87
+offsets:1,1,77,93
+rotate:90
+images/lock up
+bounds:91,97,36,33
+rotate:90
+images/lock up glow
+bounds:70,8,52,48
+offsets:1,0,53,49

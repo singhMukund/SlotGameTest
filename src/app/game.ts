@@ -5,12 +5,14 @@ import { CommonEvents } from "@/Common/CommonEvents";
 import { GameConfig } from "./GameConfiguration/GameConfig";
 import { StateManagement } from "./State/StateManagement";
 import { LoadingScreen } from "./Loading/LoadingScreen";
+import { Intro } from "./Intro/Intro";
 export class Game {
   protected static _the: Game;
   public app: Application;
   private gameContainer!: Container;
   private isLocaltesting: boolean = false;
   private loadingScreen!: LoadingScreen;
+  private intro ! : Intro;
 
   static get the(): Game {
     if (!Game._the) {
@@ -45,6 +47,8 @@ export class Game {
   private initLoadingObj(): void {
     this.loadingScreen = new LoadingScreen();
     this.app.stage.addChild(this.loadingScreen);
+    this.intro = new Intro();
+    this.app.stage.addChild(this.intro);
   }
 
   private async loadLoadingSpine() {
@@ -55,6 +59,7 @@ export class Game {
     ])
     this.loadingScreen.playLogoSpine();
     this.loadImages();
+    Game.the.app.stage.on(CommonConfig.HIDE_INTRO_PAGE_SHOW_BASEGAME,this.intoBaseGame, this);
   }
 
   private async loadImages() {
@@ -74,6 +79,7 @@ export class Game {
     });
     
     Game.the.app.stage.emit(CommonConfig.SHOW_INTRO_PAGE);
+    // this.intoBaseGame();
   }
 
   private intoBaseGame() :void{

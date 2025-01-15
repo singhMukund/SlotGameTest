@@ -1,0 +1,47 @@
+Key_3.png
+size:1174,997
+filter:Linear,Linear
+pma:true
+scale:0.6
+Key 2_1
+bounds:2,700,295,482
+rotate:90
+Layer 3 copy
+bounds:2,700,295,482
+rotate:90
+Key 2_2
+bounds:486,525,276,470
+Key 2_3
+bounds:2,248,236,450
+Key 2_4
+bounds:764,559,194,436
+Key 2_6
+bounds:467,223,122,453
+offsets:0,1,122,455
+rotate:90
+Key 2_8
+bounds:467,347,176,464
+rotate:90
+Layer 10
+bounds:465,2,219,339
+offsets:2,2,223,343
+rotate:90
+Layer 3
+bounds:933,296,224,261
+offsets:3,3,229,267
+Layer 4
+bounds:960,569,212,426
+Layer 4 glow
+bounds:240,249,225,449
+offsets:1,2,226,452
+Layer 4 in glow
+bounds:2,35,421,211
+Layer 5
+bounds:806,49,172,343
+rotate:90
+Layer 7
+bounds:425,59,188,38
+rotate:90
+Layer 9
+bounds:922,242,52,213
+rotate:90
