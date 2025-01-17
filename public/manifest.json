@@ -149,11 +149,11 @@
          "assets": [
             {
                "alias": "Crepazione_Animation_spine_data",
-               "src": "./Spine/RandomAnimaton/Crepazione_Animation/Crepazione_Animation.json"
+               "src": "./Spine/Crepazione_activation_effects/skeleton.json"
             },
             {
                "alias": "Crepazione_Animation_spine_atlas",
-               "src": "./Spine/RandomAnimaton/Crepazione_Animation/Crepazione_Animation.atlas"
+               "src": "./Spine/Crepazione_activation_effects/skeleton.atlas"
             },
             {
                "alias": "Lock_Animation_spine_data",
