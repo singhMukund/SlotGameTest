@@ -1,19 +1,27 @@
-import { Assets, Container, Sprite, Spritesheet } from "pixi.js";
+import { Assets, Container, Graphics, Sprite, Spritesheet } from "pixi.js";
 import { Game } from "../game";
 import { CommonConfig } from "@/Common/CommonConfig";
 import gsap from "gsap";
+import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
 export class RandomFeaturePopup extends Container {
     private featureTexture !: Spritesheet;
     private featureImage !: Sprite;
     private state: string;
+    private bg !: Graphics; 
+    private pistole !: Spine;
+    private zwoom !: Spine;
+    featureContainer !: Container;
     constructor(state: string) {
         super();
         this.state = state;
-        this.featureTexture = Assets.get("feature_popup");
-        this.featureImage = new Sprite(this.featureTexture.textures['randowFeaturePopup_creazione.png']);
+        this.featureContainer = new Container();
+        this.bg = new Graphics().rect(0,0,4000,4000).fill(0x000000);
+        this.bg.alpha = 0.65;             
+        this.initAnimations();
         this.addToStage();
-        this.featureImage.alpha = 0;
+        this.visible = false;
+        // this.pistole.visible = true;
         if (this.state === CommonConfig.BASE_GAME) {
             this.subscribeEvent();
         } else {
@@ -21,8 +29,18 @@ export class RandomFeaturePopup extends Container {
         }
     }
 
+    private initAnimations() :void{
+        this.pistole = Spine.from({ skeleton: "Pistol_Animation_spine_data", atlas: "Pistol_Animation_spine_atlas" });
+        this.zwoom = Spine.from({ skeleton: "Zwoom_Animation_spine_data", atlas: "Zwoom_Animation_spine_atlas" });
+        this.pistole.pivot.set(this.pistole.width/2, this.pistole.height/2);
+        this.zwoom.pivot.set(this.zwoom.width/2, this.zwoom.height/2);
+    }
+
     private addToStage(): void {
-        this.addChild(this.featureImage);
+        this.addChild(this.bg);
+        this.addChild(this.featureContainer);
+        this.featureContainer.addChild(this.pistole);
+        this.featureContainer.addChild(this.zwoom);
     }
 
     private subscribeEvent(): void {
@@ -37,33 +55,43 @@ export class RandomFeaturePopup extends Container {
         if(this.state !== CommonConfig.the.getCurrentState()){
             return;
         }
-        if (feature === CommonConfig.RANDOM_FEATURE_CRIPAZIONE) {
-            this.featureImage.texture = this.featureTexture.textures['randowFeaturePopup_creazione.png'];
+        this.hideAnimation();
+        this.visible = true;
+        if (feature === CommonConfig.RANDOM_FEATURE_ZWOOM) {
+            this.playZwoom(callback);
         } else if (feature === CommonConfig.RANDOM_FEATURE_PISTOLE) {
-            this.featureImage.texture = this.featureTexture.textures['randowFeaturePopup_pistole.png'];
+            this.playPistole(callback);
         } else {
-            this.featureImage.texture = this.featureTexture.textures['randowFeaturePopup_pistole.png'];
+            this.playZwoom(callback);
         }
-        this.featureImage.alpha = 0;
-        this.featureImage.visible = true;
-        gsap.to(this.featureImage, {
-            ease: 'power1.out',
-            duration: 0.5,
-            alpha: 1,
-            onComplete: () => {
-                gsap.to(this.featureImage, {
-                    ease: 'power1.out',
-                    duration: 0.5,
-                    alpha: 0,
-                    delay: 0.2,
-                    onComplete: () => {
-                        callback();
-                        this.featureImage.visible = false;
-                    }
-                }
-                )
+    }
+
+    private playPistole(callback: any) :void{
+        this.zwoom.visible = true;
+        this.zwoom.state.setAnimation(0, 'animation', false).listener = {
+            complete : () =>{
+                this.visible = false;
+                this.zwoom.visible = false;
+                callback();
+                this.zwoom.state.clearListeners();
             }
         }
-        )
+    }
+
+    private playZwoom(callback: any) :void{
+        this.pistole.visible = true;
+        this.pistole.state.setAnimation(0, 'animation', false).listener = {
+            complete : () =>{
+                this.pistole.visible = false;
+                this.visible = false;
+                callback();
+                this.pistole.state.clearListeners();
+            }
+        }
+    }
+
+    private hideAnimation() :void{
+        this.pistole.visible = false;
+        this.zwoom.visible = false;
     }
 }

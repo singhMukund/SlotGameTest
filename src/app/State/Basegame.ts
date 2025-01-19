@@ -168,7 +168,8 @@ export class BaseGame extends Container {
         this.resizePentagonal();
         this.resizeCharacter();
         this.randomFeaturePopup.scale.set(currentScale);
-        this.randomFeaturePopup.position.set(this.reelContainer.x + (this.reelContainer.width - this.randomFeaturePopup.width)/2, this.reelContainer.y + (this.reelContainer.height - this.randomFeaturePopup.height)/2)
+        this.randomFeaturePopup.featureContainer.position.set(this.reelContainer.x + (this.reelContainer.width/2 + this.randomFeaturePopup.featureContainer.width), 
+                                                              this.reelContainer.y + (this.reelContainer.height/2 + this.randomFeaturePopup.featureContainer.height))
     }
 
     private resizePentagonal(): void {
