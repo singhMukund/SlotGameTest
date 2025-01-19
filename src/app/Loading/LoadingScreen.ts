@@ -2,6 +2,7 @@ import { Container, Graphics, Sprite } from "pixi.js";
 import { Game } from "../game";
 import gsap from "gsap";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
+import { CommonConfig } from "@/Common/CommonConfig";
 
 export class LoadingScreen extends Container {
     private bgGraphics !: Graphics;
@@ -10,13 +11,15 @@ export class LoadingScreen extends Container {
     private loaderBg !: Graphics;
     private loaderfilled !: Graphics;
     private logoSpine !: Spine;
-    
+    private totalDistance : number = 540;   
+    private lastData : number = 0;
 
 
     constructor() {
         super();
         this.init();
         this.resize();
+        Game.the.app.stage.on(CommonConfig.HIDE_LOADING_SCREEN, this.hide, this);
     }
 
     private init(): void {
@@ -54,7 +57,7 @@ export class LoadingScreen extends Container {
 
     playLogoSpine() :void{
         this.logoSpine = Spine.from({ skeleton: "TopGamingLogo_spine_data", atlas: "TopGamingLogo_spine_atlas" });
-        this.logoSpine.state.setAnimation(0, 'anim', true);
+        this.logoSpine.state.setAnimation(0, 'anim', false);
         this.logoSpine.pivot.set(-this.logoSpine.width / 2, -this.logoSpine.height / 2);
         this.logoSpine.scale.set(0.5);
         this.logoSpine.position.set((window.innerWidth - this.logoSpine.width)/2, (window.innerHeight - this.logoSpine.height)/2);
@@ -66,7 +69,20 @@ export class LoadingScreen extends Container {
     }
 
     public loadingAnimation(data:number) :void{        
-        this.maskContainer.x += 50*data;
+        if(data === 1){
+            this.interactive = true;
+        }else{
+            data = Number((data).toFixed(1));
+        }
+        const difference = Number((data - this.lastData).toFixed(1));
+        this.lastData = data;
+        const factor : number = (difference/1) * this.totalDistance ;      
+        this.maskContainer.x += factor;
+    }
+
+    private hide() :void{
+        this.logoSpine.visible = false;
+        this.visible = false;
     }
 
     // public hideLoadingScreen() :void{

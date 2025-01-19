@@ -1,0 +1,60 @@
+music_note_1.png
+size:921,1035
+filter:Linear,Linear
+pma:true
+scale:0.6
+Key 2_1
+bounds:453,436,148,443
+rotate:90
+Layer 3 copy
+bounds:453,436,148,443
+rotate:90
+Key 2_2
+bounds:453,586,151,445
+rotate:90
+Key 2_3
+bounds:462,739,149,450
+offsets:0,1,149,451
+rotate:90
+Key 2_9
+bounds:462,739,149,450
+offsets:0,1,149,451
+rotate:90
+Key 2_4
+bounds:466,890,143,453
+offsets:0,1,143,454
+rotate:90
+Key 2_8
+bounds:466,890,143,453
+offsets:0,1,143,454
+rotate:90
+Key 2_6
+bounds:2,770,130,458
+offsets:0,1,130,459
+rotate:90
+Key 2_7
+bounds:2,902,131,462
+rotate:90
+Layer 10
+bounds:2,2,181,432
+offsets:2,0,185,432
+Layer 3
+bounds:185,380,161,253
+offsets:3,4,167,260
+rotate:90
+Layer 4
+bounds:440,8,212,426
+Layer 4 glow
+bounds:2,543,225,449
+offsets:1,2,226,452
+rotate:90
+Layer 4 in glow
+bounds:654,13,421,211
+rotate:90
+Layer 5
+bounds:185,35,172,343
+Layer 7
+bounds:867,31,188,38
+rotate:90
+Layer 9
+bounds:867,221,52,213

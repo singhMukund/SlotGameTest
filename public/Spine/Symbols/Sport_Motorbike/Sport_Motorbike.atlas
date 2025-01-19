@@ -1,0 +1,29 @@
+Sport_Motorbike.png
+size:1710,643
+filter:Linear,Linear
+pma:true
+scale:0.6
+Layer 12
+bounds:1284,347,253,294
+offsets:2,0,255,294
+Layer 13 copy
+bounds:1504,65,184,280
+offsets:2,8,194,293
+Layer 16
+bounds:1539,426,215,169
+offsets:1,23,224,206
+rotate:90
+Layer 19
+bounds:1539,381,27,43
+offsets:1,0,28,43
+Layer 20
+bounds:1284,67,218,278
+offsets:0,0,224,280
+bike
+bounds:644,5,638,636
+offsets:1,2,639,638
+bike glow
+bounds:2,2,640,639
+offsets:1,0,642,639
+red efe with fire effect
+bounds:1284,35,47,30

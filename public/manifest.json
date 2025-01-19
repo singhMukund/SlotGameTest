@@ -10,6 +10,35 @@
             {
                "alias": "TopGamingLogo_spine_atlas",
                "src": "./Spine/TOPGaming/TOP.atlas"
+            },
+            {
+               "alias": "Intro_page_spine_data",
+               "src": "./Spine/Intro_page/Intro_page.json"
+            },
+            {
+               "alias": "Intro_page_spine_atlas",
+               "src": "./Spine/Intro_page/Intro_page.atlas"
+            }
+          ]
+       },
+       {
+         "name": "intro-assets",
+         "assets": [
+            {
+               "alias": "intro_background",
+               "src": "./StaticImage/Intro/intro_background.png"
+            },
+            {
+               "alias": "intro_frame_background",
+               "src": "./StaticImage/Intro/intro_frame_background.png"
+            },
+            {
+               "alias": "introContent",
+               "src": "./StaticImage/Intro/introContent.json"
+            },
+            {
+               "alias": "introTextBtn",
+               "src": "./StaticImage/Intro/introTextBtn.json"
             }
           ]
        },
@@ -76,10 +105,6 @@
           "name": "static-button",
           "assets": [
              {
-                "alias": "spin_button",
-                "src": "./StaticImage/spin_button.json"
-             },
-             {
                 "alias": "ui_button",
                 "src": "./StaticImage/ui_button.json"
              }
@@ -88,14 +113,6 @@
        {
           "name": "win_animation",
           "assets": [
-             {
-                "alias": "5ofkind_spine_data",
-                "src": "./Spine/5ofkind_spine/5ofkind_spine.json"
-             },
-             {
-                "alias": "5ofkind_spine_atlas",
-                "src": "./Spine/5ofkind_spine/5ofkind_spine.atlas"
-             },
              {
                 "alias": "Bigwin_data",
                 "src": "./Spine/BigWin/Bigwin.json"
@@ -126,6 +143,200 @@
                 "src": "./StaticImage/randomFeaturePopup.json"
              }
           ]
-       }
+       },
+       {
+         "name": "symbol-animation-assets",
+         "assets": [
+            {
+               "alias": "3x3_Wild_spine_data",
+               "src": "./Spine/Symbols/3x3_Wild/3x3_Wild.json"
+            },
+            {
+               "alias": "3x3_Wild_spine_atlas",
+               "src": "./Spine/Symbols/3x3_Wild/3x3_Wild.atlas"
+            },
+            {
+               "alias": "Basculos_Face_HP_spine_data",
+               "src": "./Spine/Symbols/Basculos_Face_HP/Basculos_Face_HP.json"
+            },
+            {
+               "alias": "Basculos_Face_HP_spine_atlas",
+               "src": "./Spine/Symbols/Basculos_Face_HP/Basculos_Face_HP.atlas"
+            },
+            {
+               "alias": "Creepy_Door_spine_data",
+               "src": "./Spine/Symbols/Creepy_Door/Creepy_Door.json"
+            },
+            {
+               "alias": "Creepy_Door_spine_atlas",
+               "src": "./Spine/Symbols/Creepy_Door/Creepy_Door.atlas"
+            },
+            {
+               "alias": "Creepy_Slot_Machine_spine_data",
+               "src": "./Spine/Symbols/Creepy_Slot_Machine/Creepy_Slot_Machine.json"
+            },
+            {
+               "alias": "Creepy_Slot_Machine_spine_atlas",
+               "src": "./Spine/Symbols/Creepy_Slot_Machine/Creepy_Slot_Machine.atlas"
+            },
+            {
+               "alias": "Dirty_Mop_symbol_spine_data",
+               "src": "./Spine/Symbols/Dirty_Mop_symbol/Dirty_Mop_symbol.json"
+            },
+            {
+               "alias": "Dirty_Mop_symbol_spine_atlas",
+               "src": "./Spine/Symbols/Dirty_Mop_symbol/Dirty_Mop_symbol.atlas"
+            },
+            {
+               "alias": "Dirty_Pan_spine_data",
+               "src": "./Spine/Symbols/Dirty_Pan/Dirty_Pan.json"
+            },
+            {
+               "alias": "Dirty_Pan_spine_atlas",
+               "src": "./Spine/Symbols/Dirty_Pan/Dirty_Pan.atlas"
+            },
+            {
+               "alias": "music_note_1_spine_data",
+               "src": "./Spine/Symbols/music_note_1/music_note_1.json"
+            },
+            {
+               "alias": "music_note_1_spine_atlas",
+               "src": "./Spine/Symbols/music_note_1/music_note_1.atlas"
+            },
+            {
+               "alias": "music_note_2_spine_data",
+               "src": "./Spine/Symbols/music_note_2/music_note_2.json"
+            },
+            {
+               "alias": "music_note_2_spine_atlas",
+               "src": "./Spine/Symbols/music_note_2/music_note_2.atlas"
+            },
+            {
+               "alias": "music_note_3_spine_data",
+               "src": "./Spine/Symbols/music_note_3/music_note_3.json"
+            },
+            {
+               "alias": "music_note_3_spine_atlas",
+               "src": "./Spine/Symbols/music_note_3/music_note_3.atlas"
+            },
+            {
+               "alias": "Old_WarPlane_symbol_spine_data",
+               "src": "./Spine/Symbols/Old_WarPlane_symbol/Old_WarPlane_symbol.json"
+            },
+            {
+               "alias": "Old_WarPlane_symbol_spine_atlas",
+               "src": "./Spine/Symbols/Old_WarPlane_symbol/Old_WarPlane_symbol.atlas"
+            },
+            {
+               "alias": "PC_Monitor_surveillance_spine_data",
+               "src": "./Spine/Symbols/PC_Monitor_surveillance/PC_Monitor_surveillance.json"
+            },
+            {
+               "alias": "PC_Monitor_surveillance_spine_atlas",
+               "src": "./Spine/Symbols/PC_Monitor_surveillance/PC_Monitor_surveillance.atlas"
+            },
+            {
+               "alias": "Sport_Motorbike_spine_data",
+               "src": "./Spine/Symbols/Sport_Motorbike/Sport_Motorbike.json"
+            },
+            {
+               "alias": "Sport_Motorbike_spine_atlas",
+               "src": "./Spine/Symbols/Sport_Motorbike/Sport_Motorbike.atlas"
+            },
+            {
+               "alias": "Symbol_Disappear_Explosion_FX_spine_data",
+               "src": "./Spine/Symbols/Symbol_Disappear_Explosion_FX/Symbol_Disappear_Explosion_FX.json"
+            },
+            {
+               "alias": "Symbol_Disappear_Explosion_FX_spine_atlas",
+               "src": "./Spine/Symbols/Symbol_Disappear_Explosion_FX/Symbol_Disappear_Explosion_FX.atlas"
+            },
+            {
+               "alias": "Symbol_Replace_FX_spine_data",
+               "src": "./Spine/Symbols/Symbol_Replace_FX/Symbol_Replace_FX.json"
+            },
+            {
+               "alias": "Symbol_Replace_FX_spine_atlas",
+               "src": "./Spine/Symbols/Symbol_Replace_FX/Symbol_Replace_FX.atlas"
+            },
+            {
+               "alias": "wild_spine_spine_data",
+               "src": "./Spine/Symbols/wild_spine/wild_spine.json"
+            },
+            {
+               "alias": "wild_spine_spine_atlas",
+               "src": "./Spine/Symbols/wild_spine/wild_spine.atlas"
+            }
+         ]
+      },
+       {
+         "name": "randomfeature_animation",
+         "assets": [
+            {
+               "alias": "creapazione_spine_data",
+               "src": "./Spine/RandomAnimaton/creapazione/creapazione.json"
+            },
+            {
+               "alias": "creapazione_spine_atlas",
+               "src": "./Spine/RandomAnimaton/creapazione/creapazione.atlas"
+            },
+            {
+               "alias": "Lock_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Lock/Lock.json"
+            },
+            {
+               "alias": "Lock_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Lock/Lock.atlas"
+            },
+            {
+               "alias": "Key_Flying_part_spine_data",
+               "src": "./Spine/RandomAnimaton/key_Flying_part/key_Flying_part.json"
+            },
+            {
+               "alias": "Key_Flying_part_spine_atlas",
+               "src": "./Spine/RandomAnimaton/key_Flying_part/key_Flying_part.atlas"
+            },
+            {
+               "alias": "Pistol_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Pistol_Animation/Pistol_Animation.json"
+            },
+            {
+               "alias": "Pistol_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Pistol_Animation/Pistol_Animation.atlas"
+            },
+            {
+               "alias": "Zwoom_Animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Zwoom_Animation/Zwoom_Animation.json"
+            },
+            {
+               "alias": "Zwoom_Animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Zwoom_Animation/Zwoom_Animation.atlas"
+            },
+            {
+               "alias": "Zwoom_Basculos_Head_animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Zwoom_Basculos_Head_animation/Zwoom_Basculos_Head_animation.json"
+            },
+            {
+               "alias": "Zwoom_Basculos_Head_animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Zwoom_Basculos_Head_animation/Zwoom_Basculos_Head_animation.atlas"
+            },
+            {
+               "alias": "Shoot_animation_spine_data",
+               "src": "./Spine/RandomAnimaton/Shoot_animation/Shoot_animation.json"
+            },
+            {
+               "alias": "Shoot_animation_spine_atlas",
+               "src": "./Spine/RandomAnimaton/Shoot_animation/Shoot_animation.atlas"
+            },
+            {
+               "alias": "Basculo_chained_for_spine_data",
+               "src": "./Spine/Basculo_chained_for_spine/Basculo_chained_for_spine.json"
+            },
+            {
+               "alias": "Basculo_chained_for_spine_atlas",
+               "src": "./Spine/Basculo_chained_for_spine/Basculo_chained_for_spine.atlas"
+            }
+         ]
+      }
     ]
  }

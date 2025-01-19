@@ -1,0 +1,62 @@
+{"frames": {
+	"btn_continue_pressed.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":258,"w":248,"h":92},
+		"spriteSourceSize": {"x":0,"y":0,"w":248,"h":93},
+		"sourceSize": {"w":248,"h":93}
+	},
+	"btn_continue_regular.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":164,"w":249,"h":92},
+		"spriteSourceSize": {"x":0,"y":0,"w":249,"h":93},
+		"sourceSize": {"w":249,"h":93}
+	},
+	"intro_logo.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":54,"w":308,"h":108},
+		"spriteSourceSize": {"x":64,"y":8,"w":436,"h":123},
+		"sourceSize": {"w":436,"h":123}
+	},
+	"intro_text_bonus_game.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":404,"w":203,"h":51},
+		"spriteSourceSize": {"x":0,"y":3,"w":203,"h":57},
+		"sourceSize": {"w":203,"h":57}
+	},
+	"intro_text_crepazione.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":457,"w":188,"h":52},
+		"spriteSourceSize": {"x":0,"y":2,"w":188,"h":57},
+		"sourceSize": {"w":188,"h":57}
+	},
+	"intro_text_giant_basculo_wild.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":315,"h":52},
+		"spriteSourceSize": {"x":0,"y":3,"w":315,"h":57},
+		"sourceSize": {"w":315,"h":57}
+	},
+	"intro_text_pistole.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":190,"y":457,"w":132,"h":52},
+		"spriteSourceSize": {"x":0,"y":2,"w":132,"h":57},
+		"sourceSize": {"w":132,"h":57}
+	},
+	"intro_text_special_game.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":352,"w":226,"h":50},
+		"spriteSourceSize": {"x":0,"y":4,"w":226,"h":57},
+		"sourceSize": {"w":226,"h":57}
+	},
+	"intro_text_zwoom.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":205,"y":404,"w":126,"h":51},
+		"spriteSourceSize": {"x":0,"y":3,"w":126,"h":57},
+		"sourceSize": {"w":126,"h":57}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"image":"introTextBtn.png",
+	"size": {"w":512,"h":512}
+}
+}

@@ -1,0 +1,519 @@
+{
+    "skeleton": {
+        "hash": "g6W5G26Hj38",
+        "spine": "4.2.38",
+        "x": -150,
+        "y": -11.24,
+        "width": 303.5,
+        "height": 128,
+        "images": "./images/",
+        "audio": "./audio"
+    },
+    "bones": [
+        {
+            "name": "root"
+        }
+    ],
+    "slots": [
+        {
+            "name": "Shoot_1",
+            "bone": "root",
+            "attachment": "Shoot_1",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_2",
+            "bone": "root",
+            "attachment": "Shoot_2",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_3",
+            "bone": "root",
+            "attachment": "Shoot_3",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_4",
+            "bone": "root",
+            "attachment": "Shoot_4",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_5",
+            "bone": "root",
+            "attachment": "Shoot_5",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_6",
+            "bone": "root",
+            "attachment": "Shoot_6",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_7",
+            "bone": "root",
+            "attachment": "Shoot_7",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_8",
+            "bone": "root",
+            "attachment": "Shoot_8",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_9",
+            "bone": "root",
+            "attachment": "Shoot_9",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_10",
+            "bone": "root",
+            "attachment": "Shoot_10",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_11",
+            "bone": "root",
+            "attachment": "Shoot_11",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_12",
+            "bone": "root",
+            "attachment": "Shoot_12",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_13",
+            "bone": "root",
+            "attachment": "Shoot_13",
+            "blend": "additive"
+        },
+        {
+            "name": "Shoot_14",
+            "bone": "root",
+            "attachment": "Shoot_14",
+            "blend": "additive"
+        },
+        {
+            "name": "Shine_ray",
+            "bone": "root",
+            "attachment": "Shine_ray",
+            "blend": "additive"
+        }
+    ],
+    "skins": [
+        {
+            "name": "default",
+            "attachments": {
+                "Shine_ray": {
+                    "Shine_ray": {
+                        "x": 89.5,
+                        "y": 52.76,
+                        "width": 128,
+                        "height": 128
+                    }
+                },
+                "Shoot_1": {
+                    "Shoot_1": {
+                        "x": 47,
+                        "y": 57,
+                        "width": 210,
+                        "height": 114
+                    }
+                },
+                "Shoot_2": {
+                    "Shoot_2": {
+                        "x": 1,
+                        "y": 61,
+                        "width": 234,
+                        "height": 58
+                    }
+                },
+                "Shoot_3": {
+                    "Shoot_3": {
+                        "x": 13,
+                        "y": 56,
+                        "width": 200,
+                        "height": 46
+                    }
+                },
+                "Shoot_4": {
+                    "Shoot_4": {
+                        "x": -19,
+                        "y": 58,
+                        "width": 252,
+                        "height": 50
+                    }
+                },
+                "Shoot_5": {
+                    "Shoot_5": {
+                        "x": -5,
+                        "y": 57,
+                        "width": 222,
+                        "height": 50
+                    }
+                },
+                "Shoot_6": {
+                    "Shoot_6": {
+                        "x": 11.5,
+                        "y": 56,
+                        "width": 197,
+                        "height": 48
+                    }
+                },
+                "Shoot_7": {
+                    "Shoot_7": {
+                        "x": -16.5,
+                        "y": 54,
+                        "width": 257,
+                        "height": 48
+                    }
+                },
+                "Shoot_8": {
+                    "Shoot_8": {
+                        "x": -4,
+                        "y": 54.5,
+                        "width": 224,
+                        "height": 47
+                    }
+                },
+                "Shoot_9": {
+                    "Shoot_9": {
+                        "x": 11,
+                        "y": 56.5,
+                        "width": 196,
+                        "height": 51
+                    }
+                },
+                "Shoot_10": {
+                    "Shoot_10": {
+                        "x": -18.5,
+                        "y": 53,
+                        "width": 253,
+                        "height": 42
+                    }
+                },
+                "Shoot_11": {
+                    "Shoot_11": {
+                        "x": -2,
+                        "y": 54,
+                        "width": 228,
+                        "height": 46
+                    }
+                },
+                "Shoot_12": {
+                    "Shoot_12": {
+                        "x": 3,
+                        "y": 53,
+                        "width": 210,
+                        "height": 42
+                    }
+                },
+                "Shoot_13": {
+                    "Shoot_13": {
+                        "x": -17,
+                        "y": 53.5,
+                        "width": 256,
+                        "height": 43
+                    }
+                },
+                "Shoot_14": {
+                    "Shoot_14": {
+                        "x": -18.5,
+                        "y": 53.5,
+                        "width": 263,
+                        "height": 47
+                    }
+                }
+            }
+        }
+    ],
+    "animations": {
+        "animation": {
+            "slots": {
+                "Shine_ray": {
+                    "rgba": [
+                        {
+                            "color": "ffffff00"
+                        },
+                        {
+                            "time": 0.1,
+                            "color": "ffffffff"
+                        },
+                        {
+                            "time": 0.2,
+                            "color": "ffffff00"
+                        },
+                        {
+                            "time": 0.3,
+                            "color": "ffffffff"
+                        },
+                        {
+                            "time": 0.4333,
+                            "color": "ffffff00"
+                        }
+                    ]
+                },
+                "Shoot_1": {
+                    "attachment": [
+                        {
+                            "time": 0.0333
+                        }
+                    ]
+                },
+                "Shoot_2": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.0333,
+                            "name": "Shoot_2"
+                        },
+                        {
+                            "time": 0.0667
+                        },
+                        {
+                            "time": 0.8333,
+                            "name": "Shoot_2"
+                        }
+                    ]
+                },
+                "Shoot_3": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.0667,
+                            "name": "Shoot_3"
+                        },
+                        {
+                            "time": 0.1
+                        },
+                        {
+                            "time": 0.8,
+                            "name": "Shoot_3"
+                        },
+                        {
+                            "time": 0.8333
+                        }
+                    ]
+                },
+                "Shoot_4": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.1,
+                            "name": "Shoot_4"
+                        },
+                        {
+                            "time": 0.1333
+                        },
+                        {
+                            "time": 0.7667,
+                            "name": "Shoot_4"
+                        },
+                        {
+                            "time": 0.8
+                        }
+                    ]
+                },
+                "Shoot_5": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.1333,
+                            "name": "Shoot_5"
+                        },
+                        {
+                            "time": 0.1667
+                        },
+                        {
+                            "time": 0.7333,
+                            "name": "Shoot_5"
+                        },
+                        {
+                            "time": 0.7667
+                        }
+                    ]
+                },
+                "Shoot_6": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.1667,
+                            "name": "Shoot_6"
+                        },
+                        {
+                            "time": 0.2
+                        },
+                        {
+                            "time": 0.7,
+                            "name": "Shoot_6"
+                        },
+                        {
+                            "time": 0.7333
+                        }
+                    ]
+                },
+                "Shoot_7": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.2,
+                            "name": "Shoot_7"
+                        },
+                        {
+                            "time": 0.2333
+                        },
+                        {
+                            "time": 0.6667,
+                            "name": "Shoot_7"
+                        },
+                        {
+                            "time": 0.7
+                        }
+                    ]
+                },
+                "Shoot_8": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.2333,
+                            "name": "Shoot_8"
+                        },
+                        {
+                            "time": 0.2667
+                        },
+                        {
+                            "time": 0.6333,
+                            "name": "Shoot_8"
+                        },
+                        {
+                            "time": 0.6667
+                        }
+                    ]
+                },
+                "Shoot_9": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.2667,
+                            "name": "Shoot_9"
+                        },
+                        {
+                            "time": 0.3
+                        },
+                        {
+                            "time": 0.6,
+                            "name": "Shoot_9"
+                        },
+                        {
+                            "time": 0.6333
+                        }
+                    ]
+                },
+                "Shoot_10": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.3,
+                            "name": "Shoot_10"
+                        },
+                        {
+                            "time": 0.3333
+                        },
+                        {
+                            "time": 0.5667,
+                            "name": "Shoot_10"
+                        },
+                        {
+                            "time": 0.6
+                        }
+                    ]
+                },
+                "Shoot_11": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.3333,
+                            "name": "Shoot_11"
+                        },
+                        {
+                            "time": 0.3667
+                        },
+                        {
+                            "time": 0.5333,
+                            "name": "Shoot_11"
+                        },
+                        {
+                            "time": 0.5667
+                        }
+                    ]
+                },
+                "Shoot_12": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.3667,
+                            "name": "Shoot_12"
+                        },
+                        {
+                            "time": 0.4
+                        },
+                        {
+                            "time": 0.5,
+                            "name": "Shoot_12"
+                        },
+                        {
+                            "time": 0.5333
+                        }
+                    ]
+                },
+                "Shoot_13": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.4,
+                            "name": "Shoot_13"
+                        },
+                        {
+                            "time": 0.4333
+                        },
+                        {
+                            "time": 0.4667,
+                            "name": "Shoot_13"
+                        },
+                        {
+                            "time": 0.5
+                        }
+                    ]
+                },
+                "Shoot_14": {
+                    "attachment": [
+                        {},
+                        {
+                            "time": 0.4333,
+                            "name": "Shoot_14"
+                        },
+                        {
+                            "time": 0.4667
+                        }
+                    ]
+                }
+            },
+            "drawOrder": [
+                {
+                    "offsets": [
+                        {
+                            "slot": "Shine_ray",
+                            "offset": -14
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

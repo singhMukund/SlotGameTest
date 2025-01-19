@@ -1,0 +1,80 @@
+Dirty_Pan.png
+size:1996,1268
+filter:Linear,Linear
+pma:true
+Bubble_1
+bounds:1870,181,146,114
+offsets:1,1,148,116
+rotate:90
+Bubble_2_0
+bounds:105,14,54,52
+offsets:1,1,56,54
+rotate:90
+Bubble_2_1
+bounds:159,14,54,52
+offsets:1,1,56,54
+rotate:90
+Bubble_2_2
+bounds:620,546,54,52
+offsets:1,1,56,54
+rotate:90
+Bubble_2_3
+bounds:674,553,46,47
+offsets:1,1,48,49
+Liquid
+bounds:2,70,456,247
+rotate:90
+Liquid_Splash Up_1
+bounds:2,9,101,59
+offsets:462,78,1000,1000
+Liquid_Splash Up_10
+bounds:393,570,695,225
+offsets:105,51,1000,1000
+rotate:90
+Liquid_Splash Up_11
+bounds:185,538,727,206
+offsets:81,50,1000,1000
+rotate:90
+Liquid_Splash Up_12
+bounds:2,528,737,181
+offsets:73,54,1000,1000
+rotate:90
+Liquid_Splash Up_13
+bounds:1266,12,617,162
+offsets:192,55,1000,1000
+rotate:90
+Liquid_Splash Up_2
+bounds:1411,636,318,161
+offsets:357,75,1000,1000
+rotate:90
+Liquid_Splash Up_3
+bounds:1574,674,419,280
+offsets:298,68,1000,1000
+Liquid_Splash Up_4
+bounds:1430,329,546,305
+offsets:212,65,1000,1000
+Liquid_Splash Up_5
+bounds:1411,956,577,309
+offsets:190,62,1000,1000
+Liquid_Splash Up_6
+bounds:953,17,594,311
+offsets:179,60,1000,1000
+rotate:90
+Liquid_Splash Up_7
+bounds:1122,631,634,287
+offsets:150,56,1000,1000
+rotate:90
+Liquid_Splash Up_8
+bounds:858,613,652,262
+offsets:138,56,1000,1000
+rotate:90
+Liquid_Splash Up_9
+bounds:620,602,663,236
+offsets:131,57,1000,1000
+rotate:90
+Pan
+bounds:251,2,700,534
+offsets:2,3,706,537
+Smoke
+bounds:1430,97,438,230
+offsets:11,6,459,248
