@@ -72,7 +72,7 @@ export class Character extends Container{
     }
 
     private keyAnimation() :void{
-        this.key1_Animation.state.setAnimation(0, 'key1_outro', false).listener = {
+        this.key1_Animation.state.setAnimation(0, 'key1_end', false).listener = {
             complete : () =>{
                 this.lock1.state.clearListeners();
                 this.lock1.state.setAnimation(0, 'Lock', false).listener = {
@@ -86,7 +86,7 @@ export class Character extends Container{
     }
 
     private key2Animation() :void{
-        this.key2_Animation.state.setAnimation(0, 'key2_outro', false).listener = {
+        this.key2_Animation.state.setAnimation(0, 'key2_end', false).listener = {
             complete : () =>{
                 this.lock2.state.clearListeners();
                 this.lock2.state.setAnimation(0, 'Lock', false).listener = {
@@ -100,7 +100,7 @@ export class Character extends Container{
     }
 
     private key3Animation() :void{
-        this.key3_Animation.state.setAnimation(0, 'key3_outro', false).listener = {
+        this.key3_Animation.state.setAnimation(0, 'key3_end', false).listener = {
             complete : () =>{
                 this.key3_Animation.state.clearListeners();
                 this.lock3.state.setAnimation(0, 'Lock', false).listener = {

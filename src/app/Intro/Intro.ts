@@ -2,6 +2,7 @@ import { Assets, Container, Graphics, Sprite, Spritesheet } from "pixi.js";
 import { Game } from "../game";
 import { CommonConfig } from "@/Common/CommonConfig";
 import gsap from "gsap";
+import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
 export class Intro extends Container {
     private bgGraphics !: Graphics;
@@ -20,6 +21,8 @@ export class Intro extends Container {
     private pageContainer !: Container;
     private content !: Container;
     private isStopAnimaton : boolean = false;
+    private introSpine !: Spine;
+    private introContainer !: Container;
 
     constructor() {
         super();
@@ -31,6 +34,8 @@ export class Intro extends Container {
     }
 
     private initializeIntro(): void {
+        this.introContainer = new Container();
+        this.introContainer.visible = false;
         this.init();
         this.initMask();
         this.addToStage();
@@ -54,25 +59,29 @@ export class Intro extends Container {
     private onButtonUp() :void{
         this.continueBtn.texture = this.introTextBtnTexture.textures["btn_continue_regular.png"];
         this.continueBtn.interactive = false;
-        gsap.killTweensOf(this);
-        this.isStopAnimaton = true;
-        Game.the.app.stage.emit(CommonConfig.HIDE_LOADING_SCREEN);
-        gsap.to(this, {
-            alpha : 0,
-            duration : 0.5,
-            ease: 'power1.out',
-            onComplete:()=>{
-                this.visible = false;
-                Game.the.app.stage.emit(CommonConfig.HIDE_INTRO_PAGE_SHOW_BASEGAME);
-            }
-           }
-        )
+        if(this.introContainer.visible){
+            gsap.killTweensOf(this);
+            this.isStopAnimaton = true;
+            Game.the.app.stage.emit(CommonConfig.HIDE_LOADING_SCREEN);
+            gsap.to(this, {
+                alpha : 0,
+                duration : 0.5,
+                ease: 'power1.out',
+                onComplete:()=>{
+                    this.visible = false;
+                    Game.the.app.stage.emit(CommonConfig.HIDE_INTRO_PAGE_SHOW_BASEGAME);
+                }
+               }
+            )
+        }else{
+            this.hideSpineShowPages();
+        }
     }
 
     private initMask() :void{
         this.maskGraphics = new Graphics();
         this.maskGraphics.beginFill(0x000000, 0.65);
-        this.maskGraphics.drawRect(0, 0, this.page1.width *  1.4, this.page1.height *  1.4);
+        this.maskGraphics.drawRect(0, 0, this.page1.width *  1.1, this.page1.height *  1.4);
         this.maskGraphics.endFill();
     }
 
@@ -100,6 +109,9 @@ export class Intro extends Container {
         this.pageContent.scale.set(0.65);
         this.aspectRatio = this.pageContent.height / 919;
         this.aspectRatioMobile = this.pageContent.width / 360;
+        this.introSpine = Spine.from({ skeleton: "Intro_page_spine_data", atlas: "Intro_page_spine_atlas" });
+        this.introSpine.state.setAnimation(0, 'intro', true);
+        this.introSpine.pivot.set(-this.introSpine.width/2,-this.introSpine.height/2);
     }
 
     private initPage1(): void {
@@ -190,14 +202,29 @@ export class Intro extends Container {
     }
 
     private addToStage(): void {
-        this.addChild(this.content);
+        this.addChild(this.introContainer);
+        this.introContainer.addChild(this.content);
         this.content.addChild(this.pageContent);
         this.content.addChild(this.pageContainer);
-        this.addChild(this.logo);
-        this.addChild(this.continueBtn);
+        this.introContainer.addChild(this.logo);
         this.pageContainer.addChild(this.page1);
         this.pageContainer.addChild(this.page2);
-        this.addChild(this.maskGraphics);
+        this.introContainer.addChild(this.maskGraphics);
+        this.addChild(this.introSpine);
+        this.addChild(this.continueBtn);
+    }
+
+    private hideSpineShowPages() :void{
+        gsap.to(this.introSpine,{
+            duration : 0.5,
+            alpha : 0,
+            ease : "power4.in",
+            onComplete :()=>{
+                this.introContainer.visible = true;
+                this.continueBtn.position.set(this.pageContent.x + (this.pageContent.width - this.continueBtn.width) / 2, this.pageContent.y + this.pageContent.height + 30);
+                this.continueBtn.interactive = true;
+            }
+        })
     }
 
     private setToPosition(): void {
@@ -218,12 +245,14 @@ export class Intro extends Container {
         }
         this.pageContent.position.set((window.innerWidth - this.pageContent.width) / 2, this.logo.y + this.logo.height + 20);
         this.pageContainer.position.set((window.innerWidth - this.pageContent.width) / 2, this.logo.y + this.logo.height + 20);
-        this.continueBtn.position.set(this.pageContent.x + (this.pageContent.width - this.continueBtn.width) / 2,
-            this.pageContent.y + this.pageContent.height + 30);
         this.maskGraphics.scale.set(currentScale * 1);
         this.maskGraphics.position.set((window.innerWidth - this.maskGraphics.width) / 2, this.logo.y + this.logo.height - 20);
-        // this.page1.scale.set(currentScale);
-        // this.page1.position.set(this.introFrameBackground.x + ((this.introFrameBackground.width - this.page1.width) / 2),
-        // this.introFrameBackground.y + (this.introFrameBackground.height - this.page1.height) / 2);
+        this.introSpine.position.set((window.innerWidth - this.introSpine.width)/2,(window.innerHeight - this.introSpine.height) * 0.5);
+        this.continueBtn.position.set(this.pageContent.x + (this.pageContent.width - this.continueBtn.width) / 2,
+            window.innerHeight - (this.continueBtn.height* 1.2));
+
+        if(this.introContainer.visible){
+            this.continueBtn.position.set(this.pageContent.x + (this.pageContent.width - this.continueBtn.width) / 2, this.pageContent.y + this.pageContent.height + 30);
+        }
     }
 }
