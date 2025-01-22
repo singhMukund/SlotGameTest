@@ -9,6 +9,8 @@ import { WinframeReelContainer } from "../Winframe/WinframeReelContainer";
 import { WinframeContainer } from "../Winframe/WinframeContainer";
 import { ISingleWinDetails } from "../Interface/GameInterface";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
+import { MusicalNoteContainer } from "../MusicalNoteFlyAnimation/MusicalNoteContainer";
+import { MusicalNoteReelContainer } from "../MusicalNoteFlyAnimation/MusicalNoteReelContainer";
 
 interface winframeData {
   reelId: number;
@@ -22,11 +24,16 @@ export class ReelManager extends Container {
   private symboldWinIds: number[] = [];
   private currentIndexSymbolWinIds: number = 0;
   private winframeData: winframeData[] = [];
+  private musicalNoteContainer! : Container;
+  private reelManagerContainer !: Container;
 
   constructor() {
     super();
+    this.reelManagerContainer = new Container();
+    this.addChild(this.reelManagerContainer);
     this.initializeReelContainer();
     this.initializeWinframeContainer();
+    this.initializeMusicalNoteContainer();
     this.initGraphics();
     this.subscribeEvent();
     let randomWild: number[][] = [
@@ -69,7 +76,7 @@ export class ReelManager extends Container {
     this.maskContainer.drawRect(-85, -90, 850, 840);
     this.maskContainer.endFill();
     // this.maskContainer.alpha = 0.5;
-    this.addChild(this.maskContainer);
+    this.reelManagerContainer.addChild(this.maskContainer);
     this.mask = this.maskContainer;
   }
 
@@ -298,7 +305,7 @@ export class ReelManager extends Container {
 
   private initializeReelContainer(): void {
     this.reelsContainer = new Container();
-    this.addChild(this.reelsContainer);
+    this.reelManagerContainer.addChild(this.reelsContainer);
     for(let i : number = 0; i< CommonConfig.totalReel;i++){
       const reel : Reel = new Reel(i);
       reel.position.set(CommonConfig.reelWidth * i, 0);
@@ -308,11 +315,21 @@ export class ReelManager extends Container {
 
   private initializeWinframeContainer(): void {
     this.winframeContainer = new Container();
-    this.addChild(this.winframeContainer);
+    this.reelManagerContainer.addChild(this.winframeContainer);
     for(let i : number = 0; i< CommonConfig.totalReel;i++){
       const winframeReel : WinframeReelContainer = new WinframeReelContainer(i);
       winframeReel.position.set(CommonConfig.reelWidth * i, 0);
       this.winframeContainer.addChild(winframeReel);
+    }
+  }
+
+  private initializeMusicalNoteContainer(): void {
+    this.musicalNoteContainer = new Container();
+    this.addChild(this.musicalNoteContainer);
+    for(let i : number = 0; i< CommonConfig.totalReel;i++){
+      const musicalNoteReel : MusicalNoteReelContainer = new MusicalNoteReelContainer(i);
+      musicalNoteReel.position.set(CommonConfig.reelWidth * i, 0);
+      this.musicalNoteContainer.addChild(musicalNoteReel);
     }
   }
 

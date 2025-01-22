@@ -189,19 +189,24 @@ export class BaseGame extends Container {
     }
 
     private resizeCharacter(): void {
-        let height: number = this.character.height;
+        let height: number = this.character.characterBodyContainer.height;
         let currentHeightPanel = height / 999 * window.innerHeight;
         let scale: number = currentHeightPanel / height;
-        this.character.scale.set(scale);
-        let assumedWidthMobile: number = window.innerWidth * (this.character.width / 360);
-        this.character.position.set(window.innerWidth - (this.character.width * 0.7), (window.innerHeight - this.character.height) / 2);
-
+        this.character.characterBodyContainer.scale.set(scale);
+        this.character.keyContainer.scale.set(scale);
+        let assumedWidthMobile: number = window.innerWidth * (this.character.characterBodyContainer.width / 360);
+        this.character.characterBodyContainer.position.set(window.innerWidth - (this.character.characterBodyContainer.width * 0.7), (window.innerHeight - this.character.characterBodyContainer.height) / 2);
+        this.character.keyContainer.position.set(this.character.characterBodyContainer.x - this.character.keyContainer.width - 52, -2);
         if (window.innerWidth < window.innerHeight) {
-            this.character.scale.set(1.8);
-            let width = this.character.width;
+            this.character.characterBodyContainer.scale.set(1.8);
+            let width = this.character.characterBodyContainer.width;
             scale = assumedWidthMobile / width;
-            this.character.scale.set(scale * 0.9);
-            this.character.position.set(window.innerWidth - this.character.width + 20, this.reelContainer.y + this.reelContainer.height);
+            this.character.characterBodyContainer.scale.set(scale * 0.9);
+            this.character.characterBodyContainer.position.set(window.innerWidth - this.character.characterBodyContainer.width + 20, this.reelContainer.y + this.reelContainer.height);
         }
+
+        CommonConfig.the.setLocksGlobalPosition(this.character.getLockGlobalPosition());
+        // console.clear();
+        // console.log("-----------",CommonConfig.the.getLocksGlobalPosition());
     }
 }
