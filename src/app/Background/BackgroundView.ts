@@ -1,14 +1,12 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import { Game } from "../game";
-import { Spine } from "@esotericsoftware/spine-pixi-v8";
 import SoundManager from "../Sound/SoundManager";
 import { CommonConfig } from "@/Common/CommonConfig";
 
 export class BackgroundView extends Container {
     private bg !: Sprite;
     private soundManager !: SoundManager;
-    private bigWinSpine !: Spine;
-        private bigWinSpine2 !: Spine;
+
 
     constructor() {
         super();
@@ -55,17 +53,6 @@ export class BackgroundView extends Container {
 
     private addContainerToStage() {
         this.addChild(this.bg);
-        // this.addChild(this.bigWinSpine);
-        // this.bigWinSpine.pivot.set(this.bigWinSpine.width/2,this.bigWinSpine.height/2);
-        // this.bigWinSpine.scale.set(0.5);
-        // this.bigWinSpine.position.set(700,700);
-        // this.bigWinSpine.state.setAnimation(0, 'animation', true);
-
-        //  this.addChild(this.bigWinSpine2);
-        // this.bigWinSpine2.pivot.set(this.bigWinSpine2.width/2,this.bigWinSpine2.height/2);
-        // this.bigWinSpine2.scale.set(0.5);
-        // this.bigWinSpine2.position.set(700,700);
-        // this.bigWinSpine2.state.setAnimation(0, '3_chain_break_and_roar_updated', true);
     }
 
 }
