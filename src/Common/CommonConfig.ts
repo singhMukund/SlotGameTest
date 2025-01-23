@@ -158,6 +158,9 @@ export class CommonConfig {
   public static RANDOM_FEATURE_CRIPAZIONE: string = "RANDOM_FEATURE_CRIPAZIONE";
   public static RANDOM_FEATURE_PISTOLE: string = "RANDOM_FEATURE_PISTOLE";
 
+  public static HIDE_MUSICAL_NOTE_FROM_SCREEN: string = "HIDE_MUSICAL_NOTE_FROM_SCREEN";
+
+
   public static RANDOM_FEATURES_LIST: string[] = [
     CommonConfig.RANDOM_FEATURE_ZWOOM,
     CommonConfig.RANDOM_FEATURE_CRIPAZIONE,
@@ -188,6 +191,7 @@ export class CommonConfig {
   private isBonusRewarded: boolean = false;
   private _3x3WildGridIds : number[][] = [];
   private _initial3x3WildGridId : number[] = [];
+  private _locksGlobalPosition : number[][] = [];
 
   private symbolWinData: SymbolWinData = {
     0: {
@@ -450,6 +454,15 @@ export class CommonConfig {
   private winReelIds: number[] = [];
   private winReelIdsFreeGame: number[] = [];
   private cheatType: string = "";
+
+  public setLocksGlobalPosition(value : number[][]) :void{
+    this._locksGlobalPosition = value;
+  }
+
+  public getLocksGlobalPosition() : number[][]{
+    return this._locksGlobalPosition;
+  }
+
 
   public setwinningSymbolIds(value: number): void {
     this.winningSymbolIds = [[`${value}`], [`${value}`], [`${value}`]];

@@ -1,0 +1,65 @@
+{
+"skeleton": { "hash": "UCiY7ICjpFw", "spine": "4.2.38", "images": "", "audio": "./audio" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "main", "parent": "root" },
+	{ "name": "locker effects", "parent": "main" },
+	{ "name": "key1", "parent": "locker effects", "x": 16.31, "y": 97.45, "scaleX": 0.32, "scaleY": 0.32 },
+	{ "name": "glow", "parent": "key1", "scaleX": 0.7791, "scaleY": 0.634 }
+],
+"slots": [
+	{ "name": "m1 glow", "bone": "glow", "color": "ffd529ff" },
+	{ "name": "m1", "bone": "key1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"m1": {
+				"images/m2": { "x": -31.37, "y": 10.87, "scaleX": 0.5, "scaleY": 0.53, "width": 198, "height": 269 }
+			},
+			"m1 glow": {
+				"images/m2 glow": { "width": 214, "height": 289 }
+			}
+		}
+	}
+],
+"animations": {
+	"key1_loop": {
+		"slots": {
+			"m1": {
+				"attachment": [
+					{ "name": "images/m2" }
+				]
+			},
+			"m1 glow": {
+				"attachment": [
+					{ "name": "images/m2 glow" }
+				]
+			}
+		},
+		"bones": {
+			"key1": {
+				"rotate": [
+					{},
+					{ "time": 0.6667, "value": -360 }
+				],
+				"translate": [
+					{ "x": -16.31, "y": -97.45 }
+				],
+				"scale": [
+					{ "x": 3.125, "y": 3.125 }
+				]
+			},
+			"glow": {
+				"translate": [
+					{ "x": -34.6, "y": 12.79 }
+				],
+				"scale": [
+					{ "x": 0.683, "y": 0.829 }
+				]
+			}
+		}
+	}
+}
+}
