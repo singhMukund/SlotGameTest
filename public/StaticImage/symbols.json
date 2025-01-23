@@ -1,0 +1,44 @@
+{"frames": {
+	"sym_cross.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":165,"y":711,"w":127,"h":127},
+		"spriteSourceSize": {"x":2,"y":1,"w":129,"h":128},
+		"sourceSize": {"w":129,"h":128}
+	},
+	"sym_dollor.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":711,"w":163,"h":256},
+		"spriteSourceSize": {"x":0,"y":0,"w":163,"h":256},
+		"sourceSize": {"w":163,"h":256}
+	},
+	"sym_gift.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":543,"w":167,"h":166},
+		"spriteSourceSize": {"x":1,"y":3,"w":168,"h":169},
+		"sourceSize": {"w":168,"h":169}
+	},
+	"sym_spin2win.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":0,"w":211,"h":165},
+		"spriteSourceSize": {"x":0,"y":0,"w":211,"h":165},
+		"sourceSize": {"w":211,"h":165}
+	},
+	"sym_trikonlogo.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":167,"w":205,"h":192},
+		"spriteSourceSize": {"x":1,"y":0,"w":206,"h":192},
+		"sourceSize": {"w":206,"h":192}
+	},
+	"sym_txe_gold.png":{
+		"rotated": false,"trimmed": true,
+		"frame": {"x":0,"y":361,"w":178,"h":180},
+		"spriteSourceSize": {"x":9,"y":6,"w":192,"h":192},
+		"sourceSize": {"w":192,"h":192}
+	}
+},
+"meta": {
+	"app": "ShoeBox",
+	"image":"symbols.png",
+	"size": {"w":1024,"h":1024}
+}
+}
