@@ -11,13 +11,14 @@ export class RandomFeaturePopup extends Container {
     private bg !: Graphics; 
     private pistole !: Spine;
     private zwoom !: Spine;
+    private crapazaone !: Spine;
     featureContainer !: Container;
     constructor(state: string) {
         super();
         this.state = state;
         this.featureContainer = new Container();
         this.bg = new Graphics().rect(0,0,4000,4000).fill(0x000000);
-        this.bg.alpha = 0.65;             
+        this.bg.alpha = 0.75;             
         this.initAnimations();
         this.addToStage();
         this.visible = false;
@@ -32,8 +33,14 @@ export class RandomFeaturePopup extends Container {
     private initAnimations() :void{
         this.pistole = Spine.from({ skeleton: "Pistol_Animation_spine_data", atlas: "Pistol_Animation_spine_atlas" });
         this.zwoom = Spine.from({ skeleton: "Zwoom_Animation_spine_data", atlas: "Zwoom_Animation_spine_atlas" });
+        this.crapazaone = Spine.from({ skeleton: "creapazione_spine_data", atlas: "creapazione_spine_atlas" });
         this.pistole.pivot.set(this.pistole.width/2, this.pistole.height/2);
         this.zwoom.pivot.set(this.zwoom.width/2, this.zwoom.height/2);
+        this.zwoom.position.set(-35,-50);
+        this.pistole.position.set(-35,-50);
+        this.crapazaone.scale.set(0.8);
+        this.crapazaone.pivot.set(this.crapazaone.width/2, this.crapazaone.height/2);
+        this.crapazaone.position.set(-75,0);
     }
 
     private addToStage(): void {
@@ -41,6 +48,7 @@ export class RandomFeaturePopup extends Container {
         this.addChild(this.featureContainer);
         this.featureContainer.addChild(this.pistole);
         this.featureContainer.addChild(this.zwoom);
+        this.featureContainer.addChild(this.crapazaone);
     }
 
     private subscribeEvent(): void {
@@ -62,7 +70,7 @@ export class RandomFeaturePopup extends Container {
         } else if (feature === CommonConfig.RANDOM_FEATURE_PISTOLE) {
             this.playPistole(callback);
         } else {
-            this.playZwoom(callback);
+            this.playCripizione(callback);
         }
     }
 
@@ -90,8 +98,21 @@ export class RandomFeaturePopup extends Container {
         }
     }
 
+    private playCripizione(callback: any) :void{
+        this.crapazaone.visible = true;
+        this.crapazaone.state.setAnimation(0, 'animation', false).listener = {
+            complete : () =>{
+                this.crapazaone.visible = false;
+                this.visible = false;
+                callback();
+                this.crapazaone.state.clearListeners();
+            }
+        }
+    }
+
     private hideAnimation() :void{
         this.pistole.visible = false;
         this.zwoom.visible = false;
+        this.crapazaone.visible = false;
     }
 }

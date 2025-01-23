@@ -41,17 +41,17 @@ export class Character extends Container{
         this.lock3 = Spine.from({ skeleton: "Lock_Animation_spine_data", atlas: "Lock_Animation_spine_atlas" });
         this.characterBodyContainer.addChild(this.lock3);
         this.key1_Animation = Spine.from({ skeleton: "Key_Flying_part_spine_data", atlas: "Key_Flying_part_spine_atlas" });
-        this.keyContainer.addChild(this.key1_Animation);
+        // this.keyContainer.addChild(this.key1_Animation);
         this.key1_Animation.scale.set(0.6);
         this.key1_Animation.position.set(-292,568);
 
         this.key2_Animation = Spine.from({ skeleton: "Key_Flying_part_spine_data", atlas: "Key_Flying_part_spine_atlas" });
-        this.keyContainer.addChild(this.key2_Animation);
+        // this.keyContainer.addChild(this.key2_Animation);
         this.key2_Animation.scale.set(0.6);
         this.key2_Animation.position.set(-317.5,516.5);
 
         this.key3_Animation = Spine.from({ skeleton: "Key_Flying_part_spine_data", atlas: "Key_Flying_part_spine_atlas" });
-        this.keyContainer.addChild(this.key3_Animation);
+        // this.keyContainer.addChild(this.key3_Animation);
         this.key3_Animation.scale.set(0.6);
         this.key3_Animation.position.set(-416.5,547);
 
@@ -66,9 +66,9 @@ export class Character extends Container{
         this.characterSpine.state.setAnimation(0, '1_idle', true);
         
         this.imageBase.position.set(-10,this.characterSpine.height * 0.9 - 10);
-        this.keyAnimation();
-        this.key2Animation();
-        this.key3Animation();
+        // this.keyAnimation();
+        // this.key2Animation();
+        // this.key3Animation();
     }
 
     private keyAnimation() :void{

@@ -247,9 +247,9 @@ export class Intro extends Container {
         this.pageContainer.position.set((window.innerWidth - this.pageContent.width) / 2, this.logo.y + this.logo.height + 20);
         this.maskGraphics.scale.set(currentScale * 1);
         this.maskGraphics.position.set((window.innerWidth - this.maskGraphics.width) / 2, this.logo.y + this.logo.height - 20);
-        this.introSpine.position.set((window.innerWidth - this.introSpine.width)/2,(window.innerHeight - this.introSpine.height) * 0.5);
+        this.introSpine.position.set((window.innerWidth - this.introSpine.width)/2,this.introSpine.height/2);
         this.continueBtn.position.set(this.pageContent.x + (this.pageContent.width - this.continueBtn.width) / 2,
-            window.innerHeight - (this.continueBtn.height* 1.2));
+            this.introSpine.x + this.introSpine.height/2 - this.continueBtn.height);
 
         if(this.introContainer.visible){
             this.continueBtn.position.set(this.pageContent.x + (this.pageContent.width - this.continueBtn.width) / 2, this.pageContent.y + this.pageContent.height + 30);

@@ -1,126 +1,118 @@
 Intro_page.png
-size:1794,840
+size:1778,777
 filter:Linear,Linear
 pma:true
-scale:0.6
 Basculo
-bounds:1227,3,334,87
-offsets:2,2,338,91
+bounds:757,285,557,144
+offsets:4,4,564,151
 Basculo blur
-bounds:1157,531,451,84
-offsets:4,2,459,87
+bounds:2,331,753,140
+offsets:6,3,765,145
 Basculo outer glow
-bounds:1227,92,352,105
-offsets:2,1,356,108
+bounds:2,2,587,175
+offsets:3,2,593,180
 Hair
-bounds:1687,209,61,70
-rotate:90
+bounds:1462,29,99,114
+offsets:1,1,101,116
 Jacket left
-bounds:1610,464,94,248
-Jacket right
-bounds:1706,479,62,233
-Layer 29
-bounds:1157,206,232,231
-offsets:29,26,289,286
-Layer 40
-bounds:1732,323,61,50
+bounds:650,128,155,412
+offsets:1,1,157,414
 rotate:90
-Layer 51
-bounds:2,189,1153,649
+Jacket right
+bounds:591,25,101,386
+offsets:1,1,103,388
+rotate:90
+Layer 40
+bounds:979,27,99,81
+offsets:1,1,101,83
+rotate:90
 Madness
-bounds:1610,208,254,75
-offsets:2,2,258,78
+bounds:1641,352,423,125
+offsets:4,3,430,130
 rotate:90
 beard up
-bounds:1563,2,53,23
-offsets:0,1,53,26
+bounds:1446,431,86,40
+offsets:1,1,88,44
 body
-bounds:986,45,142,239
+bounds:1064,49,234,396
+offsets:1,1,236,398
 rotate:90
 ear left
-bounds:1678,2,11,23
+bounds:591,6,17,37
+offsets:1,1,19,39
+rotate:90
 ear right
-bounds:1706,466,11,24
+bounds:698,285,16,38
+offsets:1,1,18,40
 rotate:90
 eye off
-bounds:1574,512,17,8
-rotate:90
+bounds:1563,103,28,14
 eye shade black left
-bounds:1732,296,25,25
-offsets:0,2,25,28
-eye shade black right
-bounds:1546,502,26,27
-offsets:1,1,27,29
-eye white left
-bounds:1770,809,14,6
-eye white right
-bounds:1759,314,14,7
-eyeball left
-bounds:1786,809,6,6
-eyeball right
-bounds:1019,37,6,6
-fire 2
-bounds:1770,817,22,21
-offsets:3,1,28,24
-fire 2 glow
-bounds:1610,98,107,108
-offsets:20,20,147,148
-fire 2 stand
-bounds:1719,141,65,66
-offsets:1,1,68,67
-font shine
-bounds:1595,760,173,78
-offsets:2,2,176,82
-hand left
-bounds:1595,714,44,192
+bounds:1572,432,39,42
+offsets:1,3,41,46
 rotate:90
+eye shade black right
+bounds:650,286,43,46
+offsets:1,1,45,48
+rotate:90
+eye white left
+bounds:1768,754,21,8
+offsets:1,1,23,10
+rotate:90
+eye white right
+bounds:1316,288,22,9
+offsets:1,1,24,11
+eyeball left
+bounds:1768,744,8,8
+offsets:1,1,10,10
+eyeball right
+bounds:1768,734,8,8
+offsets:1,1,10,10
+font shine
+bounds:1316,299,288,130
+offsets:4,3,294,136
+hand left
+bounds:1632,30,73,320
 hand right
-bounds:1687,272,43,190
+bounds:1707,35,69,315
+offsets:1,1,71,317
 head
-bounds:1732,386,57,91
+bounds:1462,145,95,152
 highlight
-bounds:1723,95,61,44
-lamp
-bounds:1581,27,69,140
+bounds:1559,198,99,71
+offsets:1,1,101,73
 rotate:90
 left eye down
-bounds:1595,693,19,10
-offsets:1,0,20,10
-rotate:90
+bounds:591,128,32,15
+offsets:1,1,34,17
 left eye up
-bounds:1157,190,21,14
-offsets:0,1,21,15
-light om glow
-bounds:1157,617,436,221
-offsets:22,21,479,242
-light on
-bounds:1391,199,238,191
-offsets:44,44,325,235
+bounds:1616,438,33,23
+offsets:1,1,35,25
 rotate:90
 lip down
-bounds:1563,62,28,16
-offsets:0,0,28,25
-rotate:90
+bounds:698,303,46,26
+offsets:0,0,46,42
 lip up
-bounds:1645,6,31,19
+bounds:591,145,51,32
 madness line glow
-bounds:2,6,982,181
+bounds:2,473,1637,302
 r eye down
-bounds:1563,40,20,16
-rotate:90
+bounds:1563,119,32,25
+offsets:1,1,34,27
 r eye up
-bounds:1618,2,23,25
-rotate:90
+bounds:1534,431,36,40
+offsets:1,1,38,42
 red line
-bounds:1584,117,412,24
-offsets:3,1,419,26
-rotate:90
+bounds:757,431,687,40
+offsets:5,2,698,43
 red line glow
-bounds:1157,439,387,90
-offsets:8,5,403,100
+bounds:2,179,646,150
+offsets:13,8,672,166
 right eye mark
-bounds:986,8,31,35
-offsets:0,0,31,37
+bounds:1559,146,50,58
+offsets:1,1,52,62
+rotate:90
 teeth
-bounds:1770,693,19,7
+bounds:746,300,29,9
+offsets:1,1,31,11
 rotate:90
