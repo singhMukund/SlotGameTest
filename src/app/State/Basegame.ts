@@ -1,18 +1,15 @@
 import { Container } from "pixi.js";
 import { BackgroundView } from "../Background/BackgroundView";
-import { ReelView } from "../Background/ReelView";
 import { ReelManager } from "../BaseGame/ReelManager";
 import { Game } from "../game";
 import { WinpresentationController } from "../BaseGame/WinpresentationController";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
-import { BigWinMeter } from "../Meter/BigWinMeter";
 import { LineMeter } from "../Meter/LineMeter";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { ReelFrame } from "../Background/ReelFrame";
 
 export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
-    private reelView !: ReelView; 
     private reelManager !: ReelManager;
     private reelContainer !: Container;
     private bottomPanelButton !: Container;
@@ -20,7 +17,6 @@ export class BaseGame extends Container {
     private normalRation: number = 1920 / 919;
     private aspectRatioMobile: number = 0;
     private bottomPanel !: BottomPanel;
-    private bgWinMeter !: BigWinMeter;
     private aspectRatio: number = 0;
     private lineMeter !: LineMeter;
     private reelFrame !: ReelFrame;
@@ -51,7 +47,6 @@ export class BaseGame extends Container {
         this.initReelManager();
         this.initWinpresentationController();
         this.initBottomPanel();
-        this.initBigWinMeter();
         this.initLineMeter();
     }
 
@@ -65,7 +60,6 @@ export class BaseGame extends Container {
     }
 
     private initReelView() {
-        this.reelView = new ReelView();
         this.reelFrame = new ReelFrame();
     }
 
@@ -77,12 +71,8 @@ export class BaseGame extends Container {
         this.winpresentationController = new WinpresentationController();
     }
 
-    private initBigWinMeter(): void {
-        this.bgWinMeter = new BigWinMeter(CommonConfig.BASE_GAME);
-    }
-
     private initLineMeter(): void {
-        this.lineMeter = new LineMeter(CommonConfig.BASE_GAME);
+        this.lineMeter = new LineMeter();
     }
 
     private initBottomPanel(): void {
@@ -93,19 +83,16 @@ export class BaseGame extends Container {
     private addContainerToStage() {
         this.addChild(this.backgroundView);
         this.addChild(this.reelContainer);
-        this.reelContainer.addChild(this.reelView);
-        this.reelContainer.addChild(this.reelManager);
         this.reelContainer.addChild(this.reelFrame);
+        this.reelContainer.addChild(this.reelManager);
         this.reelContainer.addChild(this.lineMeter);
         this.addChild(this.bottomPanelButton);
         this.addChild(this.bottomPanel);
-        this.addChild(this.bgWinMeter);
     }
 
     private setPosition() {
-        this.reelContainer.position.set((window.innerWidth - this.reelView.width) / 2, (window.innerHeight - this.reelView.height) / 2 - 100);
-        this.reelManager.position.set(135, 135);
-        this.lineMeter.position.set(135, 135);
+        this.reelContainer.position.set((window.innerWidth - this.reelFrame.width) / 2, (window.innerHeight - this.reelFrame.height) / 2 - 100);
+        this.reelManager.position.set(157, 128);
         this.reelContainer.scale.set(0.6);
         this.aspectRatio = this.reelContainer.height / 919;
         this.aspectRatioMobile = this.reelContainer.width / 360;
@@ -127,8 +114,9 @@ export class BaseGame extends Container {
             let width = this.reelContainer.width;;
             currentScale = assumedWidthMobile / width;
             this.reelContainer.scale.set(currentScale);
-            this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, 50 * this.aspectRatioMobile);
+            this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) * 0.4);
             Game.the.app.stage.emit(CommonConfig.SET_RESIZE_WITH_REELS, [this.reelContainer.width, this.reelContainer.height, this.reelContainer.x, this.reelContainer.y]);
+            this.bottomPanel.position.set(0,this.reelContainer.y + this.reelContainer.height + 30);
         }
     }
 

@@ -9,19 +9,13 @@ export class WinMeter extends Container {
     private winValue: number = 0;
     private winCurrency: string = '$';
     private gap: number = 5;
-    private state : string;
 
-    constructor(state : string) {
+    constructor() {
         super();
-        this.state = state;
         this.init();
         this.updateWinAmount();
         this.addToStage();
-        if(this.state === CommonConfig.BASE_GAME){
-            this.subscribeEvent();
-        }else{
-            this.subscribeFGEvent();
-        }
+        this.subscribeEvent();
     }
 
     private subscribeEvent() :void{
@@ -29,10 +23,6 @@ export class WinMeter extends Container {
         Game.the.app.stage.on(CommonConfig.RESET_WIN_METER, this.resetWinAmount, this);
     }
 
-    private subscribeFGEvent() :void{
-        Game.the.app.stage.on(CommonConfig.FG_UPDATE_WIN_METER, this.updateWinAmount, this);
-        Game.the.app.stage.on(CommonConfig.FG_RESET_WIN_METER, this.resetWinAmount, this);
-    }
     private init(): void {
         const buttonStyle = new TextStyle({
             fill: "#b6b6b6",
@@ -60,8 +50,6 @@ export class WinMeter extends Container {
     }
 
     private updateWinAmount(): void {
-        // this.winValue = CommonConfig.the.getCurrentWinAmount();
-        // this.winMeterText.text = `${this.winValue}`;
         this.playIncrementAnimation(this.winMeterText, CommonConfig.the.getCurrentWinAmount());
         this.winMeterText.x = this.winMeterLabelText.x + this.winMeterLabelText.width + this.gap;
     }

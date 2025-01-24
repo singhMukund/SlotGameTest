@@ -23,11 +23,7 @@ export class StaticSymbol extends Container{
         this.symbol.anchor.set(0.5);  // Center the symbol
         this.name = 'SymbolContainer';
         this.setSymbolOffset();
-        if(texture !== "sym_wild"){
-            this.symbol.scale.set(0.4);
-        }else{
-            this.symbol.scale.set(0.9);
-        }
+        this.symbol.scale.set(0.9);
 
     }
 

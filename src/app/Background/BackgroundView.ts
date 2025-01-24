@@ -38,14 +38,15 @@ export class BackgroundView extends Container {
     private resizeApp(): void {
         let scaleX: number = 0;
         let scaleY: number = 0;
-        this.width = 1920;
-        this.height = 1080;
-        if (window.innerHeight > window.innerWidth && this) {
-            scaleX = window.innerWidth / this.width;
-            scaleY = window.innerHeight / this.height;
+        this.width = 1560;
+        this.height = 3376;
+        if (window.innerHeight > window.innerWidth && this) { 
+            scaleX = window.innerWidth >= 1080 ? 1 : window.innerWidth / this.width;
+            scaleY = window.innerHeight >= 1920 ? 1 : window.innerHeight / this.height;
             this.scale.set(scaleX, scaleY);
         } else {
-            scaleX = window.innerWidth / this.width;
+            scaleX = window.innerWidth >= 1080 ? 1 : window.innerWidth / this.width;
+            scaleY = window.innerHeight >= 1920 ? 1 : window.innerHeight / this.height;
             this.scale.set(scaleX);
         }
         this.position.set((window.innerWidth - this.width) / 2, (window.innerHeight - this.height) / 2);

@@ -13,12 +13,10 @@ export class BottomPanel extends Container {
     private aspectRatio : number =1;
     private balanceMeter !: BalanceMeter;
     private gap : number = 30;
-    private state : string;
 
 
     constructor(state : string) {
         super();
-        this.state = state;
         this.init();
         this.initButton();
         this.addContainerToStage();
@@ -29,9 +27,9 @@ export class BottomPanel extends Container {
     }
 
     private initButton(): void {
-        this.spinBtn = new SpinButton(this.state);
-        this.winMeter = new WinMeter(this.state);
-        this.balanceMeter = new BalanceMeter(this.state);
+        this.spinBtn = new SpinButton();
+        this.winMeter = new WinMeter();
+        this.balanceMeter = new BalanceMeter();
     }
 
     private addContainerToStage() {
@@ -54,8 +52,6 @@ export class BottomPanel extends Container {
         this.bg.position.set(0,window.innerHeight - this.bg.height);
         this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
         this.spinBtn.scale.set(scale);
-        this.balanceMeter.position.set(this.soundButton.x + this.soundButton.width + this.gap, window.innerHeight - (this.balanceMeter.height * 1.2));
-        this.spinBtn.position.set(this.autoplayMeter.x - (this.spinBtn.width * 1.5), window.innerHeight - this.spinBtn.height);
         if(window.innerWidth < window.innerHeight){
             this.resizeInMoble();
         }
@@ -73,6 +69,6 @@ export class BottomPanel extends Container {
         this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
         this.spinBtn.scale.set(scale * 0.6);
         this.balanceMeter.position.set(window.innerWidth - (this.balanceMeter.width * 1.1), window.innerHeight - (this.balanceMeter.height));
-        this.spinBtn.position.set((window.innerWidth - this.spinBtn.width)/2, this.soundButton.y - this.spinBtn.height);
+        this.spinBtn.position.set((window.innerWidth - this.spinBtn.width)/2, 0);
     }
 }

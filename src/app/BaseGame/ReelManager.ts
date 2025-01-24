@@ -1,16 +1,13 @@
-import { Assets, Container, Graphics, Sprite, Spritesheet } from "pixi.js";
+import { Container, Graphics, } from "pixi.js";
 import { CommonConfig } from "../../Common/CommonConfig";
 import { SymbolPool } from "../Symbol/SymbolPool";
 import { Game } from "../game";
 import gsap from "gsap";
 import { Reel } from "./Reel";
 import { Pos } from "./Pos";
-import { WinframeReelContainer } from "../Winframe/WinframeReelContainer";
-import { WinframeContainer } from "../Winframe/WinframeContainer";
 import { ISingleWinDetails } from "../Interface/GameInterface";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
-import { MusicalNoteContainer } from "../MusicalNoteFlyAnimation/MusicalNoteContainer";
-import { MusicalNoteReelContainer } from "../MusicalNoteFlyAnimation/MusicalNoteReelContainer";
+
 
 interface winframeData {
   reelId: number;
@@ -32,16 +29,12 @@ export class ReelManager extends Container {
     this.reelManagerContainer = new Container();
     this.addChild(this.reelManagerContainer);
     this.initializeReelContainer();
-    this.initializeWinframeContainer();
-    this.initializeMusicalNoteContainer();
     this.initGraphics();
     this.subscribeEvent();
     let randomWild: number[][] = [
-      [1, 4, 8, 6, 3],
-      [1, 6, 7, 9, 3],
-      [4, 9, 3, 3, 6],
-      [1, 3, 3, 4, 8],
-      [7, 6, 5, 3, 4],
+      [1, 4, 5],
+      [0, 2, 3],
+      [4, 0, 4]
     ];
     this.updateView(randomWild);
   }
@@ -73,34 +66,14 @@ export class ReelManager extends Container {
   private initGraphics(): void {
     this.maskContainer = new Graphics();
     this.maskContainer.beginFill(0xffa500);
-    this.maskContainer.drawRect(-85, -90, 850, 840);
+    this.maskContainer.drawRect(-49, -20.5, 800, 560);
     this.maskContainer.endFill();
+    this.maskContainer.position.set(-91, -60.5);
     // this.maskContainer.alpha = 0.5;
     this.reelManagerContainer.addChild(this.maskContainer);
     this.mask = this.maskContainer;
   }
 
-  // [
-  //     {
-  //         "value": [
-  //             "1,4",
-  //             "2,4",
-  //             "3,4",
-  //             "4,4",
-  //             "4,3",
-  //             "3,3"
-  //         ]
-  //     },
-  //     {
-  //         "value": [
-  //             "2,1",
-  //             "2,2",
-  //             "3,2",
-  //             "4,2",
-  //             "2,3"
-  //         ]
-  //     }
-  // ]
   private onPlayWinSymbol(): void {
     let winGrid: Map<number, ISingleWinDetails> = CommonConfig.the.getWinGrid();
     this.symboldWinIds = [];
@@ -109,45 +82,6 @@ export class ReelManager extends Container {
         this.symboldWinIds.push(winGrid.get(symbol)!.id);
     }
     this.playAnimatons();
-  }
-
-  private playWinframeAnimation(): void {
-    for (let i: number = 0; i < this.winframeData.length; i++) {
-      let singleWinframedata: winframeData = this.winframeData[i];
-      let direction: number[] = singleWinframedata.direction;
-      for (let i = 0; i < direction.length; i++) {
-        let winlineContainer = (
-          (
-            this.winframeContainer.children[
-              singleWinframedata.reelId
-            ] as WinframeReelContainer
-          ).children[singleWinframedata.rowId] as WinframeContainer
-        ).winLineContainer;
-        if (direction[i] > 0) {
-          winlineContainer.children[i].visible = true;
-        } else {
-          winlineContainer.children[i].visible = false;
-        }
-      }
-    }
-  }
-
-  private checkIfNumberIsLessthan(elm: number, arr: number[]): boolean {
-    for (let i: number = 0; i < arr.length; i++) {
-      if (arr[i] < elm) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private checkIfNumberIsGreaterthan(elm: number, arr: number[]): boolean {
-    for (let i: number = 0; i < arr.length; i++) {
-      if (arr[i] > elm) {
-        return true;
-      }
-    }
-    return false;
   }
 
   private sortArray(arr: Set<string>): Set<string> {
@@ -172,7 +106,6 @@ export class ReelManager extends Container {
       this.symboldWinIds[this.currentIndexSymbolWinIds]
     )!.index_set;
     this.createWinFrame(winData);
-    this.playWinframeAnimation();
     gsap.delayedCall(0.5, () => {
       Game.the.app.stage.emit(CommonConfig.HIDE_WINFRAME_ANIMATION);
     });
@@ -310,26 +243,6 @@ export class ReelManager extends Container {
       const reel : Reel = new Reel(i);
       reel.position.set(CommonConfig.reelWidth * i, 0);
       this.reelsContainer.addChild(reel);
-    }
-  }
-
-  private initializeWinframeContainer(): void {
-    this.winframeContainer = new Container();
-    this.reelManagerContainer.addChild(this.winframeContainer);
-    for(let i : number = 0; i< CommonConfig.totalReel;i++){
-      const winframeReel : WinframeReelContainer = new WinframeReelContainer(i);
-      winframeReel.position.set(CommonConfig.reelWidth * i, 0);
-      this.winframeContainer.addChild(winframeReel);
-    }
-  }
-
-  private initializeMusicalNoteContainer(): void {
-    this.musicalNoteContainer = new Container();
-    this.addChild(this.musicalNoteContainer);
-    for(let i : number = 0; i< CommonConfig.totalReel;i++){
-      const musicalNoteReel : MusicalNoteReelContainer = new MusicalNoteReelContainer(i);
-      musicalNoteReel.position.set(CommonConfig.reelWidth * i, 0);
-      this.musicalNoteContainer.addChild(musicalNoteReel);
     }
   }
 

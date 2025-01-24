@@ -1,16 +1,13 @@
-import { Assets, Container, Sprite, Spritesheet } from "pixi.js";
+import { Container } from "pixi.js";
 import { CommonConfig } from "../../Common/CommonConfig";
 import gsap from "gsap";
 import { Game } from "../game";
-import { StaticSymbol } from "../Symbol/StaticSymbol";
 import { Pos } from "./Pos";
 
 export class Reel extends Container {
     private pos_00 !: Pos;
     private pos_01 !: Pos;
     private pos_02 !: Pos;
-    private pos_03 !: Pos;
-    private pos_04 !: Pos;
     private reelId: number = 0;
     private delayStart: number = 0.05;
     private spinClicked: boolean = false;
@@ -29,7 +26,6 @@ export class Reel extends Container {
         super();
         this.reelId = reelId;
         this.init();
-        Game.the.app.stage.on(CommonConfig.PLAY_DROP_REEL, this.dropWinReel, this);
         Game.the.app.stage.on(CommonConfig.PLAY_STOP_SPIN, this.stopTheReel, this);
         Game.the.app.stage.on(CommonConfig.PLAY_SHUFFLE_REEL, this.playAfterHideCurrentSymbol, this);
     }
@@ -51,16 +47,6 @@ export class Reel extends Container {
         this.pos_02.position.set(0, CommonConfig.symbolHeight * 2);
         this.pos_02.name = 'pos_02';
         this.addChild(this.pos_02);
-
-        this.pos_03 = new Pos();
-        this.pos_03.position.set(0, CommonConfig.symbolHeight * 3);
-        this.pos_03.name = 'pos_03';
-        this.addChild(this.pos_03);
-
-        this.pos_04 = new Pos();
-        this.pos_04.position.set(0, CommonConfig.symbolHeight * 4);
-        this.pos_04.name = 'pos_04';
-        this.addChild(this.pos_04);
     }
 
     private playPosGsap(pos: Container, i: number): void {
@@ -127,8 +113,6 @@ export class Reel extends Container {
         gsap.killTweensOf(this.pos_00);
         gsap.killTweensOf(this.pos_01);
         gsap.killTweensOf(this.pos_02);
-        gsap.killTweensOf(this.pos_03);
-        gsap.killTweensOf(this.pos_04);
         gsap.killTweensOf(this.stopTheReel);
         gsap.killTweensOf(this.spinTheReel);
         gsap.killTweensOf(this.dropWinReel);

@@ -13,23 +13,18 @@ export class CommonConfig {
   public static highValueSymbolIds: number[] = [2, 3, 4, 5];
   public static lowValueSymbolIds: number[] = [6, 7, 8, 9];
   public static symbolIds: string[] = [
-    "sym_musicalnotes1",
-    "sym_wild",
-    "sym_basculohead",
-    "sym_slotmachine",
-    "sym_plane",
-    "sym_bike",
-    "sym_gate",
-    "sym_monitor",
-    "sym_dirtypan",
-    "sym_mop",
-    "sym_3x3Wild"
+    "sym_dollor",
+    "sym_trikonlogo",
+    "sym_txe_gold",
+    "sym_spin2win",
+    "sym_gift",
+    "sym_cross"
   ];
 
-  public static symbolsPerReel: number = 5;
-  public static totalReel: number = 5;
-  public static reelWidth: number = 169;
-  public static symbolHeight: number = 166.2;
+  public static symbolsPerReel: number = 3;
+  public static totalReel: number = 3;
+  public static reelWidth: number = 272;
+  public static symbolHeight: number = 210;
 
   // hh
   public static SHOW_INTRO_PAGE: string = "SHOW_INTRO_PAGE";
@@ -568,33 +563,21 @@ export class CommonConfig {
 
   public static reels: number[][] = [
     [
-      6, 7, 2, 3, 3, 8, 9, 4, 5, 1, 6, 3, 7, 2, 8, 5, 9, 4, 4, 7, 6, 3, 8, 4, 2,
-      9, 7, 5, 6, 5, 3, 9, 8, 1, 4, 2, 7, 7, 6, 5, 3, 4, 9, 2, 8, 5, 6, 1, 6, 7,
-      3, 8, 2, 9, 4, 8, 7, 6, 5, 1,
+      0, 1, 2, 3, 4, 5, 0, 2, 4, 1, 3, 5, 2, 4, 0, 3, 1, 5, 4, 2, 0, 1, 3, 5, 2,
+      4, 0, 1, 5, 3, 2, 4, 1, 0, 3, 5, 2, 4, 0, 3, 1, 5, 2, 0, 4, 1, 3, 5, 0, 2,
+      4, 1, 3, 5, 2, 0, 4, 3, 1, 5,
     ],
-
+  
     [
-      3, 8, 9, 2, 2, 7, 6, 4, 1, 5, 2, 9, 1, 8, 3, 6, 7, 4, 5, 6, 3, 1, 9, 1, 7,
-      8, 5, 2, 4, 6, 9, 3, 7, 1, 4, 8, 1, 2, 5, 6, 3, 9, 8, 1, 4, 7, 1, 5, 2, 6,
-      3, 8, 4, 9, 5, 1, 7, 2, 6, 1,
+      2, 3, 4, 0, 1, 5, 3, 2, 0, 4, 5, 1, 3, 0, 4, 5, 2, 1, 0, 3, 5, 2, 4, 1, 3,
+      0, 5, 4, 1, 2, 3, 0, 4, 5, 2, 1, 0, 3, 5, 4, 1, 2, 3, 0, 4, 5, 2, 1, 0, 3,
+      4, 5, 2, 0, 1, 3, 5, 4, 2, 0,
     ],
-
+  
     [
-      5, 6, 3, 2, 5, 8, 9, 1, 4, 7, 5, 2, 8, 3, 6, 9, 5, 7, 4, 6, 5, 3, 9, 1, 8,
-      4, 2, 7, 1, 5, 9, 3, 6, 5, 4, 8, 7, 2, 5, 6, 3, 1, 7, 9, 4, 2, 8, 6, 6, 5,
-      3, 4, 9, 8, 7, 7, 2, 6, 5, 1,
-    ],
-
-    [
-      7, 4, 6, 3, 5, 8, 3, 1, 2, 9, 6, 4, 7, 4, 8, 3, 9, 2, 5, 6, 7, 4, 1, 9, 3,
-      8, 6, 5, 2, 8, 4, 7, 1, 3, 9, 4, 6, 2, 8, 5, 4, 7, 9, 3, 6, 1, 6, 5, 2, 4,
-      8, 3, 7, 9, 9, 6, 2, 5, 4, 1,
-    ],
-
-    [
-      2, 5, 9, 3, 4, 7, 8, 3, 1, 6, 5, 3, 2, 8, 4, 7, 7, 9, 6, 5, 2, 3, 1, 8, 9,
-      4, 9, 7, 6, 5, 4, 9, 3, 4, 8, 6, 1, 7, 5, 2, 4, 8, 9, 3, 6, 1, 2, 7, 4, 5,
-      8, 2, 9, 6, 1, 3, 7, 1, 5, 4,
+      4, 5, 0, 1, 2, 3, 5, 4, 2, 0, 1, 3, 5, 4, 2, 0, 1, 3, 5, 4, 2, 0, 3, 1, 5,
+      4, 2, 0, 1, 3, 5, 4, 2, 0, 1, 3, 5, 4, 2, 0, 1, 3, 5, 4, 0, 2, 1, 3, 5, 4,
+      2, 0, 1, 3, 5, 4, 2, 0, 1, 3,
     ],
   ];
 
@@ -931,11 +914,11 @@ export class CommonConfig {
   findWinningGroups(reel: number[][]): Map<number, ISingleWinDetails> {
     let winArrayMap: Map<number, ISingleWinDetails> = new Map();
     let a_visited: number[][] = [
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
     ];
     for (let i: number = 0; i < reel.length; i++) {
       for (let j: number = 0; j < reel[i].length; j++) {

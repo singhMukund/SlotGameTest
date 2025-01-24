@@ -49,7 +49,6 @@ export class Game {
       "static-button"
     ],(data)=>{
       console.log(data);
-      this.loadingScreen.loadingAnimation(data);
     });
     
     Game.the.app.stage.emit(CommonConfig.SHOW_INTRO_PAGE);
@@ -74,8 +73,6 @@ export class Game {
   }
 
   private onLoadComplete() {
-    this.loadingScreen.visible = false;
-    this.loadingScreen.alpha = 0;
     this.app.stage.addChild(new StateManagement());
     // new SoundManager();
   }

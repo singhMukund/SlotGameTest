@@ -6,29 +6,17 @@ import gsap from "gsap";
 export class LineMeter extends Container {
     private winMeterText !: Text;
     private winValue: number = 0;
-    private winCurrency: string = '$';
-    private state : string;
 
-    constructor(state : string) {
+    constructor() {
         super();
-        this.state = state;
         this.init();
         this.addToStage();
-        if(this.state === CommonConfig.BASE_GAME){
-            this.subscribeEvent();
-        }else{
-            this.subscribeFGEvent();
-        }
+        this.subscribeEvent();
     }
 
     private subscribeEvent() :void{
         Game.the.app.stage.on(CommonConfig.UPDATE_LINE_WIN_METER, this.updateWinAmount, this);
         Game.the.app.stage.on(CommonConfig.RESET_WIN_METER, this.resetWinAmount, this);
-    }
-
-    private subscribeFGEvent() :void{
-        Game.the.app.stage.on(CommonConfig.FG_UPDATE_LINE_WIN_METER, this.updateWinAmount, this);
-        Game.the.app.stage.on(CommonConfig.FG_RESET_WIN_METER, this.resetWinAmount, this);
     }
 
     private init(): void {
