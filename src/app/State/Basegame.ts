@@ -110,8 +110,8 @@ export class BaseGame extends Container {
             this.reelContainer.scale.set(currentScale);
             this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) * 0.4);
             Game.the.app.stage.emit(CommonConfig.SET_RESIZE_WITH_REELS, [this.reelContainer.width, this.reelContainer.height, this.reelContainer.x, this.reelContainer.y]);
-            this.bottomPanel.position.set(0,this.reelContainer.y + this.reelContainer.height + 30);
         }
+        this.bottomPanel.position.set(this.reelContainer.x + (this.reelContainer.width - this.bottomPanel.width)/2,this.reelContainer.y + this.reelContainer.height + 30);
     }
 
 }

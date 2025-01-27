@@ -33,8 +33,6 @@ export class BottomPanel extends Container {
 
     private addContainerToStage() {
         this.addChild(this.spinBtn);
-        this.addChild(this.winMeter);
-        this.addChild(this.balanceMeter);
     }
 
 
@@ -48,11 +46,11 @@ export class BottomPanel extends Container {
         let height : number = this.spinBtn.height;
         let currentHeightPanel = height/999 * window.innerHeight ;
         let scale : number = currentHeightPanel / height;
-        this.bg.position.set(0,window.innerHeight - this.bg.height);
-        this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
         this.spinBtn.scale.set(scale);
         if(window.innerWidth < window.innerHeight){
             this.resizeInMoble();
+        }else{
+            this.spinBtn.position.set((this.width - this.spinBtn.width)/2, 0);
         }
     }
 
@@ -61,13 +59,7 @@ export class BottomPanel extends Container {
         let height : number = this.spinBtn.height;
         let currentHeightPanel = height/720 * window.innerHeight ;
         let scale : number = currentHeightPanel / height;
-
-        this.bg.position.set(0,window.innerHeight - this.bg.height);
-        this.winMeter.scale.set(scale * 0.6);
-        this.balanceMeter.scale.set(scale * 0.6);
-        this.winMeter.position.set((window.innerWidth - this.winMeter.width)/2,this.bg.y + (this.bg.height - this.winMeter.height)/2);
         this.spinBtn.scale.set(scale * 0.6);
-        this.balanceMeter.position.set(window.innerWidth - (this.balanceMeter.width * 1.1), window.innerHeight - (this.balanceMeter.height));
-        this.spinBtn.position.set((window.innerWidth - this.spinBtn.width)/2, 0);
+        this.spinBtn.position.set((this.width - this.spinBtn.width)/2, 0);
     }
 }
