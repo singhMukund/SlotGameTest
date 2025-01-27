@@ -626,33 +626,7 @@ export class CommonConfig {
   }
 
   public generateRandomView(): number[][] {
-    this.incrementForLargeWin = 0;
     const view: number[][] = [];
-    // return CommonConfig.noWinRespone;
-    if (CommonConfig.the.getCurrentState() === CommonConfig.BASE_GAME) {
-      if (this.getCheatType().length && this.getCheatType() === "normal") {
-        let winresponse =
-          this.winResponses[
-            Math.floor(Math.random() * this.winResponses.length)
-          ];
-        // winresponse = CommonConfig.NormalWinResponse4;
-        return this.returnCloneArray(winresponse);
-      } else if (
-        this.getCheatType().length &&
-        this.getCheatType() === "large"
-      ) {
-        let winresponse = CommonConfig.NormalWinResponse3;
-        return this.returnCloneArray(winresponse);
-      } else if (
-        this.getCheatType().length &&
-        this.getCheatType() === "bonus"
-      ) {
-        let winresponse = CommonConfig.NormalWinResponse3;
-        return this.returnCloneArray(winresponse);
-      }
-    }
-    this.setCheatType("");
-    // Loop through each reel to pick random positions
     for (
       let reelIndex = 0;
       reelIndex < CommonConfig.reels.length;
@@ -665,16 +639,10 @@ export class CommonConfig {
       const reelSymbols = [
         reel[startPosition % reel.length],
         reel[(startPosition + 1) % reel.length],
-        reel[(startPosition + 2) % reel.length],
-        reel[(startPosition + 3) % reel.length],
-        reel[(startPosition + 4) % reel.length],
+        reel[(startPosition + 2) % reel.length]
       ];
 
       view.push(reelSymbols);
-    }
-    // console.log(view);
-    if(CommonConfig.the.getCurrentState() === CommonConfig.FREE_Game){
-      return this.createRandom3x3WildGridView(view);
     }
     return view;
   }

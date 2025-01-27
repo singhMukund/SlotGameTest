@@ -19,7 +19,6 @@ export class Pos extends Container {
     }
 
     updatePosWithSym(sym: StaticSymbol): void {
-        // this.addChildren();
         if (this.symContainer.children.length) {
             this.symContainer.removeChildren();
             this.symContainer.addChild(sym);

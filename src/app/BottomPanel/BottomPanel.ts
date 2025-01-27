@@ -23,7 +23,6 @@ export class BottomPanel extends Container {
         this.resizeApp();
         Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
         Game.the.app.stage.emit(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN);
-        // Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE,0);
     }
 
     private initButton(): void {

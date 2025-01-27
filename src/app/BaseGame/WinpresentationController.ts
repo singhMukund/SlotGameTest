@@ -1,6 +1,5 @@
 import { CommonConfig } from "@/Common/CommonConfig";
 import { Game } from "../game";
-import gsap from "gsap";
 import { ISingleWinDetails } from "../Interface/GameInterface";
 
 export class WinpresentationController {
@@ -31,26 +30,9 @@ export class WinpresentationController {
     }
 
     private resetsOnSpinClick(): void {
-        CommonConfig.the.set3x3WildGridIds([]);
-        CommonConfig.the.setInitial3x3WildGridId([]);
-        CommonConfig.the.setTotalWinSymbolCount(0);
-        CommonConfig.the.SetCurrentWinAnimationIndex(0);
-        CommonConfig.the.setWinGrid(new Map());
-        CommonConfig.the.setCurrentWinAmount(0);
-        CommonConfig.the.setLineWinAmount(0);
-        CommonConfig.the.setCurrentRandomWinAnimationIndex(0);
-        CommonConfig.the.setCurrentRadomFeatureList([]);
-        CommonConfig.the.setIsRandomFeatureState(false);
-        CommonConfig.the.setIsBonusRewarded(false);
-        Game.the.app.stage.emit(CommonConfig.RESET_WIN_METER);
-        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE, -CommonConfig.the.getBet());
-        Game.the.app.stage.emit(CommonConfig.DISABLE_ALL_BUTTON);
-
-        // console.clear();
     }
 
     private onShowNextWinPresentation(): void {
-        // console.log("onShowNextWinPresentation--------------"+CommonConfig.the.getCurrentWinAnimationIndex());
         if (CommonConfig.the.getCurrentWinAnimationIndex() > 1) {
             return;
         }

@@ -1,6 +1,5 @@
 import { Container } from "pixi.js";
 import { BaseGame } from "./Basegame";
-import { FreeGame } from "./Freegame";
 import { Game } from "../game";
 import { CommonConfig } from "@/Common/CommonConfig";
 

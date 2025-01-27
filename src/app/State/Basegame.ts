@@ -33,11 +33,6 @@ export class BaseGame extends Container {
     }
 
     private subscribeEvent(): void {
-        // window.addEventListener("keydown", (event) => {
-        //     if (event.key === "c") { // Press 'C' to toggle the cheat panel
-        //         this.cheatPanel.visible = !this.cheatPanel.visible;
-        //     }
-        // });
     }
 
     private init() {
@@ -96,7 +91,6 @@ export class BaseGame extends Container {
         this.reelContainer.scale.set(0.6);
         this.aspectRatio = this.reelContainer.height / 919;
         this.aspectRatioMobile = this.reelContainer.width / 360;
-        // this.bottomPanelButton.position.set(0, (window.innerHeight - this.bottomPanelButton.height));
     }
 
     private resizeApp(): void {
