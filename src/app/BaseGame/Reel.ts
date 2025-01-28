@@ -95,7 +95,7 @@ export class Reel extends Container {
     }
 
     private playPosGsap(pos: Container): void {
-        this.speed = this.toBeStopped ? 12 : 32;
+        this.speed = this.toBeStopped ? 28 : 32;
         pos.y += this.speed;
     }
 

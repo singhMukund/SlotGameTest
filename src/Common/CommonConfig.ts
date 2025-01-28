@@ -31,6 +31,7 @@ export class CommonConfig {
   public static HIDE_INTRO_PAGE_SHOW_BASEGAME: string = "HIDE_INTRO_PAGE_SHOW_BASEGAME";
   public static HIDE_LOADING_SCREEN: string = "HIDE_LOADING_SCREEN";
   public static START_SPIN: string = "START_SPIN";
+  public static STOP_SPIN: string = "STOP_SPIN";
   public static FG_START_SPIN: string = "FG_START_SPIN";
   public static SET_RESPONSE_AT_REEL: string = "SET_RESPONSE_AT_REEL";
   public static FG_SET_RESPONSE_AT_REEL: string = "FG_SET_RESPONSE_AT_REEL";
@@ -154,6 +155,14 @@ export class CommonConfig {
   public static RANDOM_FEATURE_PISTOLE: string = "RANDOM_FEATURE_PISTOLE";
 
   public static HIDE_MUSICAL_NOTE_FROM_SCREEN: string = "HIDE_MUSICAL_NOTE_FROM_SCREEN";
+  
+
+  //Button State
+  public static BUTTON_STATE_SPIN : string = "BUTTON_STATE_SPIN";
+  public static BUTTON_STATE_STOP : string = "BUTTON_STATE_STOP";
+  //Event
+  public static CHANGE_BUTTON_STATE : string = "CHANGE_BUTTON_STATE";
+
 
 
   public static RANDOM_FEATURES_LIST: string[] = [
@@ -187,6 +196,7 @@ export class CommonConfig {
   private _3x3WildGridIds : number[][] = [];
   private _initial3x3WildGridId : number[] = [];
   private _locksGlobalPosition : number[][] = [];
+  private _currentButtonState : string = "";
 
   private symbolWinData: SymbolWinData = {
     0: {
@@ -497,6 +507,14 @@ export class CommonConfig {
 
   public getIsFGRandomFeatureState(): boolean {
     return this.isFGRandomFeatureState;
+  }
+
+  public setCurrentButtonState(value: string): void {
+    this._currentButtonState = value;
+  }
+
+  public getCurrentButtonState(): string {
+    return this._currentButtonState;
   }
 
   public static NormalWinResponse: number[][] = [

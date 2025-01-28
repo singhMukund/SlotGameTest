@@ -7,6 +7,7 @@ import { Reel } from "./Reel";
 import { Pos } from "./Pos";
 import { ISingleWinDetails } from "../Interface/GameInterface";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
+import { Utils } from "@esotericsoftware/spine-pixi-v8";
 
 
 interface winframeData {
@@ -19,6 +20,9 @@ export class ReelManager extends Container {
   private reelsContainer!: Container;
   private reelManagerContainer !: Container;
   private ticker: Ticker;
+  private spinStopCalled : boolean = false;
+  private normalStopSpinDelayCall !: gsap.core.Tween
+  private enableStopBtnDelayCall !: gsap.core.Tween
 
   constructor() {
     super();
@@ -44,7 +48,8 @@ export class ReelManager extends Container {
       (reel as Reel).toBeStopped = false;
       (reel as Reel).updateFinalPosition();
     })
-
+    this.spinStopCalled = false;
+    Game.the.app.stage.emit(CommonConfig.CHANGE_BUTTON_STATE, CommonConfig.BUTTON_STATE_SPIN);
   }
 
   private update(): void {
@@ -60,6 +65,7 @@ export class ReelManager extends Container {
       this
     );
     Game.the.app.stage.on(CommonConfig.START_SPIN, this.spinTheReels, this);
+    Game.the.app.stage.on(CommonConfig.STOP_SPIN, this.stopSpin, this);
     Game.the.app.stage.on(
       CommonConfig.UPDATE_VIEW_ON_REEL,
       this.updateView,
@@ -115,15 +121,34 @@ export class ReelManager extends Container {
     });
   }
 
+  private stopSpin() :void{
+    this.spinStopCalled = true;
+    this.normalStopSpinDelayCall.kill();
+    let response: number[][] = CommonConfig.the.generateRandomView();
+    this.updateView(response);
+    console.log("--------------stopFromButton");
+    this.reelsContainer.children.forEach((reel, index) => {
+      (reel as Reel).toBeStopped = true;
+      (reel as Reel).updatePosition();
+    })
+  }
+
   spinTheReels(): void {
-    gsap.delayedCall(5 , () => {
-      let response: number[][] = CommonConfig.the.generateRandomView();
-      this.updateView(response);
-      console.log("--------------stopped");
-      this.reelsContainer.children.forEach((reel, index) => {
-        (reel as Reel).toBeStopped = true;
-        (reel as Reel).updatePosition();
-      })
+    this.normalStopSpinDelayCall = gsap.delayedCall(5, () => {
+      if(!this.spinStopCalled){
+        let response: number[][] = CommonConfig.the.generateRandomView();
+        this.updateView(response);
+        console.log("--------------stopped");
+        this.reelsContainer.children.forEach((reel, index) => {
+          (reel as Reel).toBeStopped = true;
+          (reel as Reel).updatePosition();
+        })
+      }
+    });
+    this.normalStopSpinDelayCall.play();
+    gsap.delayedCall(2 , () => {
+       //This delay is for response, if I get response from server this delay code will be removed, button state will change after response from server
+      Game.the.app.stage.emit(CommonConfig.CHANGE_BUTTON_STATE, CommonConfig.BUTTON_STATE_STOP);
     })
     this.ticker.start();
   }
