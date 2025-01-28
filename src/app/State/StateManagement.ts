@@ -1,6 +1,5 @@
 import { Container } from "pixi.js";
 import { BaseGame } from "./Basegame";
-import { Game } from "../game";
 import { CommonConfig } from "@/Common/CommonConfig";
 
 export class StateManagement extends Container{
@@ -9,8 +8,7 @@ export class StateManagement extends Container{
         super();
         this.init();
         this.addContainerToStage();
-        this.hideShowState(true);
-        Game.the.app.stage.on(CommonConfig.SHOW_HIDE_BASEGAME, this.hideShowState, this);
+        this.hideShowState();
     }
 
     private init(){
@@ -21,15 +19,13 @@ export class StateManagement extends Container{
         this.addChild(this.baseGame);
     }
 
-    private hideShowState(isBaseGame : boolean) :void{
+    private hideShowState() :void{
         this.showBaseGame();
     }
 
     private showBaseGame() :void{
         this.baseGame.visible = true;
         CommonConfig.the.setCurrentState(CommonConfig.BASE_GAME);
-        Game.the.app.stage.emit(CommonConfig.UPDATE_BALANCE_TEXT);
-        Game.the.app.stage.emit(CommonConfig.INIT_BASEGAME);
     }
 
 }

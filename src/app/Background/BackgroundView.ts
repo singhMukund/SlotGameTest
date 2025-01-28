@@ -23,8 +23,6 @@ export class BackgroundView extends Container {
     private intializeBg(): void {
         this.bg = new Sprite(Assets.get("background"));
         this.bg.y = -60;
-        // this.bigWinSpine = Spine.from({ skeleton: "Crepazione_Animation_spine_data", atlas: "Crepazione_Animation_spine_atlas" });
-        //         this.bigWinSpine2 = Spine.from({ skeleton: "Basculo_chained_for_spine_data", atlas: "Basculo_chained_for_spine_atlas" });
     }
 
     private playBgSound() :void{

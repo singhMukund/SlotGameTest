@@ -4,7 +4,6 @@ import { ReelManager } from "../BaseGame/ReelManager";
 import { Game } from "../game";
 import { WinpresentationController } from "../BaseGame/WinpresentationController";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
-import { LineMeter } from "../Meter/LineMeter";
 import { CommonConfig } from "@/Common/CommonConfig";
 import { ReelFrame } from "../Background/ReelFrame";
 
@@ -12,13 +11,10 @@ export class BaseGame extends Container {
     private backgroundView !: BackgroundView;
     private reelManager !: ReelManager;
     private reelContainer !: Container;
-    private bottomPanelButton !: Container;
     private winpresentationController !: WinpresentationController;
-    private normalRation: number = 1920 / 919;
     private aspectRatioMobile: number = 0;
     private bottomPanel !: BottomPanel;
     private aspectRatio: number = 0;
-    private lineMeter !: LineMeter;
     private reelFrame !: ReelFrame;
 
 
@@ -42,12 +38,10 @@ export class BaseGame extends Container {
         this.initReelManager();
         this.initWinpresentationController();
         this.initBottomPanel();
-        this.initLineMeter();
     }
 
     private parentContainer(): void {
         this.reelContainer = new Container();
-        this.bottomPanelButton = new Container();
     }
 
     private initBackground() {
@@ -66,12 +60,8 @@ export class BaseGame extends Container {
         this.winpresentationController = new WinpresentationController();
     }
 
-    private initLineMeter(): void {
-        this.lineMeter = new LineMeter();
-    }
-
     private initBottomPanel(): void {
-        this.bottomPanel = new BottomPanel(CommonConfig.BASE_GAME);
+        this.bottomPanel = new BottomPanel();
     }
 
 
@@ -80,8 +70,6 @@ export class BaseGame extends Container {
         this.addChild(this.reelContainer);
         this.reelContainer.addChild(this.reelFrame);
         this.reelContainer.addChild(this.reelManager);
-        this.reelContainer.addChild(this.lineMeter);
-        this.addChild(this.bottomPanelButton);
         this.addChild(this.bottomPanel);
     }
 
@@ -109,7 +97,6 @@ export class BaseGame extends Container {
             currentScale = assumedWidthMobile / width;
             this.reelContainer.scale.set(currentScale);
             this.reelContainer.position.set((window.innerWidth - this.reelContainer.width) / 2, (window.innerHeight - this.reelContainer.height) * 0.4);
-            Game.the.app.stage.emit(CommonConfig.SET_RESIZE_WITH_REELS, [this.reelContainer.width, this.reelContainer.height, this.reelContainer.x, this.reelContainer.y]);
         }
         this.bottomPanel.position.set(this.reelContainer.x + (this.reelContainer.width - this.bottomPanel.width)/2,this.reelContainer.y + this.reelContainer.height + 30);
     }

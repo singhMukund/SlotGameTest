@@ -5,9 +5,7 @@ import { Game } from "../game";
 import gsap from "gsap";
 import { Reel } from "./Reel";
 import { Pos } from "./Pos";
-import { ISingleWinDetails } from "../Interface/GameInterface";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
-import { Utils } from "@esotericsoftware/spine-pixi-v8";
 
 
 interface winframeData {

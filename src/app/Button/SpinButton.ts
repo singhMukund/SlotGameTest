@@ -38,16 +38,6 @@ export class SpinButton extends Container{
               .on('pointerup', this.onButtonUp, this)
               .on('pointerover', this.onButtonOver, this)
               .on('pointerout', this.onButtonOut , this);
-        document.body.onkeyup = (e)=> {
-            if (e.key == " " ||
-                e.code == "Space" ||      
-                e.keyCode == 32      
-            ) {
-                if(this.interactive){
-                    this.onButtonUp();
-                }
-            }
-          }
     }
 
     private onButtonDown() : void{

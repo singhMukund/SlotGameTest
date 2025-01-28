@@ -1,44 +1,26 @@
 import { Assets, Container, Sprite } from "pixi.js";
 import { Game } from "../game";
 import { SpinButton } from "../Button/SpinButton";
-import { WinMeter } from "../Meter/WinMeter";
 import { CommonConfig } from "@/Common/CommonConfig";
-import { BalanceMeter } from "../Meter/BalanceMeter";
 
 
 export class BottomPanel extends Container {
-    private bg !: Sprite;
     private spinBtn !: SpinButton;
-    private winMeter !: WinMeter;
-    private aspectRatio : number =1;
-    private balanceMeter !: BalanceMeter;
-    private gap : number = 30;
 
-
-    constructor(state : string) {
+    constructor() {
         super();
-        this.init();
         this.initButton();
         this.addContainerToStage();
         this.resizeApp();
         Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
-        Game.the.app.stage.emit(CommonConfig.CHECK_ENABLE_DISABLE_PLUS_MINUS_BTN);
     }
 
     private initButton(): void {
         this.spinBtn = new SpinButton();
-        this.winMeter = new WinMeter();
-        this.balanceMeter = new BalanceMeter();
     }
 
     private addContainerToStage() {
         this.addChild(this.spinBtn);
-    }
-
-
-    private init(): void {
-        this.bg = new Sprite(Assets.get('bottomPanelBg'));
-        // this.addChild(this.bg);
     }
 
     private resizeApp() :void{

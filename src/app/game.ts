@@ -1,8 +1,6 @@
 // Game.ts
 import { Application, Assets, Container } from "pixi.js";
 import { CommonConfig } from "../Common/CommonConfig";
-import { CommonEvents } from "@/Common/CommonEvents";
-import { GameConfig } from "./GameConfiguration/GameConfig";
 import { StateManagement } from "./State/StateManagement";
 
 export class Game {
@@ -51,7 +49,6 @@ export class Game {
       console.log(data);
     });
     
-    Game.the.app.stage.emit(CommonConfig.SHOW_INTRO_PAGE);
     this.intoBaseGame();
   }
 
@@ -67,9 +64,7 @@ export class Game {
 
   private loadAssetsAndInitialize() {
     this.loadImages();
-    new CommonEvents();
     new CommonConfig();
-    new GameConfig();
   }
 
   private onLoadComplete() {
