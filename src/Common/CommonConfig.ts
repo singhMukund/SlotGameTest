@@ -1,5 +1,4 @@
 export class CommonConfig {
-  protected static _the: CommonConfig;
   public static symbolIds: string[] = [
     "sym_dollor",
     "sym_trikonlogo",
@@ -23,10 +22,11 @@ export class CommonConfig {
   public static DISABLE_ALL_BUTTON: string = "DISABLE_ALL_BUTTON";
   public static ENABLE_ALL_BUTTON: string = "ENABLE_ALL_BUTTON";
   public static SET_RESIZE_WITH_REELS: string = "SET_RESIZE_WITH_REELS";
+  public static PLAY_BACKGROUND_SOUND: string = "PLAY_BACKGROUND_SOUND";
+  public static STOP_BACKGROUND_SOUND: string = "STOP_BACKGROUND_SOUND";
+
   public static BASE_GAME: string = "basegame";
   //----------------Sound Event-----------------------------
-  public static PLAY_BG_SOUND: string = "PLAY_BG_SOUND";
-  public static STOP_BG_SOUND: string = "STOP_BG_SOUND";
   public static MUTE_UNMUTE_ALL_SOUND: string = "MUTE_ALL_SOUND";  
 
   //Button State
@@ -76,17 +76,9 @@ export class CommonConfig {
       2, 0, 1, 3, 5, 4, 2, 0, 1, 3,
     ],
   ];
-  
-  static get the(): CommonConfig {
-    if (!CommonConfig._the) {
-      CommonConfig._the = new CommonConfig();
-    }
-
-    return CommonConfig._the;
-  }
 
   constructor() {
-    if (CommonConfig._the == null) CommonConfig._the = this;
+    
   }
 
   public generateRandomView(): number[][] {

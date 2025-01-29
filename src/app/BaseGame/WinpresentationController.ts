@@ -1,14 +1,14 @@
 import { CommonConfig } from "@/Common/CommonConfig";
-import { Game } from "../game";
+import { Application } from "pixi.js";
 
 export class WinpresentationController {
-    constructor() {
+    constructor(private app: Application,private config: CommonConfig) {
         this.subscribe();
     }
 
     private subscribe(): void {
-        Game.the.app.stage.on(CommonConfig.START_SPIN, this.resetsOnSpinClick, this);
-        Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.onSpinStopped, this);
+        this.app.stage.on(CommonConfig.START_SPIN, this.resetsOnSpinClick, this);
+        this.app.stage.on(CommonConfig.SPIN_STOPPED, this.onSpinStopped, this);
     }
 
     private onSpinStopped(): void {
@@ -19,7 +19,7 @@ export class WinpresentationController {
     }
 
     private enableButtonInNoWin(): void {
-        Game.the.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
+        this.app.stage.emit(CommonConfig.ENABLE_ALL_BUTTON);
     }
 
 }

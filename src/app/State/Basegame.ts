@@ -1,7 +1,6 @@
-import { Container } from "pixi.js";
+import { Application, Container } from "pixi.js";
 import { BackgroundView } from "../Background/BackgroundView";
 import { ReelManager } from "../BaseGame/ReelManager";
-import { Game } from "../game";
 import { WinpresentationController } from "../BaseGame/WinpresentationController";
 import { BottomPanel } from "../BottomPanel/BottomPanel";
 import { CommonConfig } from "@/Common/CommonConfig";
@@ -18,14 +17,14 @@ export class BaseGame extends Container {
     private reelFrame !: ReelFrame;
 
 
-    constructor() {
+    constructor(private app: Application,private config: CommonConfig) {
         super();
         this.init();
         this.addContainerToStage();
         this.setPosition();
         this.resizeApp();
         this.subscribeEvent();
-        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+        this.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private subscribeEvent(): void {
@@ -45,7 +44,7 @@ export class BaseGame extends Container {
     }
 
     private initBackground() {
-        this.backgroundView = new BackgroundView();
+        this.backgroundView = new BackgroundView(this.app);
     }
 
     private initReelView() {
@@ -53,15 +52,15 @@ export class BaseGame extends Container {
     }
 
     private initReelManager() {
-        this.reelManager = new ReelManager();
+        this.reelManager = new ReelManager(this.app,this.config);
     }
 
     private initWinpresentationController(): void {
-        this.winpresentationController = new WinpresentationController();
+        this.winpresentationController = new WinpresentationController(this.app,this.config);
     }
 
     private initBottomPanel(): void {
-        this.bottomPanel = new BottomPanel();
+        this.bottomPanel = new BottomPanel(this.app,this.config);
     }
 
 

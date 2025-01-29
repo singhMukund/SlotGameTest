@@ -1,27 +1,26 @@
-import { Assets, Container, Sprite, Spritesheet, Texture } from "pixi.js";
-import { Game } from "../game";
+import { Application, Assets, Container, Sprite, Spritesheet, Texture } from "pixi.js";
 import { CommonConfig } from "../../Common/CommonConfig";
 
 export class SpinButton extends Container{
     private buttton !: Sprite;
     private stateBtn : string = CommonConfig.BUTTON_STATE_SPIN;
-    constructor(){
+    constructor(private app: Application,private config: CommonConfig){
         super();
         this.initializeButton();
         this.addEvent();
         this.subscribeEvent();
-        Game.the.app.stage.on(CommonConfig.CHANGE_BUTTON_STATE, this.changeButtonState, this);
+        this.app.stage.on(CommonConfig.CHANGE_BUTTON_STATE, this.changeButtonState, this);
     }
 
     private changeButtonState(state : string) : void{
         state.length && this.enable();
         this.stateBtn = state;
-        CommonConfig.the.setCurrentButtonState(state);
+        this.config.setCurrentButtonState(state);
     }
 
     private subscribeEvent(): void {
-        Game.the.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
-        Game.the.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
+        this.app.stage.on(CommonConfig.DISABLE_ALL_BUTTON, this.disable, this);
+        this.app.stage.on(CommonConfig.ENABLE_ALL_BUTTON, this.enable, this);
     }
 
     private initializeButton() :void{
@@ -47,9 +46,9 @@ export class SpinButton extends Container{
     private onButtonUp() :void{
         this.buttton.scale.set(0.3);
         if(this.stateBtn === CommonConfig.BUTTON_STATE_SPIN){
-            Game.the.app.stage.emit(CommonConfig.START_SPIN);
+            this.app.stage.emit(CommonConfig.START_SPIN);
         }else if(this.stateBtn === CommonConfig.BUTTON_STATE_STOP){
-            Game.the.app.stage.emit(CommonConfig.STOP_SPIN);
+            this.app.stage.emit(CommonConfig.STOP_SPIN);
         }else{
             return;
         }

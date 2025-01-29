@@ -1,23 +1,17 @@
-import { Assets, Container, Sprite } from "pixi.js";
-import { Game } from "../game";
-import SoundManager from "../Sound/SoundManager";
+import { Application, Assets, Container, Sprite } from "pixi.js";
 import { CommonConfig } from "@/Common/CommonConfig";
 
 export class BackgroundView extends Container {
     private bg !: Sprite;
-    private soundManager !: SoundManager;
 
 
-    constructor() {
+    constructor(private app: Application) {
         super();
-        this.soundManager = SoundManager.getInstance();
         this.intializeBg();
         this.addContainerToStage();
         this.resizeApp();
         this.playBgSound();
-        Game.the.app.stage.on(CommonConfig.PLAY_BG_SOUND, this.playBgSound, this);
-        Game.the.app.stage.on(CommonConfig.STOP_BG_SOUND, this.stopBgSound, this);
-        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+        this.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private intializeBg(): void {
@@ -26,11 +20,7 @@ export class BackgroundView extends Container {
     }
 
     private playBgSound() :void{
-        this.soundManager.play('background');
-    }
-
-    private stopBgSound() :void{
-        this.soundManager.stop('background');
+        this.app.stage.emit(CommonConfig.PLAY_BACKGROUND_SOUND,"background");
     }
 
     private resizeApp(): void {

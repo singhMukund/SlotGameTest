@@ -1,5 +1,4 @@
-import { Assets, Container, Loader, Sprite, Spritesheet } from "pixi.js";
-import { Game } from "../game";
+import { Assets, Container, Sprite, Spritesheet } from "pixi.js";
 
 export class StaticSymbol extends Container{
     private symbol: Sprite;

@@ -1,5 +1,4 @@
-import { Assets, Container, Sprite } from "pixi.js";
-import { Game } from "../game";
+import { Application, Assets, Container, Sprite } from "pixi.js";
 import { SpinButton } from "../Button/SpinButton";
 import { CommonConfig } from "@/Common/CommonConfig";
 
@@ -7,16 +6,16 @@ import { CommonConfig } from "@/Common/CommonConfig";
 export class BottomPanel extends Container {
     private spinBtn !: SpinButton;
 
-    constructor() {
+    constructor(private app: Application,private config: CommonConfig) {
         super();
         this.initButton();
         this.addContainerToStage();
         this.resizeApp();
-        Game.the.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
+        this.app.stage.on("RESIZE_THE_APP", this.resizeApp, this);
     }
 
     private initButton(): void {
-        this.spinBtn = new SpinButton();
+        this.spinBtn = new SpinButton(this.app,this.config);
     }
 
     private addContainerToStage() {

@@ -4,22 +4,13 @@ import { CommonConfig } from "../Common/CommonConfig";
 import { StateManagement } from "./State/StateManagement";
 
 export class Game {
-  protected static _the: Game;
   public app: Application;
   private gameContainer!: Container;
-
-  static get the(): Game {
-    if (!Game._the) {
-      Game._the = new Game();
-    }
-
-    return Game._the;
-  }
+  private config !:CommonConfig;
 
   constructor() {
-    if (Game._the == null) Game._the = this;
-
     this.app = new Application();
+    //Just for pixi extenstion 
     (globalThis as any).__PIXI_APP__ = this.app;
     this.init();
   }
@@ -56,19 +47,13 @@ export class Game {
     this.onLoadComplete();
   }
 
-  isIOS(): boolean {
-    const audio = document.createElement("audio");
-    return audio.canPlayType('audio/ogg; codecs="vorbis"') === "";
-    return false;
-  }
-
   private loadAssetsAndInitialize() {
+    this.config = new CommonConfig();
     this.loadImages();
-    new CommonConfig();
   }
 
   private onLoadComplete() {
-    this.app.stage.addChild(new StateManagement());
+    this.app.stage.addChild(new StateManagement(this.app,this.config));
     // new SoundManager();
   }
 

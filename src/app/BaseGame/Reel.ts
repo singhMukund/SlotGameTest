@@ -1,7 +1,6 @@
-import { BlurFilter, Container } from "pixi.js";
+import { Application, BlurFilter, Container } from "pixi.js";
 import { CommonConfig } from "../../Common/CommonConfig";
 import gsap from "gsap";
-import { Game } from "../game";
 import { Pos } from "./Pos";
 import { SymbolPool } from "../Symbol/SymbolPool";
 import { StaticSymbol } from "../Symbol/StaticSymbol";
@@ -25,12 +24,12 @@ export class Reel extends Container {
 
 
 
-    constructor(reelId: number) {
+    constructor(reelId: number,private app: Application,private config: CommonConfig) {
         super();
         this.reelId = reelId;
         this.init();
-        Game.the.app.stage.on(CommonConfig.SPIN_STOPPED, this.onSpinStopped, this);
-        Game.the.app.stage.on(CommonConfig.START_SPIN, this.removeChildrenFromLooper, this);
+        this.app.stage.on(CommonConfig.SPIN_STOPPED, this.onSpinStopped, this);
+        this.app.stage.on(CommonConfig.START_SPIN, this.removeChildrenFromLooper, this);
     }
 
     private onSpinStopped(): void {
@@ -130,7 +129,7 @@ export class Reel extends Container {
             }
             if (this.toBeStopped && index === 2 && this.reelId === 2) {
                 if (Math.abs(pos.y) <= 20) {
-                    Game.the.app.stage.emit(CommonConfig.SPIN_STOPPED);
+                    this.app.stage.emit(CommonConfig.SPIN_STOPPED);
                 }
             }
         });

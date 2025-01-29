@@ -1,10 +1,10 @@
-import { Container } from "pixi.js";
+import { Application, Container } from "pixi.js";
 import { BaseGame } from "./Basegame";
 import { CommonConfig } from "@/Common/CommonConfig";
 
 export class StateManagement extends Container{
     private baseGame !: BaseGame;
-    constructor(){
+    constructor(private app: Application,private config: CommonConfig){
         super();
         this.init();
         this.addContainerToStage();
@@ -12,7 +12,7 @@ export class StateManagement extends Container{
     }
 
     private init(){
-        this.baseGame = new BaseGame();
+        this.baseGame = new BaseGame(this.app,this.config);
     }
 
     private addContainerToStage(){
@@ -25,7 +25,7 @@ export class StateManagement extends Container{
 
     private showBaseGame() :void{
         this.baseGame.visible = true;
-        CommonConfig.the.setCurrentState(CommonConfig.BASE_GAME);
+        this.config.setCurrentState(CommonConfig.BASE_GAME);
     }
 
 }

@@ -1,11 +1,12 @@
 import { Howl } from 'howler';
+import { CommonConfig } from '@/Common/CommonConfig';
+import { Application } from 'pixi.js';
 
 class SoundManager {
-  private static instance: SoundManager;
   private sounds: Record<string, Howl>;
   private isMuted: boolean= false;
 
-  private constructor() {
+  private constructor(private app: Application,private config: CommonConfig) {
     this.sounds = {
       background: new Howl({
         src: ['./audio/BG_Music.wav', './audio/BG_Music.m4a'],
@@ -13,13 +14,7 @@ class SoundManager {
         loop: true,
       }),
     };
-  }
-
-  public static getInstance(): SoundManager {
-    if (!SoundManager.instance) {
-      SoundManager.instance = new SoundManager();
-    }
-    return SoundManager.instance;
+    this.app.stage.on(CommonConfig.PLAY_BACKGROUND_SOUND, this.play, this);
   }
 
   public play(soundName: string): void {
